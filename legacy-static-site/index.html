@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tonsammler</title>
+<meta name="description" content="Tonsammler – deep, hypnotic Techno für lange Nächte im Club. Musik, Bio, Arbeit und Kontakt.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎧</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Sacramento&display=swap">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0d0b08;
+    --ink:#f3ead8;
+    --ink-dim:#a89b85;
+    --gold:#d9a94f;
+    --gold-text:#e8c179;
+    --gold-ink:#241906;
+    --line:rgba(246,241,230,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  body{
+    color:var(--ink);
+    font-family:'Manrope', ui-sans-serif, system-ui, sans-serif;
+    line-height:1.6;
+    background:
+      radial-gradient(115% 55% at 12% 0%, #17130c 0%, transparent 55%),
+      radial-gradient(120% 65% at 88% 35%, #1d1810 0%, transparent 60%),
+      radial-gradient(140% 75% at 50% 100%, #241d12 0%, transparent 65%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+  a{color:inherit;}
+  .display{font-family:'Manrope', ui-sans-serif, system-ui, sans-serif;}
+  .script{font-family:'Sacramento', cursive;}
+  .mono{font-family:'Manrope', ui-sans-serif, system-ui, sans-serif;letter-spacing:0.05em;font-weight:600;}
+  .wrap{max-width:1080px;margin-inline:auto;padding-inline:24px;}
+
+  .ts-nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(13,11,8,0.72);backdrop-filter:blur(10px);
+  }
+  .ts-nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:18px;gap:16px;}
+  .ts-nav .word{font-weight:800;letter-spacing:0.02em;font-size:1.05rem;text-decoration:none;}
+  .ts-nav .links{display:flex;gap:22px;flex-wrap:wrap;}
+  .ts-nav .links a{font-size:0.78rem;color:var(--ink-dim);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;transition:color 0.2s ease;}
+  .ts-nav .links a:hover{color:var(--gold-text);}
+
+  .hero{min-height:88svh;display:flex;align-items:center;}
+  .hero-inner{padding-block:64px;}
+  .hero-block{opacity:0;transform:translateX(-80px);}
+  @keyframes flyInLeft{from{opacity:0;transform:translateX(-80px);}to{opacity:1;transform:translateX(0);}}
+  @media (prefers-reduced-motion:reduce){.hero-block{animation:none !important;opacity:1;transform:none;}}
+  .hero-block-1{animation:flyInLeft 1.5s cubic-bezier(.19,.72,.24,1) 0s both;}
+  .hero-block-2{animation:flyInLeft 1.4s cubic-bezier(.19,.72,.24,1) 0.45s both;}
+  .hero-block-3{animation:flyInLeft 1.3s cubic-bezier(.19,.72,.24,1) 0.9s both;}
+  .hero-script{display:block;font-size:clamp(1.3rem,3.6vw,1.9rem);color:var(--ink-dim);margin-bottom:6px;}
+  .hero-name{
+    font-size:clamp(3.2rem,12vw,8rem);line-height:0.94;margin:0;font-weight:300;letter-spacing:0.02em;
+    text-wrap:balance;color:var(--ink);
+  }
+  .hero-name a{color:inherit;text-decoration:none;transition:color 0.25s ease;}
+  .hero-name a:hover{color:var(--gold-text);}
+  .hero-bullets{display:flex;gap:22px;flex-wrap:wrap;list-style:none;padding:0;margin:32px 0 40px;}
+  .hero-bullets li{
+    font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .hero-bullets li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 24px;border-radius:999px;font-size:0.92rem;font-weight:700;
+    text-decoration:none;border:none;transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-solid{background:#ffffff;color:var(--gold-ink);box-shadow:0 10px 28px rgba(0,0,0,0.35);}
+  .btn-outline{color:var(--ink);}
+  .btn-outline:hover{color:var(--gold-text);}
+
+  section{padding-block:88px;}
+  .kicker{display:flex;align-items:baseline;gap:14px;margin-bottom:44px;}
+  .kicker .num{color:var(--gold-text);font-size:0.8rem;}
+  .kicker h2{font-size:2rem;margin:0;font-weight:800;}
+
+  .channel-list{display:flex;flex-direction:column;}
+  .channel-row{
+    display:flex;align-items:center;gap:20px;padding-block:22px;
+    border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);
+    transition:padding-left 0.25s ease, color 0.25s ease;
+  }
+  .channel-list a:first-child{border-top:1px solid var(--line);}
+  .channel-row:hover{padding-left:10px;color:var(--gold-text);}
+  .channel-row .idx{font-size:0.8rem;color:var(--ink-dim);width:24px;flex-shrink:0;}
+  .channel-row .icon{width:20px;height:20px;flex-shrink:0;color:inherit;}
+  .channel-row .plat{font-size:1.2rem;font-weight:700;width:150px;flex-shrink:0;}
+  .channel-row .desc{color:var(--ink-dim);font-size:0.92rem;flex:1;}
+  .channel-row .go{font-size:0.85rem;flex-shrink:0;transition:transform 0.25s ease;}
+  .channel-row:hover .go{transform:translateX(4px);}
+  .channel-row.placeholder{opacity:0.55;cursor:default;}
+  .channel-row.placeholder:hover{padding-left:0;color:var(--ink);}
+
+  .bio-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:56px;align-items:start;}
+  .bio-text h3{font-size:1.5rem;margin:0 0 24px;font-weight:700;}
+  .bio-text .lang-label{font-size:0.72rem;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;}
+  .bio-text p{color:var(--ink-dim);font-size:1.02rem;max-width:60ch;margin:0 0 20px;}
+  .bio-text blockquote{font-size:1.25rem;font-weight:600;color:var(--gold-text);margin:0 0 32px;padding:0;border:none;}
+  .bio-text blockquote .cite{display:block;font-size:0.82rem;font-weight:500;color:var(--ink-dim);margin-top:8px;}
+
+  .photo-frame{
+    width:250px;height:250px;border-radius:50%;overflow:hidden;margin:0 auto 28px;
+    box-shadow:0 18px 44px rgba(0,0,0,0.5);
+  }
+  .photo-frame img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 24%;}
+  .side-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 20px;list-style:none;padding:0;margin:0;}
+  .side-bullets li{font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-dim);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .side-bullets li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+
+  .plain-text{max-width:62ch;margin-inline:auto;}
+  .plain-text .lang-label{font-size:0.72rem;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;}
+  .plain-text p{font-size:1.02rem;line-height:1.8;color:var(--ink-dim);margin:0 0 28px;}
+
+  .gallery-note{color:var(--ink-dim);font-size:0.85rem;margin:-28px 0 32px;max-width:60ch;}
+  .gallery{display:flex;gap:24px;flex-wrap:wrap;}
+  .tile{
+    flex:1 1 260px;aspect-ratio:4/5;border-radius:38px 12px 38px 12px;position:relative;overflow:hidden;
+    box-shadow:0 18px 44px rgba(0,0,0,0.4);transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .tile:nth-child(even){margin-top:36px;}
+  .tile:hover{transform:translateY(-6px);box-shadow:0 26px 54px rgba(0,0,0,0.55);}
+  .tile img,.tile svg{width:100%;height:100%;display:block;object-fit:cover;}
+
+  #kontakt{padding-block:88px 168px;}
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .contact h2{font-size:2.4rem;margin:0 0 16px;font-weight:800;}
+  .contact p{color:var(--ink-dim);max-width:44ch;}
+  .contact-list{display:flex;flex-direction:column;}
+  .contact-field{padding-block:16px;border-bottom:1px solid var(--line);}
+  .contact-list .contact-field:first-child{border-top:1px solid var(--line);}
+  .contact-field .label{font-size:0.78rem;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}
+  .contact-field .value{font-size:1.05rem;font-weight:600;}
+  .social-row{display:flex;gap:16px;margin-top:26px;flex-wrap:wrap;}
+  .social-row a{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink);transition:transform 0.2s ease, color 0.2s ease, background 0.2s ease;}
+  .social-row a:hover{color:var(--gold-text);background:rgba(255,255,255,0.14);transform:translateY(-2px);}
+  .social-row svg{width:24px;height:24px;}
+
+  footer{padding-block:36px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;color:var(--ink-dim);font-size:0.82rem;}
+
+  @media (max-width:720px){
+    .bio-grid,.contact{grid-template-columns:1fr;}
+    section{padding-block:64px;}
+    #kontakt{padding-block:64px 110px;}
+    .hero{min-height:auto;padding-block:88px 56px;}
+    .tile:nth-child(even){margin-top:0;}
+  }
+</style>
+</head>
+<body>
+
+  <nav class="ts-nav">
+    <div class="wrap">
+      <a class="word display" href="#top">TONSAMMLER</a>
+      <div class="links mono">
+        <a href="#top">Start</a>
+        <a href="#bio">Über mich</a>
+        <a href="#musik">Musik</a>
+        <a href="#arbeit">Arbeit</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-inner">
+      <div class="hero-block hero-block-1">
+        <span class="hero-script script">Milan-Joel Pawlick aka</span>
+        <h1 class="hero-name display"><a href="#kontakt">TONSAMMLER</a></h1>
+      </div>
+      <ul class="hero-bullets mono hero-block hero-block-2">
+        <li>Techno</li>
+        <li>Minimalistic</li>
+        <li>Repetitiv</li>
+      </ul>
+      <a class="btn btn-solid hero-block hero-block-3" href="#kontakt">Kontakt aufnehmen</a>
+    </div>
+  </header>
+
+  <section id="bio">
+    <div class="wrap">
+      <div class="kicker">
+        <span class="num mono">TS&#8209;01</span>
+        <h2 class="display">Über mich</h2>
+      </div>
+      <div class="bio-grid">
+        <div class="bio-text">
+          <h3 class="display">Hi, ich bin Milan&#8209;Joel &ndash; aka Tonsammler</h3>
+
+          <span class="lang-label mono">Deutsch</span>
+          <p>Tonsammler bringt in den Genres von Minimal bis Techno tiefe, treibende, repetitive Loops mit Energie. Sein Sound ist f&uuml;r die Tanzfl&auml;che gebaut, um Leute zu bewegen, physisch wie emotional.</p>
+          <blockquote>&bdquo;Das Sammeln von Gef&uuml;hlen durch Ton&ldquo;<span class="cite">&mdash; Tonsammler</span></blockquote>
+
+          <span class="lang-label mono">English</span>
+          <p>Tonsammler brings deep, driving, repetitive loops with energy to genres ranging from minimal to techno. His sound is made for the dance floor, built to move people, both physically and emotionally.</p>
+          <blockquote>&ldquo;Collecting feelings through sound&rdquo;<span class="cite">&mdash; Tonsammler</span></blockquote>
+        </div>
+        <div>
+          <div class="photo-frame">
+            <img src="images/portrait.jpg" alt="Milan-Joel, Tonsammler">
+          </div>
+          <ul class="side-bullets mono">
+            <li>Techno</li>
+            <li>Minimalistic</li>
+            <li>Repetitiv</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="musik">
+    <div class="wrap">
+      <div class="kicker">
+        <span class="num mono">TS&#8209;02</span>
+        <h2 class="display">Musik</h2>
+      </div>
+      <div class="channel-list">
+        <a class="channel-row" href="https://soundcloud.com/tonsammlermusic" target="_blank" rel="noopener">
+          <span class="idx mono">01</span>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 15v3M5 13v5M8 11v7M11 13v5M14 9c1-1 2-1.5 3.5-1.5 3 0 5.5 2.3 5.5 5.5 0 .3 0 .7-.1 1H8V9.2c.6-.4 1.3-.6 2-.6"/></svg>
+          <span class="plat">SoundCloud</span>
+          <span class="desc">Alle Tracks, Demos und Edits zum Reinhören.</span>
+          <span class="go">&rarr;</span>
+        </a>
+        <a class="channel-row" href="https://www.youtube.com/@TONSAMMLER" target="_blank" rel="noopener">
+          <span class="idx mono">02</span>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="3"/><path d="M10.5 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg>
+          <span class="plat">YouTube</span>
+          <span class="desc">Musikvideos, Visualizer und Live-Sessions.</span>
+          <span class="go">&rarr;</span>
+        </a>
+        <a class="channel-row placeholder" href="#" onclick="return false;">
+          <span class="idx mono">03</span>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9.2"/><path d="M7 15.2c3-1 7-.6 9.3.9M7.3 12c3.4-1.1 7.6-.7 9.9.8M7.6 8.7c3.9-1.1 8.4-.7 10.8 1"/></svg>
+          <span class="plat">Spotify</span>
+          <span class="desc mono">Link folgt &ndash; Platzhalter</span>
+          <span class="go"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="arbeit">
+    <div class="wrap">
+      <div class="kicker">
+        <span class="num mono">TS&#8209;03</span>
+        <h2 class="display">Arbeit</h2>
+      </div>
+      <div class="plain-text">
+        <span class="lang-label mono">Deutsch</span>
+        <p>Ich habe bereits sechs Events erfolgreich organisiert und dabei die volle Verantwortung als Manager, Designer und DJ &uuml;bernommen. Neben der Leitung eigener Projekte bin ich stark in der elektronischen Musikszene aktiv, was mich gut vernetzt, fortlaufend inspiriert und nah an aktuellen Trends h&auml;lt.</p>
+        <span class="lang-label mono">English</span>
+        <p>I have successfully organized six events, taking full responsibility as manager, designer, and DJ. In addition to leading my own projects, I am highly engaged in the electronic music scene, which allows me to stay well&#8209;connected, continuously inspired, and attuned to the latest trends.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="galerie">
+    <div class="wrap">
+      <div class="kicker">
+        <span class="num mono">TS&#8209;04</span>
+        <h2 class="display">Galerie</h2>
+      </div>
+      <p class="gallery-note">Zum Verschieben: vertausche einfach die Reihenfolge der <code class="mono">&lt;div class="tile"&gt;</code>-Bl&ouml;cke im Code. Um ein Foto einzusetzen, ersetze das <code class="mono">&lt;svg&gt;</code> in einer Kachel durch <code class="mono">&lt;img src="images/dein-foto.jpg" alt="..."&gt;</code>.</p>
+      <div class="gallery">
+        <div class="tile">
+          <img src="images/live.jpg" alt="Tonsammler live am Set">
+        </div>
+        <div class="tile">
+          <img src="images/portrait.jpg" alt="Milan-Joel, Tonsammler">
+        </div>
+        <div class="tile">
+          <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#1d1810"/><g stroke="#e8c179" stroke-width="2" opacity="0.6"><circle cx="100" cy="100" r="70" fill="none"/><circle cx="100" cy="100" r="46" fill="none"/><circle cx="100" cy="100" r="10" fill="#e8c179" stroke="none"/></g></svg>
+        </div>
+        <div class="tile">
+          <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#17130c"/><g fill="#d9a94f" opacity="0.85"><rect x="20" y="120" width="10" height="50"/><rect x="40" y="90" width="10" height="80"/><rect x="60" y="60" width="10" height="110"/><rect x="80" y="100" width="10" height="70"/><rect x="100" y="40" width="10" height="130"/><rect x="120" y="80" width="10" height="90"/><rect x="140" y="110" width="10" height="60"/><rect x="160" y="70" width="10" height="100"/></g></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2 class="display">Let&rsquo;s work together</h2>
+          <p>Für Booking-Anfragen, Kollabos oder einfach nur Hallo sagen &ndash; melde dich gern.</p>
+          <div class="social-row">
+            <a href="https://www.instagram.com/ton.sammler/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://www.youtube.com/@TONSAMMLER" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="3"/><path d="M10.5 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://soundcloud.com/tonsammlermusic" target="_blank" rel="noopener" aria-label="SoundCloud">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 15v3M5 13v5M8 11v7M11 13v5M14 9c1-1 2-1.5 3.5-1.5 3 0 5.5 2.3 5.5 5.5 0 .3 0 .7-.1 1H8V9.2c.6-.4 1.3-.6 2-.6"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="contact-list">
+          <div class="contact-field">
+            <div class="label mono">Telefon</div>
+            <div class="value">+49 151 10468852</div>
+          </div>
+          <div class="contact-field">
+            <div class="label mono">E&#8209;Mail</div>
+            <div class="value">tonsammlermusic@gmail.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">&copy; 2026 Tonsammler</span>
+      <span class="mono">TS &middot; Sound Archive</span>
+    </div>
+  </footer>
+
+</body>
+</html>
