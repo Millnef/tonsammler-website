@@ -4,23 +4,35 @@ import SectionHeading from "@/components/SectionHeading";
 const ITEMS = [
   {
     src: "/images/gallery/gallery-event-1.jpg",
-    alt: "TONSAMMLER live am Pioneer-Setup",
+    alt: "TONSAMMLER live im YOU LOFT München",
     objectPosition: "object-top",
+    title: "YOU LOFT MÜNCHEN",
+    description: "Sinister Basslines Kollektiv",
+    date: "19.04.2024",
   },
   {
-    src: "/images/gallery/gallery-event-2.jpg",
-    alt: "TONSAMMLER am Mixer, Rückansicht",
+    src: "/images/gallery/gallery-event-karo10.jpg",
+    alt: "TONSAMMLER live im KARO10",
     objectPosition: "object-center",
+    title: "KARO10",
+    description: "Impedanz Kollektiv",
+    date: "20.12.2025",
   },
   {
     src: "/images/gallery/gallery-event-3.jpg",
-    alt: "TONSAMMLER live, rotes Licht",
+    alt: "TONSAMMLER live, OH BOI",
     objectPosition: "object-center",
+    title: "OH BOI",
+    description: "8 hour ANL",
+    date: "05.12.2025",
   },
   {
     src: "/images/gallery/gallery-event-4.jpg",
     alt: "TONSAMMLER backstage",
     objectPosition: "object-center",
+    title: null,
+    description: null,
+    date: null,
   },
 ];
 
@@ -46,20 +58,35 @@ export default function Gallery() {
             </div>
 
             <div className="mt-4 flex items-start justify-between gap-4">
-              <h3 className="text-xl font-medium text-foreground/40 sm:text-2xl">
-                Titel folgt
+              <h3
+                className={`text-xl font-medium sm:text-2xl ${
+                  item.title ? "text-foreground" : "text-foreground/40"
+                }`}
+              >
+                {item.title ?? "Titel folgt"}
               </h3>
-              <span aria-hidden="true" className="text-foreground/30">
+              <span
+                aria-hidden="true"
+                className={item.title ? "text-foreground/50" : "text-foreground/30"}
+              >
                 ↗
               </span>
             </div>
 
             <div className="mt-2 flex items-start justify-between gap-4">
-              <p className="max-w-[70%] text-sm font-light text-foreground/40">
-                Beschreibung folgt.
+              <p
+                className={`max-w-[70%] text-sm font-light ${
+                  item.description ? "text-foreground/60" : "text-foreground/40"
+                }`}
+              >
+                {item.description ?? "Beschreibung folgt."}
               </p>
-              <span className="shrink-0 text-right text-xs font-medium uppercase tracking-[0.15em] text-foreground/30">
-                Datum folgt
+              <span
+                className={`shrink-0 text-right text-xs font-medium uppercase tracking-[0.15em] ${
+                  item.date ? "text-foreground/40" : "text-foreground/30"
+                }`}
+              >
+                {item.date ?? "Datum folgt"}
               </span>
             </div>
           </div>
