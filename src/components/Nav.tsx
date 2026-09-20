@@ -38,7 +38,7 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div className="flex flex-col gap-1 bg-black px-6 pb-6 sm:hidden">
+        <div className="flex flex-col items-end gap-1 bg-black px-6 pb-6 sm:hidden">
           {LINKS.map((link) => (
             <a
               key={link.href}

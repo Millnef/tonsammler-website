@@ -4,8 +4,8 @@ import SectionHeading from "@/components/SectionHeading";
 const STATS = [
   { value: "3", label: "Jahre aktiv" },
   { value: "2", label: "Jahre Mitgründer – IMPEDANZ Kollektiv" },
-  { value: "8", label: "Veranstaltungen" },
   { value: "60+", label: "Gigs gespielt" },
+  { value: "8", label: "Veranstaltungen" },
 ];
 
 export default function About() {
