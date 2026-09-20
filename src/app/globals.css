@@ -23,7 +23,14 @@ html {
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image: radial-gradient(
+    ellipse 120% 90% at 50% 30%,
+    #0d0d0d 0%,
+    var(--background) 70%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-raleway), ui-sans-serif, system-ui, sans-serif;
 }
