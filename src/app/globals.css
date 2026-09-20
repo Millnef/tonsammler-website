@@ -26,7 +26,7 @@ body {
   background-color: var(--background);
   background-image: radial-gradient(
     ellipse 120% 90% at 50% 30%,
-    #0d0d0d 0%,
+    #121212 0%,
     var(--background) 70%
   );
   background-repeat: no-repeat;
