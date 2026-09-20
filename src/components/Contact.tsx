@@ -34,7 +34,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-50"
+      className="relative w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-75"
     >
       <div
         aria-hidden="true"
