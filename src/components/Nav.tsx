@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Logo from "@/components/Logo";
 import { LINKS } from "@/lib/nav-links";
+
+const EASE_OUT = "easeOut";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 w-full sm:static">
-      <div className="flex items-center justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
+      <div className="relative z-50 flex items-center justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
         <Logo />
 
         <div className="hidden gap-8 sm:flex">
@@ -29,28 +32,61 @@ export default function Nav() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Menü schließen" : "Menü öffnen"}
           aria-expanded={open}
-          className="sm:hidden"
+          className="relative z-50 block h-6 w-6 sm:hidden"
         >
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.5}>
-            <path d="M4 7h16M4 12h16M4 17h16" />
-          </svg>
+          <motion.span
+            className="absolute inset-x-0 top-[7px] h-[1.5px] bg-current"
+            animate={open ? { y: 5, rotate: 45 } : { y: 0, rotate: 0 }}
+            transition={{ duration: 0.35, ease: EASE_OUT }}
+          />
+          <motion.span
+            className="absolute inset-x-0 top-[12px] h-[1.5px] bg-current"
+            animate={{ opacity: open ? 0 : 1 }}
+            transition={{ duration: 0.25, ease: EASE_OUT }}
+          />
+          <motion.span
+            className="absolute inset-x-0 top-[17px] h-[1.5px] bg-current"
+            animate={open ? { y: -5, rotate: -45 } : { y: 0, rotate: 0 }}
+            transition={{ duration: 0.35, ease: EASE_OUT }}
+          />
         </button>
       </div>
 
-      {open && (
-        <div className="flex flex-col items-end gap-1 bg-black px-6 pb-6 sm:hidden">
-          {LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className="py-3 text-xs font-medium uppercase tracking-[0.15em] text-foreground/60"
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              key="nav-overlay"
+              aria-hidden="true"
+              className="fixed inset-0 z-40 bg-black sm:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: EASE_OUT }}
+            />
+
+            <motion.div
+              key="nav-menu"
+              className="fixed inset-0 z-40 flex flex-col items-end justify-center gap-2 px-6 sm:hidden"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.35, ease: EASE_OUT }}
             >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
+              {LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="py-3 text-xs font-medium uppercase tracking-[0.15em] text-foreground/60 transition-colors duration-200 ease-out hover:text-accent active:text-accent"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
