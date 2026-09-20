@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 
@@ -8,7 +11,20 @@ const STATS = [
   { value: "8", label: "Veranstaltungen" },
 ];
 
+const TEXT = {
+  de: [
+    "Aufgewachsen zwischen München und Augsburg zieht sich elektronische Musik seit 10 Jahren unverändert durchs Leben — lange bevor daraus ein eigener Sound wurde. Heute steht der Name für Techno mit minimalistischen Strukturen, gebaut auf Repetition. Jeder Track und jedes Set ist der Versuch, Menschen zu bewegen, physisch wie emotional — „collecting feelings through sound\" ist dabei mehr Haltung als Slogan.",
+    "Als Mitgründer des IMPEDANZ Kollektivs gilt die gleiche Aufmerksamkeit, Menschen den Raum, den Musik öffnen kann, zu zeigen.",
+  ],
+  en: [
+    "Growing up between Munich and Augsburg, electronic music has run through life unchanged for 10 years — long before it became a sound of its own. Today the name stands for techno built on minimalist structures and repetition. Every track and every set is an attempt to move people, physically and emotionally — \"collecting feelings through sound\" is more an attitude than a slogan.",
+    "As a co-founder of the IMPEDANZ Kollektiv, the same attention goes into showing people the space that music can open up.",
+  ],
+};
+
 export default function About() {
+  const [lang, setLang] = useState<"de" | "en">("de");
+
   return (
     <section
       id="about"
@@ -55,19 +71,20 @@ export default function About() {
       <div className="relative z-10">
         <SectionHeading>ABOUT</SectionHeading>
 
-        <p className="mt-8 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-          Aufgewachsen zwischen München und Augsburg zieht sich elektronische
-          Musik seit 10 Jahren unverändert durchs Leben — lange bevor
-          daraus ein eigener Sound wurde. Heute steht der Name für Techno mit
-          minimalistischen Strukturen, gebaut auf Repetition. Jeder Track und
-          jedes Set ist der Versuch, Menschen zu bewegen, physisch wie
-          emotional — „collecting feelings through sound" ist dabei mehr
-          Haltung als Slogan.
+        <button
+          type="button"
+          onClick={() => setLang((prev) => (prev === "de" ? "en" : "de"))}
+          className="mt-8 text-xs font-medium uppercase tracking-[0.15em] text-accent"
+        >
+          {lang === "de" ? "EN" : "DE"}
+        </button>
+
+        <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+          {TEXT[lang][0]}
         </p>
 
         <p className="mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-          Als Mitgründer des IMPEDANZ Kollektivs gilt die gleiche
-          Aufmerksamkeit, Menschen den Raum, den Musik öffnen kann, zu zeigen.
+          {TEXT[lang][1]}
         </p>
 
         <div className="mt-16 flex flex-wrap gap-x-16 gap-y-8">
