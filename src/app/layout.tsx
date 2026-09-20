@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
+import GrainOverlay from "@/components/GrainOverlay";
 import "./globals.css";
 
 const raleway = Raleway({
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="de" className={`${raleway.variable}`}>
       <body className="bg-background text-foreground antialiased">
         {children}
+        <GrainOverlay />
       </body>
     </html>
   );
