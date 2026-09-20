@@ -10,7 +10,7 @@ export default function Music() {
   return (
     <section
       id="music"
-      className="w-full scroll-mt-24 px-6 pb-32 pt-48 sm:scroll-mt-0 sm:px-10 sm:pb-40 sm:pt-64"
+      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-40"
     >
       <SectionHeading>MUSIC</SectionHeading>
 
