@@ -33,7 +33,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative flex min-h-[1100px] w-full scroll-mt-24 flex-col overflow-hidden px-6 py-32 sm:min-h-[850px] sm:scroll-mt-0 sm:px-10 sm:pt-50 sm:pb-25"
+      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-32 pb-6 sm:min-h-[850px] sm:scroll-mt-0 sm:px-10 sm:pt-50 sm:pb-25"
     >
       <div
         aria-hidden="true"
