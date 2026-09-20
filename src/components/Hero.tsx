@@ -8,7 +8,7 @@ export default function Hero() {
     >
       <div
         aria-hidden="true"
-        className="absolute right-0 top-0 -bottom-25 w-[calc(50%+50px)] sm:w-1/2"
+        className="absolute right-0 top-0 -bottom-25 w-[calc(50%+50px)] sm:w-1/2 sm:max-w-3xl"
         style={{
           maskImage:
             "radial-gradient(ellipse 65% 58% at 68% 40%, black 25%, transparent 85%)",
