@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 import {
   InstagramIcon,
@@ -33,57 +34,78 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-50"
+      className="relative w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-50"
     >
-      <SectionHeading>BOOKING</SectionHeading>
-
-      <p className="mt-1 max-w-xl text-lg font-light text-foreground/70 sm:text-xl">
-        Let&apos;s create something together.
-      </p>
-
-      <a
-        href="mailto:tonsammlermusic@gmail.com"
-        className="mt-20 inline-block text-xl font-medium text-accent sm:text-2xl"
+      <div
+        aria-hidden="true"
+        className="absolute left-1/2 bottom-0 aspect-square w-[80%] -translate-x-1/2 translate-y-1/2 opacity-50 sm:left-auto sm:right-0 sm:top-1/2 sm:bottom-auto sm:w-[45%] sm:translate-x-0 sm:-translate-y-1/2"
+        style={{
+          maskImage:
+            "radial-gradient(ellipse 42% 42% at 50% 50%, black 35%, transparent 88%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 42% 42% at 50% 50%, black 35%, transparent 88%)",
+        }}
       >
-        tonsammlermusic@gmail.com
-      </a>
+        <Image
+          src="/images/booking-art.webp"
+          alt=""
+          fill
+          sizes="45vw"
+          className="object-contain"
+        />
+      </div>
 
-      <a
-        href="tel:+4915110468852"
-        className="mt-2 block text-xl font-medium text-accent sm:text-2xl"
-      >
-        +49 151 10468852
-      </a>
+      <div className="relative z-10">
+        <SectionHeading>BOOKING</SectionHeading>
 
-      <div className="mt-16 flex flex-wrap gap-6">
-        {SOCIALS.map((social) => {
-          const Icon = social.icon;
+        <p className="mt-1 max-w-xl text-lg font-light text-foreground/70 sm:text-xl">
+          Let&apos;s create something together.
+        </p>
 
-          if (!social.href) {
+        <a
+          href="mailto:tonsammlermusic@gmail.com"
+          className="mt-20 inline-block text-xl font-medium text-accent sm:text-2xl"
+        >
+          tonsammlermusic@gmail.com
+        </a>
+
+        <a
+          href="tel:+4915110468852"
+          className="mt-2 block text-xl font-medium text-accent sm:text-2xl"
+        >
+          +49 151 10468852
+        </a>
+
+        <div className="mt-16 flex flex-wrap gap-6">
+          {SOCIALS.map((social) => {
+            const Icon = social.icon;
+
+            if (!social.href) {
+              return (
+                <span
+                  key={social.label}
+                  aria-label={social.label}
+                  className="flex h-13 w-13 items-center justify-center text-foreground/25 sm:h-16 sm:w-16"
+                >
+                  <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                </span>
+              );
+            }
+
             return (
-              <span
+              <a
                 key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.label}
-                className="flex h-13 w-13 items-center justify-center text-foreground/25 sm:h-16 sm:w-16"
+                className="flex h-13 w-13 items-center justify-center text-foreground/70 sm:h-16 sm:w-16"
               >
                 <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
-              </span>
+              </a>
             );
-          }
-
-          return (
-            <a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.label}
-              className="flex h-13 w-13 items-center justify-center text-foreground/70 sm:h-16 sm:w-16"
-            >
-              <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
-            </a>
-          );
-        })}
+          })}
+        </div>
       </div>
     </section>
   );
