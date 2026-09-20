@@ -23,12 +23,7 @@ html {
 }
 
 body {
-  background-color: var(--background);
-  background-image:
-    radial-gradient(ellipse 75% 45% at 20% 10%, #0d0d0d 0%, transparent 70%),
-    radial-gradient(ellipse 75% 45% at 80% 60%, #0d0d0d 0%, transparent 70%),
-    radial-gradient(ellipse 75% 45% at 40% 90%, #0d0d0d 0%, transparent 70%);
-  background-repeat: no-repeat;
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-raleway), ui-sans-serif, system-ui, sans-serif;
 }
