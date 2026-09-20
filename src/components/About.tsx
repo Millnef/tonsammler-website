@@ -77,7 +77,7 @@ export default function About() {
               <div className="text-3xl font-medium sm:text-4xl">
                 {stat.value}
               </div>
-              <div className="mt-2 max-w-[12rem] text-xs font-light uppercase tracking-[0.15em] text-foreground/60">
+              <div className="mt-2 max-w-[12rem] text-xs font-medium uppercase tracking-[0.15em] text-foreground/60">
                 {stat.label}
               </div>
             </div>
