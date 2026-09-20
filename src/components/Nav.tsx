@@ -1,13 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-const LINKS = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#music", label: "Music" },
-  { href: "#contact", label: "Contact" },
-];
+import Logo from "@/components/Logo";
+import { LINKS } from "@/lib/nav-links";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -15,9 +10,7 @@ export default function Nav() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50 w-full sm:static">
       <div className="flex items-center justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
-        <a href="#top" className="text-sm font-medium tracking-[0.08em] sm:text-base">
-          TONSAMMLER
-        </a>
+        <Logo />
 
         <div className="hidden gap-8 sm:flex">
           {LINKS.map((link) => (

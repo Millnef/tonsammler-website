@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SectionHeading from "@/components/SectionHeading";
 
 const STATS = [
   { value: "3", label: "Jahre aktiv" },
@@ -52,9 +53,7 @@ export default function About() {
       </div>
 
       <div className="relative z-10">
-        <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] font-extralight tracking-tight">
-          ABOUT
-        </h2>
+        <SectionHeading>ABOUT</SectionHeading>
 
         <p className="mt-8 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
           Aufgewachsen zwischen München und Augsburg zieht sich elektronische

@@ -1,3 +1,5 @@
+import SectionHeading from "@/components/SectionHeading";
+
 const LINK_FIELDS = [
   { label: "Spotify", href: null },
   { label: "SoundCloud", href: "https://soundcloud.com/tonsammlermusic" },
@@ -10,9 +12,7 @@ export default function Music() {
       id="music"
       className="w-full scroll-mt-24 px-6 pb-32 pt-48 sm:scroll-mt-0 sm:px-10 sm:pb-40 sm:pt-64"
     >
-      <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] font-extralight tracking-tight">
-        MUSIC
-      </h2>
+      <SectionHeading>MUSIC</SectionHeading>
 
       <div className="mt-12 divide-y divide-white/10 border-y border-white/10 sm:mt-16">
         {LINK_FIELDS.map((field) =>
