@@ -27,12 +27,12 @@ const ITEMS = [
     date: "05.12.2025",
   },
   {
-    src: "/images/gallery/gallery-event-4.jpg",
-    alt: "TONSAMMLER backstage",
-    objectPosition: "object-center",
-    title: null,
-    description: null,
-    date: null,
+    src: "/images/gallery/gallery-event-scopez.jpg",
+    alt: "TONSAMMLER live bei Scopez Events",
+    objectPosition: "object-top",
+    title: "SCOPEZ EVENTS",
+    description: "Privat Summer Outdoor",
+    date: "02.05.2026",
   },
 ];
 
