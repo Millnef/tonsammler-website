@@ -12,7 +12,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative z-10 w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-40"
+      className="relative z-10 w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-50"
     >
       <div
         aria-hidden="true"
