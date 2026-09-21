@@ -71,7 +71,7 @@ export default function Gallery() {
     <section
       ref={sectionRef}
       id="gallery"
-      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-50"
+      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-20 sm:px-10 sm:py-50"
     >
       <SectionHeading>GALERY</SectionHeading>
 

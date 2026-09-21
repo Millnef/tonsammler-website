@@ -58,7 +58,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative z-10 w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-100"
+      className="relative z-10 w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-20 sm:px-10 sm:py-100"
     >
       <div
         aria-hidden="true"

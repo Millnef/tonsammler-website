@@ -62,12 +62,12 @@ export default function Releases() {
     <section
       ref={sectionRef}
       id="releases"
-      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-100"
+      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-20 sm:px-10 sm:py-100"
     >
       <SectionHeading>RELEASES</SectionHeading>
 
-      <div ref={contentRef}>
-        <div className="mt-12 divide-y divide-white/10 border-y border-white/10 sm:mt-16">
+      <div ref={contentRef} className="lg:grid lg:grid-cols-[280px_1fr] lg:items-start lg:gap-16">
+        <div className="mt-12 divide-y divide-white/10 border-y border-white/10 sm:mt-16 lg:mt-0">
           {PLATFORMS.map((platform) => {
             const Icon = platform.icon;
             const isPlaceholder = platform.href === "#";
@@ -90,7 +90,8 @@ export default function Releases() {
           })}
         </div>
 
-        <div className="mt-12 sm:mt-16">
+        <div>
+          <div className="mt-12 sm:mt-16 lg:mt-0">
           <div className="inline-flex rounded-full border border-white/10 bg-white/[0.03] p-1">
             {PLATFORMS.map((platform) => {
               const isActive = active === platform.key;
@@ -125,7 +126,7 @@ export default function Releases() {
           </div>
         </div>
 
-        <div className="mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2">
+        <div className="mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2 lg:mx-0 lg:mt-8 lg:w-full">
           <div className="relative aspect-video w-full overflow-hidden border border-white/10">
             <AnimatePresence initial={false}>
               {active === "spotify" && (
@@ -234,6 +235,7 @@ export default function Releases() {
               </a>
             </div>
           )}
+        </div>
         </div>
       </div>
     </section>
