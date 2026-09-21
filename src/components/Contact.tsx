@@ -63,7 +63,7 @@ export default function Contact() {
             {
               opacity: 1,
               y: 0,
-              duration: 0.4,
+              duration: 0.6,
               ease: "power2.out",
               stagger: 0.09,
             },
@@ -102,7 +102,7 @@ export default function Contact() {
         <a
           ref={emailRef}
           href="mailto:tonsammlermusic@gmail.com"
-          className="block w-fit origin-left whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-[0.88] tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105"
+          className="block w-fit origin-left whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-none tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105"
         >
           tonsammlermusic@gmail.com
         </a>
@@ -138,7 +138,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="flex h-13 w-13 items-center justify-center text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent sm:h-16 sm:w-16"
+                className="flex h-13 w-13 origin-left items-center justify-center text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent sm:h-16 sm:w-16"
               >
                 <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
               </a>

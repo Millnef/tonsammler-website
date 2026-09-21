@@ -49,7 +49,7 @@ export default function Releases() {
           gsap.to(contentRef.current, {
             opacity: 1,
             y: 0,
-            duration: 0.4,
+            duration: 0.6,
             ease: "power2.out",
           });
         },
@@ -67,7 +67,7 @@ export default function Releases() {
       <SectionHeading>RELEASES</SectionHeading>
 
       <div ref={contentRef} className="lg:grid lg:grid-cols-[280px_1fr] lg:items-start lg:gap-16">
-        <div className="mt-12 divide-y divide-white/10 border-y border-white/10 sm:mt-16 lg:mt-0">
+        <div className="mt-12 divide-y divide-white/10 border-y border-white/10 overflow-hidden sm:mt-16 lg:mt-0">
           {PLATFORMS.map((platform) => {
             const Icon = platform.icon;
             const isPlaceholder = platform.href === "#";
@@ -78,7 +78,7 @@ export default function Releases() {
                 href={platform.href}
                 target={isPlaceholder ? undefined : "_blank"}
                 rel={isPlaceholder ? undefined : "noopener noreferrer"}
-                className="flex items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
+                className="flex origin-left items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
               >
                 <span className="flex items-center gap-3">
                   <Icon className="h-4 w-4" />
@@ -92,7 +92,7 @@ export default function Releases() {
 
         <div>
           <div className="mt-12 sm:mt-16 lg:mt-0">
-          <div className="inline-flex rounded-full border border-white/10 bg-white/[0.03] p-1">
+          <div className="inline-flex max-w-full overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1">
             {PLATFORMS.map((platform) => {
               const isActive = active === platform.key;
 
@@ -102,7 +102,7 @@ export default function Releases() {
                   type="button"
                   onClick={() => setActive(platform.key)}
                   aria-pressed={isActive}
-                  className="relative rounded-full px-5 py-2 text-xs font-medium uppercase tracking-[0.15em]"
+                  className="relative rounded-full px-3 py-2 text-xs font-medium uppercase tracking-[0.15em] sm:px-5"
                 >
                   {isActive && (
                     <motion.span

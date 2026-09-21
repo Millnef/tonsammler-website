@@ -57,7 +57,7 @@ export default function Gallery() {
           gsap.to(batch, {
             opacity: 1,
             y: 0,
-            duration: 0.4,
+            duration: 0.6,
             ease: "power2.out",
             stagger: 0.09,
           });

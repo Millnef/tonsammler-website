@@ -37,7 +37,7 @@ export default function Sets() {
           gsap.to(contentRef.current, {
             opacity: 1,
             y: 0,
-            duration: 0.4,
+            duration: 0.6,
             ease: "power2.out",
           });
         },
@@ -55,7 +55,7 @@ export default function Sets() {
       <SectionHeading>SETS</SectionHeading>
 
       <div ref={contentRef}>
-        <div className="mt-12 divide-y divide-white/10 border-y border-white/10 sm:mt-16">
+        <div className="mt-12 divide-y divide-white/10 border-y border-white/10 overflow-hidden sm:mt-16">
           {PLATFORMS.map((platform) => {
             const Icon = platform.icon;
 
@@ -65,7 +65,7 @@ export default function Sets() {
                 href={platform.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
+                className="flex origin-left items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
               >
                 <span className="flex items-center gap-3">
                   <Icon className="h-4 w-4" />

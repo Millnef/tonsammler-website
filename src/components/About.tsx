@@ -7,10 +7,10 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 
 const STATS = [
-  { value: "3", label: "Jahre aktiv" },
-  { value: "2", label: "Jahre Mitgründer – IMPEDANZ Kollektiv" },
-  { value: "60+", label: "Gigs gespielt" },
-  { value: "8", label: "Veranstaltungen" },
+  { value: 3, suffix: "", label: "Jahre aktiv" },
+  { value: 2, suffix: "", label: "Jahre Mitgründer – IMPEDANZ Kollektiv" },
+  { value: 60, suffix: "+", label: "Gigs gespielt" },
+  { value: 8, suffix: "", label: "Veranstaltungen" },
 ];
 
 const TEXT = {
@@ -30,6 +30,7 @@ export default function About() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+  const statValueRefs = useRef<HTMLDivElement[]>([]);
 
   useGSAP(
     () => {
@@ -44,9 +45,24 @@ export default function About() {
           gsap.to(elements, {
             opacity: 1,
             y: 0,
-            duration: 0.4,
+            duration: 0.6,
             ease: "power2.out",
             stagger: 0.09,
+          });
+
+          STATS.forEach((stat, index) => {
+            const el = statValueRefs.current[index];
+            if (!el) return;
+
+            const counter = { val: 0 };
+            gsap.to(counter, {
+              val: stat.value,
+              duration: 1.3,
+              ease: "power2.out",
+              onUpdate: () => {
+                el.textContent = `${Math.round(counter.val)}${stat.suffix}`;
+              },
+            });
           });
         },
       });
@@ -104,7 +120,7 @@ export default function About() {
         <button
           type="button"
           onClick={() => setLang((prev) => (prev === "de" ? "en" : "de"))}
-          className="mt-8 text-xs font-medium uppercase tracking-[0.15em] text-accent transition-transform duration-200 ease-out hover:scale-105"
+          className="mt-8 origin-left text-xs font-medium uppercase tracking-[0.15em] text-accent transition-transform duration-200 ease-out hover:scale-105"
         >
           {lang === "de" ? "EN" : "DE"}
         </button>
@@ -120,10 +136,16 @@ export default function About() {
         </div>
 
         <div ref={statsRef} className="mt-16 flex flex-wrap gap-x-16 gap-y-8">
-          {STATS.map((stat) => (
+          {STATS.map((stat, index) => (
             <div key={stat.label}>
-              <div className="text-3xl font-medium sm:text-4xl">
+              <div
+                ref={(el) => {
+                  if (el) statValueRefs.current[index] = el;
+                }}
+                className="text-3xl font-medium sm:text-4xl"
+              >
                 {stat.value}
+                {stat.suffix}
               </div>
               <div className="mt-2 max-w-[12rem] text-xs font-medium uppercase tracking-[0.15em] text-foreground/60">
                 {stat.label}

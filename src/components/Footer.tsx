@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="flex flex-col gap-4 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-10 sm:py-8">
         <Logo />
 
-        <div className="flex gap-4 sm:gap-8">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 sm:flex-nowrap sm:gap-8">
           {LINKS.map((link) => (
             <a
               key={link.href}
