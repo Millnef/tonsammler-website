@@ -1,4 +1,9 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 
 const ITEMS = [
@@ -37,17 +42,48 @@ const ITEMS = [
 ];
 
 export default function Gallery() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageRefs = useRef<HTMLDivElement[]>([]);
+
+  useGSAP(
+    () => {
+      const elements = imageRefs.current.filter(Boolean);
+      gsap.set(elements, { opacity: 0, y: 40 });
+
+      ScrollTrigger.batch(elements, {
+        start: "top 80%",
+        once: true,
+        onEnter: (batch) => {
+          gsap.to(batch, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.09,
+          });
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
     <section
+      ref={sectionRef}
       id="gallery"
       className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-50"
     >
       <SectionHeading>GALERY</SectionHeading>
 
       <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-12 sm:mt-16 sm:grid-cols-2 sm:gap-x-6">
-        {ITEMS.map((item) => (
+        {ITEMS.map((item, index) => (
           <div key={item.src}>
-            <div className="relative aspect-[3/4] overflow-hidden border border-white/10 bg-white/[0.03]">
+            <div
+              ref={(el) => {
+                if (el) imageRefs.current[index] = el;
+              }}
+              className="relative aspect-[3/4] overflow-hidden border border-white/10 bg-white/[0.03]"
+            >
               <Image
                 src={item.src}
                 alt={item.alt}

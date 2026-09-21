@@ -1,6 +1,31 @@
+"use client";
+
 import Image from "next/image";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 
 export default function Hero() {
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
+
+  useGSAP(() => {
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      headlineRef.current,
+      { clipPath: "inset(0 100% 0 0)" },
+      { clipPath: "inset(0 0% 0 0)", duration: 0.55, ease: "power2.out" }
+    );
+
+    tl.fromTo(
+      subRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+      0.15
+    );
+  });
+
   return (
     <section
       id="top"
@@ -31,11 +56,17 @@ export default function Hero() {
           Milan-Joel Pawlick aka
         </p>
 
-        <h1 className="whitespace-nowrap text-[clamp(2.25rem,10.5vw,12.5rem)] font-extralight leading-[0.88] tracking-tight">
+        <h1
+          ref={headlineRef}
+          className="whitespace-nowrap text-[clamp(2.25rem,10.5vw,12.5rem)] font-extralight leading-[0.88] tracking-tight"
+        >
           TONSAMMLER
         </h1>
 
-        <p className="mt-8 max-w-md text-base font-light text-foreground/60 sm:text-lg">
+        <p
+          ref={subRef}
+          className="mt-8 max-w-md text-base font-light text-foreground/60 sm:text-lg"
+        >
           „collecting feelings through sound"
         </p>
       </div>

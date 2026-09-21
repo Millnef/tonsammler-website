@@ -20,7 +20,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="text-xs font-medium uppercase tracking-[0.15em] text-foreground/60"
+              className="origin-left text-xs font-medium uppercase tracking-[0.15em] text-foreground/60 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
             >
               {link.label}
             </a>

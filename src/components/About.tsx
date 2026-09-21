@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 
 const STATS = [
@@ -24,9 +26,37 @@ const TEXT = {
 
 export default function About() {
   const [lang, setLang] = useState<"de" | "en">("de");
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const elements = [headingRef.current, textRef.current, statsRef.current];
+      gsap.set(elements, { opacity: 0, y: 30 });
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          gsap.to(elements, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.09,
+          });
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
+      ref={sectionRef}
       id="about"
       className="relative z-10 w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-100"
     >
@@ -69,25 +99,27 @@ export default function About() {
       </div>
 
       <div className="relative z-10">
-        <SectionHeading>ABOUT</SectionHeading>
+        <SectionHeading ref={headingRef}>ABOUT</SectionHeading>
 
         <button
           type="button"
           onClick={() => setLang((prev) => (prev === "de" ? "en" : "de"))}
-          className="mt-8 text-xs font-medium uppercase tracking-[0.15em] text-accent"
+          className="mt-8 text-xs font-medium uppercase tracking-[0.15em] text-accent transition-transform duration-200 ease-out hover:scale-105"
         >
           {lang === "de" ? "EN" : "DE"}
         </button>
 
-        <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-          {TEXT[lang][0]}
-        </p>
+        <div ref={textRef}>
+          <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+            {TEXT[lang][0]}
+          </p>
 
-        <p className="mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-          {TEXT[lang][1]}
-        </p>
+          <p className="mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+            {TEXT[lang][1]}
+          </p>
+        </div>
 
-        <div className="mt-16 flex flex-wrap gap-x-16 gap-y-8">
+        <div ref={statsRef} className="mt-16 flex flex-wrap gap-x-16 gap-y-8">
           {STATS.map((stat) => (
             <div key={stat.label}>
               <div className="text-3xl font-medium sm:text-4xl">
