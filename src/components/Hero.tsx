@@ -46,7 +46,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[92svh] items-end pt-[25px] pb-[400px]"
+      className="relative flex min-h-[92svh] items-end pb-[200px]"
     >
       <div
         ref={photoRef}
