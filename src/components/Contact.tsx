@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
@@ -10,6 +11,9 @@ import {
   SoundCloudIcon,
   YouTubeIcon,
 } from "@/components/icons";
+
+const EMAIL = "tonsammlermusic@gmail.com";
+const EASE_OUT = "easeOut";
 
 const SOCIALS = [
   {
@@ -35,10 +39,23 @@ const SOCIALS = [
 ];
 
 export default function Contact() {
+  const [copied, setCopied] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const emailRef = useRef<HTMLAnchorElement>(null);
   const phoneRef = useRef<HTMLAnchorElement>(null);
   const socialsRef = useRef<HTMLDivElement>(null);
+
+  const handleEmailClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
+  };
 
   useGSAP(
     () => {
@@ -80,7 +97,7 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-32 pb-25 sm:min-h-[850px] sm:scroll-mt-20 sm:px-10 sm:pt-50"
+      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-[25px] pb-[400px] sm:min-h-[850px] sm:scroll-mt-20 sm:px-10"
     >
       <div
         aria-hidden="true"
@@ -100,13 +117,30 @@ export default function Contact() {
       </div>
 
       <div className="relative z-10 flex flex-1 flex-col justify-center">
-        <a
-          ref={emailRef}
-          href="mailto:tonsammlermusic@gmail.com"
-          className="block w-fit origin-center whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-[1.35] tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105 pb-[0.25em]"
-        >
-          tonsammlermusic@gmail.com
-        </a>
+        <div className="relative w-fit">
+          <a
+            ref={emailRef}
+            href={`mailto:${EMAIL}`}
+            onClick={handleEmailClick}
+            className="block w-fit origin-center whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-[1.35] tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105 pb-[0.25em]"
+          >
+            {EMAIL}
+          </a>
+
+          <AnimatePresence>
+            {copied && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: EASE_OUT }}
+                className="absolute left-0 top-full whitespace-nowrap rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-black sm:left-full sm:top-1/2 sm:-translate-y-1/2 sm:ml-4 sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.15em]"
+              >
+                Kopiert!
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </div>
 
         <a
           ref={phoneRef}

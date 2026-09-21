@@ -60,7 +60,7 @@ export default function About() {
             const counter = { val: 0 };
             gsap.to(counter, {
               val: stat.value,
-              duration: 5,
+              duration: 2.5,
               ease: "none",
               snap: { val: 1 },
               onUpdate: () => {
@@ -80,11 +80,11 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative z-10 w-full scroll-mt-24 overflow-hidden px-6 py-32 sm:scroll-mt-20 sm:px-10 sm:py-100"
+      className="relative z-10 w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
     >
       <div
         aria-hidden="true"
-        className="absolute right-0 top-0 bottom-0 hidden w-[70%] sm:block"
+        className="absolute right-0 bottom-0 hidden h-[1377px] w-[70%] sm:block"
         style={{
           maskImage:
             "radial-gradient(ellipse 62% 24% at 78% 80%, black 15%, transparent 85%)",

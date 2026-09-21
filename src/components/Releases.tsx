@@ -62,7 +62,7 @@ export default function Releases() {
     <section
       ref={sectionRef}
       id="releases"
-      className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-20 sm:px-10 sm:py-100 lg:pt-[50px]"
+      className="w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
     >
       <SectionHeading>RELEASES</SectionHeading>
 
