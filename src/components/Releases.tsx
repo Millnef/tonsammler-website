@@ -1,18 +1,47 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 
 const LINK_FIELDS = [
   { label: "Spotify", href: null },
   { label: "SoundCloud", href: "https://soundcloud.com/tonsammlermusic" },
-  { label: "YouTube", href: "https://www.youtube.com/@TONSAMMLER" },
 ];
 
-export default function Music() {
+export default function Releases() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const soundcloudRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.set(soundcloudRef.current, { opacity: 0, y: 30 });
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          gsap.to(soundcloudRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+          });
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
     <section
-      id="music"
+      ref={sectionRef}
+      id="releases"
       className="w-full scroll-mt-24 px-6 py-32 sm:scroll-mt-0 sm:px-10 sm:py-100"
     >
-      <SectionHeading>MUSIC</SectionHeading>
+      <SectionHeading>RELEASES</SectionHeading>
 
       <div className="mt-12 divide-y divide-white/10 border-y border-white/10 sm:mt-16">
         {LINK_FIELDS.map((field) =>
@@ -22,7 +51,7 @@ export default function Music() {
               href={field.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70"
+              className="flex items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
             >
               <span>{field.label}</span>
               <span aria-hidden="true">↗</span>
@@ -41,7 +70,7 @@ export default function Music() {
         )}
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 sm:grid-cols-3 sm:gap-6">
+      <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 sm:grid-cols-2 sm:gap-6">
         <div>
           <span className="text-xs font-medium uppercase tracking-[0.15em] text-foreground/50">
             Spotify
@@ -58,7 +87,7 @@ export default function Music() {
           </div>
         </div>
 
-        <div>
+        <div ref={soundcloudRef}>
           <span className="text-xs font-medium uppercase tracking-[0.15em] text-foreground/50">
             SoundCloud
           </span>
@@ -107,25 +136,6 @@ export default function Music() {
                 CARLA
               </a>
             </div>
-          </div>
-        </div>
-
-        <div>
-          <span className="text-xs font-medium uppercase tracking-[0.15em] text-foreground/50">
-            YouTube
-          </span>
-
-          <div className="mt-4 aspect-video w-full overflow-hidden border border-white/10">
-            <iframe
-              width="100%"
-              height="100%"
-              className="h-full w-full"
-              src="https://www.youtube.com/embed/qBRBy3EUuRc?si=_VsD10EOSAUlNOHY&start=900"
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
           </div>
         </div>
       </div>
