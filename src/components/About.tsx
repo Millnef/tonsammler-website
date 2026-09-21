@@ -2,9 +2,12 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+
+const EASE_OUT = "easeOut";
 
 const STATS = [
   { value: 3, suffix: "", label: "Jahre aktiv" },
@@ -57,10 +60,13 @@ export default function About() {
             const counter = { val: 0 };
             gsap.to(counter, {
               val: stat.value,
-              duration: 1.3,
-              ease: "power2.out",
+              duration: 5,
+              ease: "none",
+              snap: { val: 1 },
               onUpdate: () => {
-                el.textContent = `${Math.round(counter.val)}${stat.suffix}`;
+                const rounded = Math.round(counter.val);
+                const suffix = rounded >= stat.value ? stat.suffix : "";
+                el.textContent = `${rounded}${suffix}`;
               },
             });
           });
@@ -125,14 +131,25 @@ export default function About() {
           {lang === "de" ? "EN" : "DE"}
         </button>
 
-        <div ref={textRef}>
-          <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-            {TEXT[lang][0]}
-          </p>
+        <div ref={textRef} className="relative grid overflow-hidden">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={lang}
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "-100%" }}
+              transition={{ duration: 0.4, ease: EASE_OUT }}
+              className="col-start-1 row-start-1"
+            >
+              <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+                {TEXT[lang][0]}
+              </p>
 
-          <p className="mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-            {TEXT[lang][1]}
-          </p>
+              <p className="mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+                {TEXT[lang][1]}
+              </p>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         <div ref={statsRef} className="mt-16 flex flex-wrap gap-x-16 gap-y-8">

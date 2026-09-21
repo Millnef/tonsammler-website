@@ -56,6 +56,7 @@ export default function Contact() {
             clipPath: "inset(0 0% 0 0)",
             duration: 0.55,
             ease: "power2.out",
+            clearProps: "clipPath",
           });
 
           tl.to(
@@ -102,7 +103,7 @@ export default function Contact() {
         <a
           ref={emailRef}
           href="mailto:tonsammlermusic@gmail.com"
-          className="block w-fit origin-left whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-none tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105"
+          className="block w-fit origin-center whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-[1.35] tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105 pb-[0.25em]"
         >
           tonsammlermusic@gmail.com
         </a>
