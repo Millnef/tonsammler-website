@@ -97,7 +97,7 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-[25px] pb-[13px] sm:min-h-[850px] sm:scroll-mt-20 sm:px-10"
+      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-[25px] pb-[13px] sm:min-h-[640px] sm:scroll-mt-20 sm:px-10 sm:pt-[72px] sm:pb-0"
     >
       <div
         aria-hidden="true"
@@ -116,7 +116,7 @@ export default function Contact() {
         </p>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-center">
+      <div className="relative z-10 flex flex-1 flex-col justify-center sm:justify-end">
         <div className="relative w-fit">
           <a
             ref={emailRef}
