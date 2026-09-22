@@ -39,7 +39,7 @@ export default function Releases() {
 
   useGSAP(
     () => {
-      gsap.set(contentRef.current, { opacity: 0, y: 30 });
+      gsap.set(contentRef.current, { opacity: 0, y: 75 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -49,7 +49,7 @@ export default function Releases() {
           gsap.to(contentRef.current, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
+            duration: 0.9,
             ease: "power2.out",
           });
         },

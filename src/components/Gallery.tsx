@@ -48,7 +48,7 @@ export default function Gallery() {
   useGSAP(
     () => {
       const elements = imageRefs.current.filter(Boolean);
-      gsap.set(elements, { opacity: 0, y: 40 });
+      gsap.set(elements, { opacity: 0, y: 75 });
 
       ScrollTrigger.batch(elements, {
         start: "top 80%",
@@ -57,7 +57,7 @@ export default function Gallery() {
           gsap.to(batch, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
+            duration: 0.9,
             ease: "power2.out",
             stagger: 0.09,
           });

@@ -60,7 +60,7 @@ export default function Contact() {
   useGSAP(
     () => {
       gsap.set(emailRef.current, { clipPath: "inset(0 100% 0 0)" });
-      gsap.set([phoneRef.current, socialsRef.current], { opacity: 0, y: 30 });
+      gsap.set([phoneRef.current, socialsRef.current], { opacity: 0, y: 75 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -81,7 +81,7 @@ export default function Contact() {
             {
               opacity: 1,
               y: 0,
-              duration: 0.6,
+              duration: 0.9,
               ease: "power2.out",
               stagger: 0.09,
             },

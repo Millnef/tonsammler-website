@@ -37,8 +37,8 @@ export default function Hero() {
 
     tl.fromTo(
       subRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+      { opacity: 0, y: 75 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
       0.35
     );
   });
@@ -46,7 +46,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[92svh] items-end pb-[200px]"
+      className="relative flex min-h-[92svh] items-end pt-[300px] pb-[200px]"
     >
       <div
         ref={photoRef}

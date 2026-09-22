@@ -1,11 +1,18 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+
+const TEXT_BLOCK_CLASSES = {
+  first:
+    "mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
+  second:
+    "mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
+};
 
 const EASE_OUT = "easeOut";
 
@@ -29,16 +36,31 @@ const TEXT = {
 
 export default function About() {
   const [lang, setLang] = useState<"de" | "en">("de");
+  const [textMinHeight, setTextMinHeight] = useState<number>();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const deMeasureRef = useRef<HTMLDivElement>(null);
+  const enMeasureRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const statValueRefs = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    const measure = () => {
+      const deHeight = deMeasureRef.current?.offsetHeight ?? 0;
+      const enHeight = enMeasureRef.current?.offsetHeight ?? 0;
+      setTextMinHeight(Math.max(deHeight, enHeight));
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   useGSAP(
     () => {
       const elements = [headingRef.current, textRef.current, statsRef.current];
-      gsap.set(elements, { opacity: 0, y: 30 });
+      gsap.set(elements, { opacity: 0, y: 75 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -48,7 +70,7 @@ export default function About() {
           gsap.to(elements, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
+            duration: 0.9,
             ease: "power2.out",
             stagger: 0.09,
           });
@@ -131,7 +153,29 @@ export default function About() {
           {lang === "de" ? "EN" : "DE"}
         </button>
 
-        <div ref={textRef} className="relative grid overflow-hidden">
+        <div
+          ref={textRef}
+          className="relative grid overflow-hidden"
+          style={{ minHeight: textMinHeight }}
+        >
+          <div
+            ref={deMeasureRef}
+            aria-hidden="true"
+            className="invisible col-start-1 row-start-1"
+          >
+            <p className={TEXT_BLOCK_CLASSES.first}>{TEXT.de[0]}</p>
+            <p className={TEXT_BLOCK_CLASSES.second}>{TEXT.de[1]}</p>
+          </div>
+
+          <div
+            ref={enMeasureRef}
+            aria-hidden="true"
+            className="invisible col-start-1 row-start-1"
+          >
+            <p className={TEXT_BLOCK_CLASSES.first}>{TEXT.en[0]}</p>
+            <p className={TEXT_BLOCK_CLASSES.second}>{TEXT.en[1]}</p>
+          </div>
+
           <AnimatePresence initial={false}>
             <motion.div
               key={lang}
@@ -141,13 +185,8 @@ export default function About() {
               transition={{ duration: 0.4, ease: EASE_OUT }}
               className="col-start-1 row-start-1"
             >
-              <p className="mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-                {TEXT[lang][0]}
-              </p>
-
-              <p className="mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-                {TEXT[lang][1]}
-              </p>
+              <p className={TEXT_BLOCK_CLASSES.first}>{TEXT[lang][0]}</p>
+              <p className={TEXT_BLOCK_CLASSES.second}>{TEXT[lang][1]}</p>
             </motion.div>
           </AnimatePresence>
         </div>
