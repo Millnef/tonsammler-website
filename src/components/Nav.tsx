@@ -68,43 +68,56 @@ export default function Nav() {
         <div className="relative z-50 flex items-center justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
           <Logo />
 
-          <AnimatePresence initial={false}>
-            {!scrolled && (
-              <motion.div
-                key="links"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25, ease: EASE_OUT }}
-                className="hidden gap-8 sm:flex"
-              >
-                {LINKS.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="origin-left text-xs font-medium uppercase tracking-[0.15em] text-foreground/60 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="relative hidden h-6 sm:block">
+            <div aria-hidden="true" className="invisible flex items-center gap-8">
+              {LINKS.map((link) => (
+                <span
+                  key={link.href}
+                  className="text-xs font-medium uppercase tracking-[0.15em]"
+                >
+                  {link.label}
+                </span>
+              ))}
+            </div>
 
-          <AnimatePresence initial={false}>
-            {scrolled && (
-              <motion.div
-                key="hamburger-desktop"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25, ease: EASE_OUT }}
-                className="hidden sm:block"
-              >
-                <HamburgerIcon open={open} onClick={() => setOpen((v) => !v)} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <AnimatePresence initial={false}>
+              {!scrolled && (
+                <motion.div
+                  key="links"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25, ease: EASE_OUT }}
+                  className="absolute inset-0 flex items-center gap-8"
+                >
+                  {LINKS.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className="origin-left text-xs font-medium uppercase tracking-[0.15em] text-foreground/60 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence initial={false}>
+              {scrolled && (
+                <motion.div
+                  key="hamburger-desktop"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25, ease: EASE_OUT }}
+                  className="absolute inset-0 flex items-center justify-end"
+                >
+                  <HamburgerIcon open={open} onClick={() => setOpen((v) => !v)} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           <HamburgerIcon
             open={open}
