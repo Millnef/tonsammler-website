@@ -44,6 +44,8 @@ export default function About() {
   const enMeasureRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const statValueRefs = useRef<HTMLDivElement[]>([]);
+  const desktopImageRef = useRef<HTMLDivElement>(null);
+  const mobileImageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const measure = () => {
@@ -94,6 +96,26 @@ export default function About() {
           });
         },
       });
+
+      const parallax = (target: HTMLDivElement | null, distance: number) => {
+        gsap.fromTo(
+          target,
+          { y: -distance },
+          {
+            y: distance,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      };
+
+      parallax(desktopImageRef.current, 30);
+      parallax(mobileImageRef.current, 20);
     },
     { scope: sectionRef }
   );
@@ -106,7 +128,7 @@ export default function About() {
     >
       <div
         aria-hidden="true"
-        className="absolute right-0 bottom-0 hidden h-[1377px] w-[70%] sm:block"
+        className="absolute right-0 bottom-0 hidden h-[1377px] w-[70%] overflow-hidden sm:block"
         style={{
           maskImage:
             "radial-gradient(ellipse 62% 24% at 78% 80%, black 15%, transparent 85%)",
@@ -114,18 +136,20 @@ export default function About() {
             "radial-gradient(ellipse 62% 24% at 78% 80%, black 15%, transparent 85%)",
         }}
       >
-        <Image
-          src="/images/about-photo.jpg"
-          alt="TONSAMMLER live, CDJ im Vordergrund"
-          fill
-          sizes="50vw"
-          className="object-contain object-right-bottom"
-        />
+        <div ref={desktopImageRef} className="absolute inset-0 will-change-transform">
+          <Image
+            src="/images/about-photo.jpg"
+            alt="TONSAMMLER live, CDJ im Vordergrund"
+            fill
+            sizes="50vw"
+            className="origin-[78%_75%] scale-110 object-contain object-right-bottom"
+          />
+        </div>
       </div>
 
       <div
         aria-hidden="true"
-        className="absolute right-0 top-[360px] h-[75vh] w-3/4 sm:hidden"
+        className="absolute right-0 top-[360px] h-[75vh] w-3/4 overflow-hidden sm:hidden"
         style={{
           maskImage:
             "radial-gradient(ellipse 70% 55% at 100% 50%, black 15%, transparent 85%)",
@@ -133,13 +157,15 @@ export default function About() {
             "radial-gradient(ellipse 70% 55% at 100% 50%, black 15%, transparent 85%)",
         }}
       >
-        <Image
-          src="/images/about-photo.jpg"
-          alt="TONSAMMLER live, CDJ im Vordergrund"
-          fill
-          sizes="75vw"
-          className="object-cover object-right"
-        />
+        <div ref={mobileImageRef} className="absolute inset-0 will-change-transform">
+          <Image
+            src="/images/about-photo.jpg"
+            alt="TONSAMMLER live, CDJ im Vordergrund"
+            fill
+            sizes="75vw"
+            className="origin-right scale-110 object-cover object-right"
+          />
+        </div>
       </div>
 
       <div className="relative z-10">
