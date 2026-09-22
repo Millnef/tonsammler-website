@@ -97,7 +97,7 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-[25px] pb-[13px] sm:min-h-[640px] sm:scroll-mt-20 sm:px-10 sm:pt-[72px] sm:pb-0"
+      className="relative flex min-h-[450px] w-full scroll-mt-24 flex-col overflow-hidden px-6 pt-[25px] pb-[13px] sm:min-h-[650px] sm:scroll-mt-20 sm:px-10 sm:pt-[72px] sm:pb-[10px]"
     >
       <div
         aria-hidden="true"
