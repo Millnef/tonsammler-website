@@ -1,4 +1,5 @@
 import About from "@/components/About";
+import AccentGlow from "@/components/AccentGlow";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Gallery from "@/components/Gallery";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Nav />
+      <AccentGlow />
       <main>
         <Hero />
         <About />
