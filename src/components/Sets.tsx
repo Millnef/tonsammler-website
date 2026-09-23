@@ -6,6 +6,10 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 
+// Quadratic fade over 20% at each end: long, dim tail so the bright footage emerges from black
+const VIDEO_FADE_MASK =
+  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.04) 4%, rgba(0,0,0,0.16) 8%, rgba(0,0,0,0.36) 12%, rgba(0,0,0,0.64) 16%, black 20%, black 80%, rgba(0,0,0,0.64) 84%, rgba(0,0,0,0.36) 88%, rgba(0,0,0,0.16) 92%, rgba(0,0,0,0.04) 96%, transparent 100%)";
+
 const PLATFORMS = [
   {
     key: "soundcloud",
@@ -50,8 +54,26 @@ export default function Sets() {
     <section
       ref={sectionRef}
       id="sets"
-      className="w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
+      className="relative isolate w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        <video
+          src="/videos/sets-background.mp4"
+          poster="/videos/sets-background-poster.jpg"
+          muted
+          loop
+          autoPlay
+          playsInline
+          preload="auto"
+          className="h-full w-full object-cover"
+          style={{ maskImage: VIDEO_FADE_MASK, WebkitMaskImage: VIDEO_FADE_MASK }}
+        />
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
+
       <SectionHeading>SETS</SectionHeading>
 
       <div ref={contentRef}>

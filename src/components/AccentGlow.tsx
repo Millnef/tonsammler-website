@@ -101,21 +101,21 @@ export default function AccentGlow() {
       const about = document.getElementById("about");
       const releases = document.getElementById("releases");
       const sets = document.getElementById("sets");
-      const gallery = document.getElementById("gallery");
-      if (!about || !releases || !sets || !gallery) return;
+      if (!about || !releases || !sets) return;
 
       const docTop = (el: HTMLElement) =>
         el.getBoundingClientRect().top + window.scrollY;
 
+      // Releases only: fades in from About's lower third, fully out before Sets (video background)
       const top = docTop(about) + (about.offsetHeight * 2) / 3;
-      const bottom = docTop(gallery) + gallery.offsetHeight / 3;
+      const bottom = docTop(sets);
 
       setGeometry({
         top,
         width: document.documentElement.clientWidth,
         height: bottom - top,
-        fadeInEnd: docTop(releases) + releases.offsetHeight * 0.25 - top,
-        fadeOutStart: docTop(sets) + sets.offsetHeight - top,
+        fadeInEnd: docTop(releases) - top,
+        fadeOutStart: docTop(releases) + releases.offsetHeight * 0.55 - top,
       });
     };
 
