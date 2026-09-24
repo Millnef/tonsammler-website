@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type Ref } from "react";
+import { useRef, useState, type Ref } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -19,10 +19,10 @@ const EASE_OUT = "easeOut";
 
 const VIDEO_SRC = "/videos/contact-background.mp4";
 
-// Mobile: right edge, vertically centred, gone within 25% of the width.
-// Desktop: bottom-right corner, fading out towards the middle of the screen.
+// Mobile: right edge, vertically centred, gone within 50% of the width.
+// Desktop: bottom-right corner (90% wide), fading out towards the middle of the screen.
 const VIDEO_LAYER_CLASSES =
-  "pointer-events-none absolute inset-0 z-0 [mask-image:radial-gradient(ellipse_25%_45%_at_100%_50%,black_20%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_25%_45%_at_100%_50%,black_20%,transparent_100%)] sm:left-auto sm:w-[70%] sm:[mask-image:radial-gradient(ellipse_100%_100%_at_100%_100%,black_25%,transparent_80%)] sm:[-webkit-mask-image:radial-gradient(ellipse_100%_100%_at_100%_100%,black_25%,transparent_80%)]";
+  "pointer-events-none absolute inset-0 z-0 [mask-image:radial-gradient(ellipse_50%_45%_at_100%_50%,black_20%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_50%_45%_at_100%_50%,black_20%,transparent_100%)] sm:left-auto sm:w-[90%] sm:[mask-image:radial-gradient(ellipse_100%_100%_at_100%_100%,black_25%,transparent_80%)] sm:[-webkit-mask-image:radial-gradient(ellipse_100%_100%_at_100%_100%,black_25%,transparent_80%)]";
 
 const LABEL_CLASSES = "text-sm font-light text-foreground sm:text-base";
 
@@ -104,25 +104,6 @@ export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const emailRef = useRef<HTMLAnchorElement>(null);
   const blocksRef = useRef<HTMLDivElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string>();
-
-  // The clip is large, so only start loading it once Contact is within one viewport
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVideoSrc(VIDEO_SRC);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "100% 0px" }
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
 
   useGSAP(
     () => {
@@ -169,7 +150,7 @@ export default function Contact() {
     >
       <div aria-hidden="true" className={VIDEO_LAYER_CLASSES}>
         <video
-          src={videoSrc}
+          src={VIDEO_SRC}
           poster="/videos/contact-background-poster.jpg"
           muted
           loop
