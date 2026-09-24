@@ -67,7 +67,7 @@ export default function Sets() {
     <section
       ref={sectionRef}
       id="sets"
-      className="relative isolate w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
+      className="relative isolate w-full scroll-mt-24 px-6 pt-[25px] pb-[500px] sm:scroll-mt-20 sm:px-10"
     >
       <div
         aria-hidden="true"

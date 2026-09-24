@@ -46,12 +46,12 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[92svh] items-end pt-[464px] pb-[136px] sm:pt-[400px] sm:pb-[200px]"
+      className="relative flex min-h-[calc(92svh_+_100px)] items-end pt-[464px] pb-[236px] sm:pt-[400px] sm:pb-[300px]"
     >
       <div
         ref={photoRef}
         aria-hidden="true"
-        className="absolute right-0 -top-[68px] -bottom-25 w-[calc(50%+50px)] sm:-top-[88px] sm:w-1/2 sm:max-w-3xl"
+        className="absolute right-0 -top-[68px] bottom-0 w-[calc(50%+50px)] sm:-top-[88px] sm:w-1/2 sm:max-w-3xl"
         style={{
           maskImage:
             "radial-gradient(ellipse 65% 58% at 68% 40%, black 25%, transparent 85%)",
