@@ -9,12 +9,20 @@ import SectionHeading from "@/components/SectionHeading";
 
 const TEXT_BLOCK_CLASSES = {
   first:
-    "mt-4 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
-  second:
-    "mt-6 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
+    "mt-4 max-w-2xl whitespace-pre-line text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
+  rest:
+    "mt-6 max-w-2xl whitespace-pre-line text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
 };
 
 const EASE_OUT = "easeOut";
+
+type Topic = "tonsammler" | "events";
+type Lang = "de" | "en";
+
+const TOPICS: { key: Topic; label: string }[] = [
+  { key: "tonsammler", label: "Tonsammler" },
+  { key: "events", label: "Event Management" },
+];
 
 const STATS = [
   { value: 3, suffix: "", label: "Jahre aktiv" },
@@ -23,40 +31,71 @@ const STATS = [
   { value: 8, suffix: "", label: "Veranstaltungen" },
 ];
 
-const TEXT = {
-  de: [
-    "Aufgewachsen zwischen München und Augsburg zieht sich elektronische Musik seit 10 Jahren unverändert durchs Leben — lange bevor daraus ein eigener Sound wurde. Heute steht der Name für Techno mit minimalistischen Strukturen, gebaut auf Repetition. Jeder Track und jedes Set ist der Versuch, Menschen zu bewegen, physisch wie emotional — „collecting feelings through sound\" ist dabei mehr Haltung als Slogan.",
-    "Als Mitgründer des IMPEDANZ Kollektivs gilt die gleiche Aufmerksamkeit, Menschen den Raum, den Musik öffnen kann, zu zeigen.",
-  ],
-  en: [
-    "Growing up between Munich and Augsburg, electronic music has run through life unchanged for 10 years — long before it became a sound of its own. Today the name stands for techno built on minimalist structures and repetition. Every track and every set is an attempt to move people, physically and emotionally — \"collecting feelings through sound\" is more an attitude than a slogan.",
-    "As a co-founder of the IMPEDANZ Kollektiv, the same attention goes into showing people the space that music can open up.",
-  ],
+const TEXT: Record<Topic, Record<Lang, string[]>> = {
+  tonsammler: {
+    de: [
+      "Aufgewachsen zwischen Augsburg und München, zieht sich elektronische Musik seit 10 Jahren durch mein Leben, angefangen mit Techno zwischen 125 BPM und 130 BPM, extrem tiefen Bässen und so minimalistischen Veränderungen, dass meine Mitschüler in der 6. Klasse dachten, ich höre 2 Stunden lang das Gleiche.",
+      "Danach wurde es schnell, Hardtechno und Schranz mit bis zu 180 BPM.",
+      "Bei mir kam irgendwann die Realisation, dass es nicht um schneller und härter, sondern um tiefer und breiter geht, mehr Raum für Interpretation, Space zum sich fallen lassen, Gedanken noch wahrnehmen können und im gleichen Zug fließen lassen, meine Augen schließen können.\nGleichzeitig geht es natürlich weiterhin um Energielevels, die ich erreichen und geben will.",
+      "Diese Gefühlsmischung versuche ich mit allen meinen Releases, Sets und Veranstaltungen einzufangen.",
+      "Ich habe in meinem Leben schon viele Leute von der Musik überzeugt, auch die, die Techno für „zu monoton“ gehalten haben. Jeder von ihnen ist heute, auch ein bisschen wegen der Musik, ein anderer Mensch.",
+      "Unter anderem hatte ich mit IMPEDANZ auf 10 unserer eigenen Veranstaltungen die Ehre, Menschen meinen Sound näher zu bringen, ihnen genau diese Gefühlsmischung zu vermitteln und sie vielleicht ein Stück weit nachhaltig positiv zu beeinflussen.",
+      "Ich höre zwar schon lange diese Musik, stehe aber dennoch erst am Anfang dieses Abschnitts. Ich freue mich auf das, was noch kommt.",
+    ],
+    en: [
+      "Growing up between Augsburg and Munich, electronic music has run through my life for 10 years now — starting with techno between 125 and 130 BPM, extremely deep basslines, and changes so minimal that my classmates in 6th grade thought I was listening to the same track for two hours straight.",
+      "After that it got fast — hardtechno and Schranz, up to 180 BPM.",
+      "At some point I realized it's not about faster and harder, but about deeper and wider — more room for interpretation, space to let go, to still be aware of your thoughts while letting them flow at the same time, to be able to close your eyes.",
+      "At the same time, it's of course still about the energy levels I want to reach — and to give.",
+      "I try to capture this mix of emotions in every one of my releases, sets, and events.",
+      "Over the years, I've won a lot of people over to this music — even those who thought techno was \"too monotonous.\" Every one of them is, at least partly because of the music, a different person today.",
+      "With IMPEDANZ, I've had the privilege of introducing people to my sound at 10 of our own events — passing on this exact mix of emotions, and maybe leaving a lasting, positive mark on some of them along the way.",
+      "I've been listening to this music for a long time, but I'm still only at the beginning of this chapter. I'm looking forward to what's still to come.",
+    ],
+  },
+  events: {
+    de: [
+      "Ich habe mit IMPEDANZ, als eines von drei Mitgliedern, über 10 Events organisiert. Wir haben dabei die Verantwortung für Management, Designs, Bookings und Gestaltung übernommen. Nähere Infos zu allen unseren vergangenen Events findest du auf Instagram @impedanz.kollektiv.",
+    ],
+    en: [
+      "As one of three members of IMPEDANZ, I've organized over 10 events. Together, we took on the responsibility for management, design, bookings, and overall creative direction. For more details on all our past events, check out Instagram @impedanz.kollektiv.",
+    ],
+  },
 };
 
+function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
+  return paragraphs.map((text, index) => (
+    <p
+      key={index}
+      className={index === 0 ? TEXT_BLOCK_CLASSES.first : TEXT_BLOCK_CLASSES.rest}
+    >
+      {text}
+    </p>
+  ));
+}
+
 export default function About() {
-  const [lang, setLang] = useState<"de" | "en">("de");
-  const [textMinHeight, setTextMinHeight] = useState<number>();
+  const [lang, setLang] = useState<Lang>("de");
+  const [topic, setTopic] = useState<Topic>("tonsammler");
+  const [textHeight, setTextHeight] = useState<number>();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const deMeasureRef = useRef<HTMLDivElement>(null);
-  const enMeasureRef = useRef<HTMLDivElement>(null);
+  const textGridRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const statValueRefs = useRef<HTMLDivElement[]>([]);
   const desktopImageRef = useRef<HTMLDivElement>(null);
   const mobileImageRef = useRef<HTMLDivElement>(null);
 
+  // The grid holds both languages of the current topic, so it is always as tall as the
+  // longer one; its height drives the animated wrapper when the topic changes
   useEffect(() => {
-    const measure = () => {
-      const deHeight = deMeasureRef.current?.offsetHeight ?? 0;
-      const enHeight = enMeasureRef.current?.offsetHeight ?? 0;
-      setTextMinHeight(Math.max(deHeight, enHeight));
-    };
+    const grid = textGridRef.current;
+    if (!grid) return;
 
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    const observer = new ResizeObserver(() => setTextHeight(grid.offsetHeight));
+    observer.observe(grid);
+    return () => observer.disconnect();
   }, []);
 
   useGSAP(
@@ -171,6 +210,39 @@ export default function About() {
       <div className="relative z-10">
         <SectionHeading ref={headingRef}>ABOUT</SectionHeading>
 
+        <div className="mt-8 flex w-fit max-w-full overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1">
+          {TOPICS.map((item) => {
+            const isActive = topic === item.key;
+
+            return (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => setTopic(item.key)}
+                aria-pressed={isActive}
+                className="relative shrink-0 whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium uppercase tracking-[0.15em] max-[375px]:px-2 max-[375px]:text-[11px] max-[375px]:tracking-[0.1em] sm:px-5"
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="about-topic-pill"
+                    className="absolute inset-0 rounded-full bg-accent"
+                    transition={{ duration: 0.3, ease: EASE_OUT }}
+                  />
+                )}
+                <span
+                  className={`relative z-10 transition-colors duration-200 ease-out ${
+                    isActive
+                      ? "text-black"
+                      : "text-foreground/60 hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         <button
           type="button"
           onClick={() => setLang((prev) => (prev === "de" ? "en" : "de"))}
@@ -179,42 +251,39 @@ export default function About() {
           {lang === "de" ? "EN" : "DE"}
         </button>
 
-        <div
-          ref={textRef}
-          className="relative grid overflow-hidden"
-          style={{ minHeight: textMinHeight }}
-        >
-          <div
-            ref={deMeasureRef}
-            aria-hidden="true"
-            className="invisible col-start-1 row-start-1"
+        <div ref={textRef}>
+          <motion.div
+            className="overflow-hidden"
+            initial={false}
+            animate={textHeight === undefined ? undefined : { height: textHeight }}
+            transition={{ duration: 0.4, ease: EASE_OUT }}
+            onAnimationComplete={() => ScrollTrigger.refresh()}
           >
-            <p className={TEXT_BLOCK_CLASSES.first}>{TEXT.de[0]}</p>
-            <p className={TEXT_BLOCK_CLASSES.second}>{TEXT.de[1]}</p>
-          </div>
+            <div ref={textGridRef} className="relative grid">
+              {(["de", "en"] as const).map((sizerLang) => (
+                <div
+                  key={sizerLang}
+                  aria-hidden="true"
+                  className="invisible col-start-1 row-start-1"
+                >
+                  <Paragraphs paragraphs={TEXT[topic][sizerLang]} />
+                </div>
+              ))}
 
-          <div
-            ref={enMeasureRef}
-            aria-hidden="true"
-            className="invisible col-start-1 row-start-1"
-          >
-            <p className={TEXT_BLOCK_CLASSES.first}>{TEXT.en[0]}</p>
-            <p className={TEXT_BLOCK_CLASSES.second}>{TEXT.en[1]}</p>
-          </div>
-
-          <AnimatePresence initial={false}>
-            <motion.div
-              key={lang}
-              initial={{ opacity: 0, x: "100%" }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "-100%" }}
-              transition={{ duration: 0.4, ease: EASE_OUT }}
-              className="col-start-1 row-start-1"
-            >
-              <p className={TEXT_BLOCK_CLASSES.first}>{TEXT[lang][0]}</p>
-              <p className={TEXT_BLOCK_CLASSES.second}>{TEXT[lang][1]}</p>
-            </motion.div>
-          </AnimatePresence>
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.div
+                  key={`${topic}-${lang}`}
+                  initial={{ opacity: 0, x: "100%" }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: "-100%" }}
+                  transition={{ duration: 0.4, ease: EASE_OUT }}
+                  className="col-start-1 row-start-1"
+                >
+                  <Paragraphs paragraphs={TEXT[topic][lang]} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
         </div>
 
         <div ref={statsRef} className="mt-16 flex flex-wrap gap-x-16 gap-y-8">
