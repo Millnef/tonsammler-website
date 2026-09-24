@@ -28,7 +28,7 @@ const STATS = [
   { value: 3, suffix: "", label: "Jahre aktiv" },
   { value: 2, suffix: "", label: "Jahre Mitgründer – IMPEDANZ Kollektiv" },
   { value: 60, suffix: "+", label: "Gigs gespielt" },
-  { value: 8, suffix: "", label: "Veranstaltungen" },
+  { value: 10, suffix: "", label: "Veranstaltungen" },
 ];
 
 const TEXT: Record<Topic, Record<Lang, string[]>> = {
