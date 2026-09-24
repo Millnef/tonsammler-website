@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type Ref } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -13,18 +13,22 @@ import {
 } from "@/components/icons";
 
 const EMAIL = "tonsammlermusic@gmail.com";
+const PHONE = "+49 151 10468852";
+const PHONE_HREF = "tel:+4915110468852";
 const EASE_OUT = "easeOut";
+
+const LABEL_CLASSES = "text-sm font-light text-foreground sm:text-base";
+
+// leading + bottom padding keep descenders visible, also at hover scale;
+// below 375px the size follows the viewport so the e-mail never gets cut off
+const VALUE_CLASSES =
+  "block w-fit origin-center whitespace-nowrap pb-[0.25em] text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-[1.35] tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105 max-[375px]:text-[6.4vw]";
 
 const SOCIALS = [
   {
     icon: InstagramIcon,
     href: "https://www.instagram.com/ton.sammler/",
     label: "Instagram",
-  },
-  {
-    icon: SpotifyIcon,
-    href: null,
-    label: "Spotify (coming soon)",
   },
   {
     icon: SoundCloudIcon,
@@ -36,31 +40,69 @@ const SOCIALS = [
     href: "https://www.youtube.com/@TONSAMMLER",
     label: "YouTube",
   },
+  {
+    icon: SpotifyIcon,
+    href: null,
+    label: "Spotify (coming soon)",
+  },
 ];
 
-export default function Contact() {
+function CopyValue({
+  value,
+  href,
+  valueRef,
+}: {
+  value: string;
+  href: string;
+  valueRef?: Ref<HTMLAnchorElement>;
+}) {
   const [copied, setCopied] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const emailRef = useRef<HTMLAnchorElement>(null);
-  const phoneRef = useRef<HTMLAnchorElement>(null);
-  const socialsRef = useRef<HTMLDivElement>(null);
 
-  const handleEmailClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     try {
-      await navigator.clipboard.writeText(EMAIL);
+      await navigator.clipboard.writeText(value);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      window.location.href = `mailto:${EMAIL}`;
+      window.location.href = href;
     }
   };
 
+  return (
+    <div className="relative mt-2 w-fit">
+      <a ref={valueRef} href={href} onClick={handleClick} className={VALUE_CLASSES}>
+        {value}
+      </a>
+
+      <AnimatePresence>
+        {copied && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: EASE_OUT }}
+            className="absolute left-0 top-full whitespace-nowrap rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-black sm:left-full sm:top-1/2 sm:-translate-y-1/2 sm:ml-8 sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.15em]"
+          >
+            Kopiert!
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function Contact() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const emailRef = useRef<HTMLAnchorElement>(null);
+  const blocksRef = useRef<HTMLDivElement>(null);
+
   useGSAP(
     () => {
+      const blocks = blocksRef.current ? [...blocksRef.current.children] : [];
       gsap.set(emailRef.current, { clipPath: "inset(0 100% 0 0)" });
-      gsap.set([phoneRef.current, socialsRef.current], { opacity: 0, y: 75 });
+      gsap.set(blocks, { opacity: 0, y: 75 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -69,21 +111,21 @@ export default function Contact() {
         onEnter: () => {
           const tl = gsap.timeline();
 
-          tl.to(emailRef.current, {
-            clipPath: "inset(0 0% 0 0)",
-            duration: 0.55,
+          tl.to(blocks, {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
             ease: "power2.out",
-            clearProps: "clipPath",
+            stagger: 0.09,
           });
 
           tl.to(
-            [phoneRef.current, socialsRef.current],
+            emailRef.current,
             {
-              opacity: 1,
-              y: 0,
-              duration: 0.9,
+              clipPath: "inset(0 0% 0 0)",
+              duration: 0.55,
               ease: "power2.out",
-              stagger: 0.09,
+              clearProps: "clipPath",
             },
             0.15
           );
@@ -109,76 +151,61 @@ export default function Contact() {
       />
 
       <div className="relative z-10">
-        <SectionHeading>BOOKING</SectionHeading>
+        <SectionHeading>CONTACT</SectionHeading>
 
         <p className="mt-1 max-w-xl text-lg font-light text-foreground/70 sm:text-xl">
           Let&apos;s create something together.
         </p>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-center sm:justify-end">
-        <div className="relative w-fit">
-          <a
-            ref={emailRef}
-            href={`mailto:${EMAIL}`}
-            onClick={handleEmailClick}
-            className="block w-fit origin-center whitespace-nowrap text-[clamp(1.5rem,4.5vw,3.5rem)] font-extralight leading-[1.35] tracking-tight text-accent transition-transform duration-200 ease-out hover:scale-105 pb-[0.25em]"
-          >
-            {EMAIL}
-          </a>
-
-          <AnimatePresence>
-            {copied && (
-              <motion.span
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: EASE_OUT }}
-                className="absolute left-0 top-full whitespace-nowrap rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-black sm:left-full sm:top-1/2 sm:-translate-y-1/2 sm:ml-4 sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.15em]"
-              >
-                Kopiert!
-              </motion.span>
-            )}
-          </AnimatePresence>
+      <div
+        ref={blocksRef}
+        className="relative z-10 mt-12 flex flex-1 flex-col justify-center gap-10 sm:mt-16 sm:justify-end sm:gap-12"
+      >
+        <div>
+          <h3 className={LABEL_CLASSES}>E-Mail</h3>
+          <CopyValue value={EMAIL} href={`mailto:${EMAIL}`} valueRef={emailRef} />
         </div>
 
-        <a
-          ref={phoneRef}
-          href="tel:+4915110468852"
-          className="mt-6 block w-fit origin-left text-xl font-medium text-accent transition-transform duration-200 ease-out hover:scale-105 sm:mt-8 sm:text-2xl"
-        >
-          +49 151 10468852
-        </a>
+        <div>
+          <h3 className={LABEL_CLASSES}>Mobil</h3>
+          <CopyValue value={PHONE} href={PHONE_HREF} />
+        </div>
 
-        <div ref={socialsRef} className="mt-16 flex flex-wrap gap-6">
-          {SOCIALS.map((social) => {
-            const Icon = social.icon;
+        <div>
+          <h3 className={LABEL_CLASSES}>Social Media</h3>
 
-            if (!social.href) {
+          {/* negative margin aligns the first glyph (centred in its hit area) with the label */}
+          <div className="mt-2 -ml-3.5 flex flex-wrap gap-6 sm:-ml-4.5">
+            {SOCIALS.map((social) => {
+              const Icon = social.icon;
+
+              if (!social.href) {
+                return (
+                  <span
+                    key={social.label}
+                    aria-label={social.label}
+                    className="flex h-13 w-13 items-center justify-center text-foreground/25 sm:h-16 sm:w-16"
+                  >
+                    <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                  </span>
+                );
+              }
+
               return (
-                <span
+                <a
                   key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-13 w-13 items-center justify-center text-foreground/25 sm:h-16 sm:w-16"
+                  className="flex h-13 w-13 origin-left items-center justify-center text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent sm:h-16 sm:w-16"
                 >
                   <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
-                </span>
+                </a>
               );
-            }
-
-            return (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                className="flex h-13 w-13 origin-left items-center justify-center text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent sm:h-16 sm:w-16"
-              >
-                <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
-              </a>
-            );
-          })}
+            })}
+          </div>
         </div>
       </div>
     </section>
