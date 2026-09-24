@@ -6,9 +6,22 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 
-// Quadratic fade over 20% at each end: long, dim tail so the bright footage emerges from black
-const VIDEO_FADE_MASK =
-  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.04) 4%, rgba(0,0,0,0.16) 8%, rgba(0,0,0,0.36) 12%, rgba(0,0,0,0.64) 16%, black 20%, black 80%, rgba(0,0,0,0.64) 84%, rgba(0,0,0,0.36) 88%, rgba(0,0,0,0.16) 92%, rgba(0,0,0,0.04) 96%, transparent 100%)";
+// How far the video reaches up into Releases' 400px bottom whitespace
+const VIDEO_TOP_OVERLAP = 240;
+
+// Quadratic fades (long, dim tail so the bright footage emerges from black):
+// the fade-in spans the overlap, the fade-out covers the last 20% of Sets
+const VIDEO_FADE_IN =
+  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.04) 20%, rgba(0,0,0,0.16) 40%, rgba(0,0,0,0.36) 60%, rgba(0,0,0,0.64) 80%, black 100%)";
+const VIDEO_FADE_OUT =
+  "linear-gradient(to bottom, black 0%, black 80%, rgba(0,0,0,0.64) 84%, rgba(0,0,0,0.36) 88%, rgba(0,0,0,0.16) 92%, rgba(0,0,0,0.04) 96%, transparent 100%)";
+
+const VIDEO_MASK = {
+  image: `${VIDEO_FADE_IN}, ${VIDEO_FADE_OUT}`,
+  size: `100% ${VIDEO_TOP_OVERLAP + 1}px, 100% calc(100% - ${VIDEO_TOP_OVERLAP}px)`,
+  position: "top, bottom",
+  repeat: "no-repeat",
+};
 
 const PLATFORMS = [
   {
@@ -58,8 +71,10 @@ export default function Sets() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 overflow-hidden"
+        style={{ top: -VIDEO_TOP_OVERLAP }}
       >
+        {/* lg: 160.8px = VIDEO_TOP_OVERLAP * (1 - 0.33) keeps the 33% crop of the Sets area unchanged */}
         <video
           src="/videos/sets-background.mp4"
           poster="/videos/sets-background-poster.jpg"
@@ -68,8 +83,17 @@ export default function Sets() {
           autoPlay
           playsInline
           preload="auto"
-          className="h-full w-full object-cover object-[center_33%]"
-          style={{ maskImage: VIDEO_FADE_MASK, WebkitMaskImage: VIDEO_FADE_MASK }}
+          className="h-full w-full object-cover object-[center_33%] lg:object-[50%_calc(33%_+_160.8px)]"
+          style={{
+            maskImage: VIDEO_MASK.image,
+            maskSize: VIDEO_MASK.size,
+            maskPosition: VIDEO_MASK.position,
+            maskRepeat: VIDEO_MASK.repeat,
+            WebkitMaskImage: VIDEO_MASK.image,
+            WebkitMaskSize: VIDEO_MASK.size,
+            WebkitMaskPosition: VIDEO_MASK.position,
+            WebkitMaskRepeat: VIDEO_MASK.repeat,
+          }}
         />
         <div className="absolute inset-0 bg-black/40" />
       </div>
