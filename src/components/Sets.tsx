@@ -68,7 +68,7 @@ export default function Sets() {
           autoPlay
           playsInline
           preload="auto"
-          className="h-full w-full object-cover grayscale"
+          className="h-full w-full object-cover object-[center_33%]"
           style={{ maskImage: VIDEO_FADE_MASK, WebkitMaskImage: VIDEO_FADE_MASK }}
         />
         <div className="absolute inset-0 bg-black/40" />

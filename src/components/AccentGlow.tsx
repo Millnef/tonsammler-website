@@ -100,22 +100,24 @@ export default function AccentGlow() {
     const measure = () => {
       const about = document.getElementById("about");
       const releases = document.getElementById("releases");
-      const sets = document.getElementById("sets");
-      if (!about || !releases || !sets) return;
+      if (!about || !releases) return;
 
       const docTop = (el: HTMLElement) =>
         el.getBoundingClientRect().top + window.scrollY;
 
-      // Releases only: fades in from About's lower third, fully out before Sets (video background)
+      // Releases content only: fades in from About's lower third and is fully
+      // out by the end of Releases' content, so the whitespace before Sets stays pure black
+      const releasesContentHeight =
+        releases.offsetHeight - parseFloat(getComputedStyle(releases).paddingBottom);
       const top = docTop(about) + (about.offsetHeight * 2) / 3;
-      const bottom = docTop(sets);
+      const bottom = docTop(releases) + releasesContentHeight;
 
       setGeometry({
         top,
         width: document.documentElement.clientWidth,
         height: bottom - top,
         fadeInEnd: docTop(releases) - top,
-        fadeOutStart: docTop(releases) + releases.offsetHeight * 0.55 - top,
+        fadeOutStart: docTop(releases) + releasesContentHeight * 0.3 - top,
       });
     };
 
