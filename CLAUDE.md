@@ -16,7 +16,7 @@
 - Nur ease-out Timing-Funktionen
 - Maximale Dauer: 400ms
 - Keine bouncy/elastic Animationen, keine Overshoots
-- Keine Parallax-Effekte — einzige bewusste Ausnahme: das Bild in der About-Sektion (scroll-gekoppelt via GSAP ScrollTrigger mit `scrub`, dezent ±20–30px). Das ist gewollt und kein Verstoß; nicht auf andere Elemente übertragen.
+- Keine Parallax-Effekte — einzige bewusste Ausnahme: das Bild in der About-Sektion (scroll-gekoppelt via GSAP ScrollTrigger mit `scrub`, ±60–75px). Das ist gewollt und kein Verstoß; nicht auf andere Elemente übertragen.
 - Scroll-Trigger perspektivisch über GSAP (ScrollTrigger), UI-Transitions über Framer Motion
 - In dieser Phase (Schritt 1) noch KEINE Animationen implementieren
 

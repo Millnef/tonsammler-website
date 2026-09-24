@@ -153,8 +153,8 @@ export default function About() {
         );
       };
 
-      parallax(desktopImageRef.current, 30);
-      parallax(mobileImageRef.current, 20);
+      parallax(desktopImageRef.current, 75);
+      parallax(mobileImageRef.current, 60);
     },
     { scope: sectionRef }
   );
@@ -181,7 +181,7 @@ export default function About() {
             alt="TONSAMMLER live, CDJ im Vordergrund"
             fill
             sizes="50vw"
-            className="origin-[78%_75%] scale-110 object-contain object-right-bottom"
+            className="origin-[78%_71%] scale-120 object-contain object-right-bottom"
           />
         </div>
       </div>
@@ -202,7 +202,7 @@ export default function About() {
             alt="TONSAMMLER live, CDJ im Vordergrund"
             fill
             sizes="75vw"
-            className="origin-right scale-110 object-cover object-right"
+            className="origin-right scale-120 object-cover object-right"
           />
         </div>
       </div>
