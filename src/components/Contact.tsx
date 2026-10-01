@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import {
-  HORIZONTAL_LINE_CLASSES,
+  LINE_CLASSES,
   useHeadlineLines,
   type HeadlineLineSpec,
 } from "@/lib/headline-lines";
@@ -181,7 +181,7 @@ export default function Contact() {
         <SectionHeading
           ref={headingRef}
           lines={lineRefs.map((ref, i) => (
-            <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+            <span key={i} ref={ref} aria-hidden="true" className={LINE_CLASSES} />
           ))}
         >
           CONTACT

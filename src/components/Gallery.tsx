@@ -5,6 +5,36 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+import {
+  FADING_LINE_CLASSES,
+  useHeadlineLines,
+  type HeadlineLineSpec,
+} from "@/lib/headline-lines";
+
+// "Y": both arms continue upwards at their own angle (±57°, measured from the glyph),
+// starting just inside the arm so the square line end stays hidden behind its
+// horizontal top cut, up to the end of the Sets content, fading out
+const Y_ARM_INSET = 0.012;
+const HEADING_LINES: HeadlineLineSpec[] = [
+  {
+    char: 5,
+    direction: "angle",
+    start: [0.0404, -0.71],
+    angle: -122.96,
+    width: 0.0327,
+    inset: Y_ARM_INSET,
+    until: { elementId: "sets", edge: "contentBottom" },
+  },
+  {
+    char: 5,
+    direction: "angle",
+    start: [0.6031, -0.71],
+    angle: -56.96,
+    width: 0.0331,
+    inset: Y_ARM_INSET,
+    until: { elementId: "sets", edge: "contentBottom" },
+  },
+];
 
 const ITEMS = [
   {
@@ -43,12 +73,31 @@ const ITEMS = [
 
 export default function Gallery() {
   const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const imageRefs = useRef<HTMLDivElement[]>([]);
+  const { refs: lineRefs } = useHeadlineLines(headingRef, HEADING_LINES);
 
   useGSAP(
     () => {
       const elements = imageRefs.current.filter(Boolean);
       gsap.set(elements, { opacity: 0, y: 75 });
+
+      // Coupled to the scroll position: the arms grow while the heading moves up
+      // from the bottom of the screen to 40% of its height
+      gsap.fromTo(
+        lineRefs.map((ref) => ref.current),
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "top 40%",
+            scrub: true,
+          },
+        }
+      );
 
       ScrollTrigger.batch(elements, {
         start: "top 80%",
@@ -71,9 +120,16 @@ export default function Gallery() {
     <section
       ref={sectionRef}
       id="gallery"
-      className="w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
+      className="w-full overflow-x-clip scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
     >
-      <SectionHeading>GALERY</SectionHeading>
+      <SectionHeading
+        ref={headingRef}
+        lines={lineRefs.map((ref, i) => (
+          <span key={i} ref={ref} aria-hidden="true" className={FADING_LINE_CLASSES} />
+        ))}
+      >
+        GALERY
+      </SectionHeading>
 
       <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-12 sm:mt-16 sm:grid-cols-2 sm:gap-x-6">
         {ITEMS.map((item, index) => (

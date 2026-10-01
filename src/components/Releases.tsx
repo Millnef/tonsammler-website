@@ -5,12 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
-import {
-  HORIZONTAL_LINE_CLASSES,
-  VERTICAL_LINE_CLASSES,
-  useHeadlineLines,
-  type HeadlineLineSpec,
-} from "@/lib/headline-lines";
+import { LINE_CLASSES, useHeadlineLines, type HeadlineLineSpec } from "@/lib/headline-lines";
 import { SpotifyIcon, SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 
 type PlatformKey = "spotify" | "soundcloud" | "youtube";
@@ -90,7 +85,7 @@ export default function Releases() {
             scrub: true,
           },
         })
-        .fromTo(upLine, { scaleY: 0, opacity: 1 }, { scaleY: 1, ease: "none", duration: 0.5 })
+        .fromTo(upLine, { scaleX: 0, opacity: 1 }, { scaleX: 1, ease: "none", duration: 0.5 })
         .to(upLine, { opacity: 0, ease: "none", duration: 0.5 });
     },
     { scope: sectionRef }
@@ -109,7 +104,7 @@ export default function Releases() {
             key={i}
             ref={ref}
             aria-hidden="true"
-            className={HEADING_LINES[i].direction === "up" ? VERTICAL_LINE_CLASSES : HORIZONTAL_LINE_CLASSES}
+            className={LINE_CLASSES}
           />
         ))}
       >

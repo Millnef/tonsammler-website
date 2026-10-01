@@ -5,29 +5,61 @@ import { createRef, useCallback, useEffect, useState, type RefObject } from "rea
 // Stroke widths of Raleway ExtraLight (200), measured from the rendered glyphs:
 // horizontal bars (T, E) 0.032em, vertical stems (L, I) 0.034em. Being em-based,
 // the lines follow the heading's responsive font size on every breakpoint.
-export const HORIZONTAL_LINE_CLASSES =
-  "pointer-events-none absolute block h-[0.032em] bg-foreground";
-export const VERTICAL_LINE_CLASSES =
-  "pointer-events-none absolute block w-[0.034em] bg-foreground";
+const HORIZONTAL_STROKE = 0.032;
+const VERTICAL_STROKE = 0.034;
 
-export type HeadlineLineSpec = {
-  /** index of the letter in the heading text */
-  char: number;
-  /** which ink corner of that letter the line starts from */
-  anchor: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-  direction: "left" | "right" | "up";
-  /** "up" only: the line reaches this far above the top of the element with this id */
-  reachAbove?: { elementId: string; offset: number };
-};
+// Every line is a 1px box: browsers snap a box's position and size to whole pixels
+// before transforming it, which would shift and thin a 2.4px line by up to ~0.8px.
+// Position, thickness and direction are therefore applied as (unsnapped) transforms.
+export const LINE_CLASSES = "pointer-events-none absolute block h-px bg-foreground";
+// Same, fading out towards the far end
+export const FADING_LINE_CLASSES =
+  "pointer-events-none absolute block h-px bg-linear-to-r from-foreground to-transparent";
+
+/** A horizontal boundary: the top/bottom (or bottom minus padding) of an element */
+type Boundary = { elementId: string; edge: "top" | "bottom" | "contentBottom"; offset?: number };
+
+export type HeadlineLineSpec =
+  | {
+      /** index of the letter in the heading text */
+      char: number;
+      /** which ink corner of that letter the line starts from */
+      anchor: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+      direction: "left" | "right" | "up";
+      /** "up" only: the line reaches this far above the top of the element with this id */
+      reachAbove?: { elementId: string; offset: number };
+      /** px the line reaches past the screen edge (e.g. while its heading slides in) */
+      overshoot?: number;
+    }
+  | {
+      char: number;
+      /** continues a diagonal stroke of the glyph */
+      direction: "angle";
+      /** stroke end point in em, relative to the glyph origin and baseline */
+      start: [number, number];
+      /** stroke direction in degrees, screen coordinates (y down) */
+      angle: number;
+      /** stroke width in em */
+      width: number;
+      /** em the line starts inside the stroke, so its square end stays hidden */
+      inset: number;
+      /** the line runs until this boundary or the screen edge, whichever comes first */
+      until: Boundary;
+    };
 
 let measureCanvas: HTMLCanvasElement | undefined;
 
-// Painted ink bounds of one letter in viewport coordinates. Browsers paint text on a
-// baseline snapped to device pixels and hint stroke edges to the pixel grid, so the
-// outline metrics can be off by up to ~1.5px. Instead the letter is rasterised once on
-// a canvas at its real size, the same sub-pixel phase and the same snapped baseline,
-// and the edges are read back with sub-pixel precision from the edge pixels' coverage.
-function letterInk(heading: HTMLElement, index: number) {
+// Lines start this far inside the letter so sub-pixel differences in horizontal glyph
+// rasterisation never leave a hairline gap; same colour and height, so it is invisible
+const OVERLAP = 1;
+
+// Geometry of one letter in viewport coordinates: its origin, the baseline it is
+// painted on and its painted ink bounds. Browsers paint text on a baseline snapped to
+// device pixels and hint stroke edges to the pixel grid, so outline metrics can be off
+// by up to ~1.5px. The letter is therefore rasterised once on a canvas at its real
+// size, the same sub-pixel phase and the same snapped baseline, and the edges are read
+// back with sub-pixel precision from the edge pixels' coverage.
+function letterGeometry(heading: HTMLElement, index: number) {
   const text = [...heading.childNodes].find(
     (node): node is Text => node.nodeType === Node.TEXT_NODE
   );
@@ -45,11 +77,12 @@ function letterInk(heading: HTMLElement, index: number) {
   const ctx = measureCanvas.getContext("2d", { willReadFrequently: true });
   if (!ctx) return null;
 
-  // Layout rounds the font ascent; painting snaps the baseline to device pixels
+  // Layout rounds the font ascent; painting snaps the baseline to whole CSS pixels
+  // (measured against painted text at device pixel ratios 1, 2 and 3)
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.font = `${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
   const ascent = Math.round(ctx.measureText(text.data[index]).fontBoundingBoxAscent);
-  const baseline = Math.round((glyph.top + ascent) * dpr) / dpr;
+  const baseline = Math.round(glyph.top + ascent);
 
   const pad = Math.ceil(fontSize * 0.3);
   const width = Math.ceil((glyph.width + pad * 2) * dpr);
@@ -87,70 +120,207 @@ function letterInk(heading: HTMLElement, index: number) {
   const [top, bottom, left, right] = [first(rowMax), last(rowMax), first(colMax), last(colMax)];
   if (top === null || bottom === null || left === null || right === null) return null;
 
+  // Painted coverage (0–1) at a point relative to the glyph origin and baseline, in CSS px
+  const coverage = (lx: number, ly: number) => {
+    const fx = (originX + lx) * dpr - 0.5;
+    const fy = (originY + ly) * dpr - 0.5;
+    const x0 = Math.floor(fx);
+    const y0 = Math.floor(fy);
+    const at = (x: number, y: number) =>
+      x < 0 || y < 0 || x >= width || y >= height ? 0 : data[(y * width + x) * 4 + 3] / 255;
+    const ax = fx - x0;
+    const ay = fy - y0;
+    return (
+      (at(x0, y0) * (1 - ax) + at(x0 + 1, y0) * ax) * (1 - ay) +
+      (at(x0, y0 + 1) * (1 - ax) + at(x0 + 1, y0 + 1) * ax) * ay
+    );
+  };
+
   return {
-    left: glyph.left + (left / dpr - originX),
-    right: glyph.left + (right / dpr - originX),
-    top: baseline + (top / dpr - originY),
-    bottom: baseline + (bottom / dpr - originY),
+    fontSize,
+    coverage,
+    originX: glyph.left,
+    baseline,
+    ink: {
+      left: glyph.left + (left / dpr - originX),
+      right: glyph.left + (right / dpr - originX),
+      top: baseline + (top / dpr - originY),
+      bottom: baseline + (bottom / dpr - originY),
+    },
   };
 }
 
-// Lines start this far inside the letter so sub-pixel differences in horizontal glyph
-// rasterisation never leave a hairline gap; same colour and height, so it is invisible
-const OVERLAP = 1;
+function boundaryY({ elementId, edge, offset = 0 }: Boundary) {
+  const el = document.getElementById(elementId);
+  if (!el) return null;
+  const rect = el.getBoundingClientRect();
+  if (edge === "top") return rect.top + offset;
+  if (edge === "bottom") return rect.bottom + offset;
+  return rect.bottom - parseFloat(getComputedStyle(el).paddingBottom) + offset;
+}
+
+// Places a line starting at (x, y) (centre of its start, layout coordinates) running
+// at `angle` degrees for `length` px with the given thickness. The 1px layout box sits
+// on whole CSS pixels (where browsers snap boxes); the sub-pixel rest, the direction and
+// the thickness are transforms, which are not snapped. GSAP's scaleX grows it from its start.
+function placeLine(
+  line: HTMLElement,
+  box: { left: number; top: number },
+  x: number,
+  y: number,
+  angle: number,
+  length: number,
+  thickness: number
+) {
+  const snapX = Math.floor(x);
+  const snapY = Math.floor(y - 0.5);
+  const s = line.style;
+  s.left = `${snapX - box.left}px`;
+  s.top = `${snapY - box.top}px`;
+  s.width = `${Math.max(0, length)}px`;
+  s.transformOrigin = "0 0.5px";
+  s.translate = `${x - snapX}px ${y - 0.5 - snapY}px`;
+  s.rotate = `${angle}deg`;
+  s.scale = `1 ${thickness}`;
+}
+
+type Geometry = NonNullable<ReturnType<typeof letterGeometry>>;
+
+// Sideways offset of the painted stroke behind a line start (glyph-local coordinates,
+// line running along (dx, dy)): coverage-weighted centre of cross-sections between
+// `from` and `to` px behind the start, measured along the normal
+function strokeOffset(
+  geo: Geometry,
+  sx: number,
+  sy: number,
+  dx: number,
+  dy: number,
+  stroke: number,
+  from: number,
+  to: number
+) {
+  const nx = -dy;
+  const ny = dx;
+  let offset = 0;
+  let count = 0;
+  for (let back = from; back <= to; back += 0.25) {
+    const cx = sx - dx * back;
+    const cy = sy - dy * back;
+    let mass = 0;
+    let moment = 0;
+    for (let t = -2 * stroke - 1; t <= 2 * stroke + 1; t += 0.1) {
+      const a = geo.coverage(cx + nx * t, cy + ny * t);
+      mass += a;
+      moment += a * t;
+    }
+    if (mass > 0) {
+      offset += moment / mass;
+      count++;
+    }
+  }
+  return { x: count ? nx * (offset / count) : 0, y: count ? ny * (offset / count) : 0 };
+}
 
 function positionLines(
   heading: HTMLElement,
   specs: HeadlineLineSpec[],
   refs: RefObject<HTMLSpanElement | null>[]
 ) {
-  const box = heading.getBoundingClientRect();
+  // Work in layout coordinates: undo any translation an animation currently applies,
+  // so measuring mid-animation gives the same result as at rest
+  const transform = getComputedStyle(heading).transform;
+  const matrix = transform && transform !== "none" ? new DOMMatrixReadOnly(transform) : null;
+  const tx = matrix?.e ?? 0;
+  const ty = matrix?.f ?? 0;
+  const rect = heading.getBoundingClientRect();
+  const box = { left: rect.left - tx, top: rect.top - ty };
   const viewportRight = document.documentElement.clientWidth;
 
   specs.forEach((spec, i) => {
     const line = refs[i].current;
-    const ink = letterInk(heading, spec.char);
-    if (!line || !ink) return;
-    const s = line.style;
+    const geo = letterGeometry(heading, spec.char);
+    if (!line || !geo) return;
+    const ink = {
+      left: geo.ink.left - tx,
+      right: geo.ink.right - tx,
+      top: geo.ink.top - ty,
+      bottom: geo.ink.bottom - ty,
+    };
 
-    if (spec.direction === "up") {
-      const target = spec.reachAbove
-        ? (document.getElementById(spec.reachAbove.elementId)?.getBoundingClientRect().top ?? ink.top) -
-          spec.reachAbove.offset
-        : ink.top;
-      s.left = `${ink.left - box.left}px`;
-      s.top = "";
-      s.bottom = `${box.bottom - ink.top - OVERLAP}px`;
-      s.height = `${Math.max(0, ink.top - target + OVERLAP)}px`;
-      s.transformOrigin = "50% 100%";
+    // Glyph-local coordinates (relative to the glyph origin and its baseline)
+    const local = {
+      left: geo.ink.left - geo.originX,
+      right: geo.ink.right - geo.originX,
+      top: geo.ink.top - geo.baseline,
+      bottom: geo.ink.bottom - geo.baseline,
+    };
+    const toLayout = (lx: number, ly: number) => [geo.originX - tx + lx, geo.baseline - ty + ly];
+
+    // Straight continuation of a stroke ending at (sx, sy): centre the line on the stroke
+    // as painted (sampled just behind its end, short enough not to be biased by curves),
+    // then start it `inset` px inside the letter
+    const continueStroke = (sx: number, sy: number, angle: number, stroke: number, inset: number) => {
+      const rad = (angle * Math.PI) / 180;
+      const dx = Math.cos(rad);
+      const dy = Math.sin(rad);
+      const shift = strokeOffset(geo, sx, sy, dx, dy, stroke, inset + 0.5, inset + 2.5);
+      const [x, y] = toLayout(sx + shift.x - dx * inset, sy + shift.y - dy * inset);
+      return { x, y, dx, dy };
+    };
+
+    if (spec.direction === "angle") {
+      const stroke = spec.width * geo.fontSize;
+      const inset = spec.inset * geo.fontSize + OVERLAP;
+      const c = continueStroke(spec.start[0] * geo.fontSize, spec.start[1] * geo.fontSize, spec.angle, stroke, inset);
+
+      // Run to the boundary or the screen edge, whichever comes first (+1px at the edge
+      // so rounding never leaves a sliver; horizontal overflow is clipped by the section)
+      const limits: number[] = [];
+      if (c.dx > 0) limits.push((viewportRight - c.x) / c.dx + 1);
+      if (c.dx < 0) limits.push(-c.x / c.dx + 1);
+      const stopY = boundaryY(spec.until);
+      if (stopY !== null && c.dy !== 0 && (stopY - c.y) / c.dy > 0) limits.push((stopY - c.y) / c.dy);
+
+      placeLine(line, box, c.x, c.y, spec.angle, Math.min(...limits), stroke);
       return;
     }
 
-    if (spec.anchor.startsWith("top")) {
-      s.top = `${ink.top - box.top}px`;
-      s.bottom = "";
-    } else {
-      s.top = "";
-      s.bottom = `${box.bottom - ink.bottom}px`;
+    if (spec.direction === "up") {
+      // Continues the stem upwards from the top of the letter
+      const stroke = VERTICAL_STROKE * geo.fontSize;
+      const target = spec.reachAbove
+        ? (boundaryY({ elementId: spec.reachAbove.elementId, edge: "top" }) ?? ink.top) -
+          spec.reachAbove.offset
+        : ink.top;
+      const c = continueStroke(local.left + stroke / 2, local.top, -90, stroke, OVERLAP);
+      placeLine(line, box, c.x, c.y, -90, c.y - target, stroke);
+      return;
     }
 
-    if (spec.direction === "right") {
-      s.left = `${ink.right - box.left - OVERLAP}px`;
-      s.width = `${Math.max(0, viewportRight - ink.right + OVERLAP)}px`;
-      s.transformOrigin = "0% 50%";
+    const stroke = HORIZONTAL_STROKE * geo.fontSize;
+    const overshoot = (spec.overshoot ?? 0) + 1;
+    const right = spec.direction === "right";
+    const angle = right ? 0 : 180;
+    const startX = right ? local.right : local.left;
+
+    let x: number;
+    let y: number;
+    if (spec.anchor.startsWith("top")) {
+      // Top corner (T crossbar): continue the bar itself
+      ({ x, y } = continueStroke(startX, local.top + stroke / 2, angle, stroke, OVERLAP));
     } else {
-      s.left = `${-box.left}px`;
-      s.width = `${Math.max(0, ink.left + OVERLAP)}px`;
-      s.transformOrigin = "100% 50%";
+      // Bottom corner (R): no stroke to continue, the line's bottom edge sits on the letter's
+      [x, y] = toLayout(right ? startX - OVERLAP : startX + OVERLAP, local.bottom - stroke / 2);
     }
+
+    placeLine(line, box, x, y, angle, right ? viewportRight - x + overshoot : x + overshoot, stroke);
   });
 }
 
 /**
- * Positions decorative lines that grow out of a letter corner of a heading to the
- * screen edge. Measures on mount (after the web font is ready) and on every size
- * change of the document, never on scroll. `measure` can be called manually, e.g.
- * after an intro animation has moved the heading.
+ * Positions decorative lines that grow out of a letter of a heading. Measures on mount
+ * (after the web font is ready) and on every size change of the document, never on
+ * scroll. `measure` can also be called manually.
  */
 export function useHeadlineLines(
   headingRef: RefObject<HTMLElement | null>,

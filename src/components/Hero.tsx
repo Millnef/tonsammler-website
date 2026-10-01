@@ -5,15 +5,19 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import {
-  HORIZONTAL_LINE_CLASSES,
+  LINE_CLASSES,
   useHeadlineLines,
   type HeadlineLineSpec,
 } from "@/lib/headline-lines";
 
-// T: top-left corner → left edge; R: bottom-right corner → right edge
+// Distance the headline slides in from; the lines run while it moves
+const HEADLINE_SLIDE = 60;
+
+// T: top-left corner → left edge; R: bottom-right corner → right edge. The right line
+// reaches past the edge by the slide distance so it never ends short while sliding in.
 const HEADLINE_LINES: HeadlineLineSpec[] = [
   { char: 0, anchor: "top-left", direction: "left" },
-  { char: 9, anchor: "bottom-right", direction: "right" },
+  { char: 9, anchor: "bottom-right", direction: "right", overshoot: HEADLINE_SLIDE },
 ];
 
 export default function Hero() {
@@ -29,6 +33,7 @@ export default function Hero() {
   useGSAP(() => {
     const lines = lineRefs.map((ref) => ref.current);
     gsap.set(lines, { scaleX: 0 });
+    measureLines();
 
     const tl = gsap.timeline();
 
@@ -48,10 +53,13 @@ export default function Hero() {
 
     tl.fromTo(
       headlineRef.current,
-      { opacity: 0, x: -60 },
+      { opacity: 0, x: -HEADLINE_SLIDE },
       { opacity: 1, x: 0, duration: 1.5, ease: "power2.out" },
       0.18
     );
+
+    // Lines grow together with the headline sliding in, as in the other sections
+    tl.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" }, 0.18);
 
     tl.fromTo(
       subRef.current,
@@ -59,10 +67,6 @@ export default function Hero() {
       { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
       0.35
     );
-
-    // Lines start once the intro is done; re-measure first since the headline has moved
-    tl.call(measureLines);
-    tl.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" });
   });
 
   return (
@@ -105,7 +109,7 @@ export default function Hero() {
         >
           TONSAMMLER
           {lineRefs.map((ref, i) => (
-            <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+            <span key={i} ref={ref} aria-hidden="true" className={LINE_CLASSES} />
           ))}
         </h1>
 

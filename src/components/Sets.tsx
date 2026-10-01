@@ -4,17 +4,26 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 import {
-  HORIZONTAL_LINE_CLASSES,
+  LINE_CLASSES,
   useHeadlineLines,
   type HeadlineLineSpec,
 } from "@/lib/headline-lines";
 
-// Last "S": top-right corner → right edge
+// Last "S": continues the upper terminal stroke (38° down-right, measured from the
+// glyph) through the whole section, behind the content and in front of the video
 const HEADING_LINES: HeadlineLineSpec[] = [
-  { char: 3, anchor: "top-right", direction: "right" },
+  {
+    char: 3,
+    direction: "angle",
+    start: [0.5186, -0.6204],
+    angle: 37.99,
+    width: 0.0315,
+    inset: 0,
+    until: { elementId: "sets", edge: "bottom" },
+  },
 ];
-import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 
 // How far the video reaches up into Releases' 400px bottom whitespace
 const VIDEO_TOP_OVERLAP = 240;
@@ -58,7 +67,6 @@ export default function Sets() {
     () => {
       const lines = lineRefs.map((ref) => ref.current);
       gsap.set(contentRef.current, { opacity: 0, y: 75 });
-      gsap.set(lines, { scaleX: 0 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -71,10 +79,24 @@ export default function Sets() {
             duration: 0.9,
             ease: "power2.out",
           });
-
-          gsap.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" });
         },
       });
+
+      // Coupled to the scroll position: drawn while the section scrolls through
+      gsap.fromTo(
+        lines,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        }
+      );
     },
     { scope: sectionRef }
   );
@@ -117,7 +139,7 @@ export default function Sets() {
       <SectionHeading
         ref={headingRef}
         lines={lineRefs.map((ref, i) => (
-          <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+          <span key={i} ref={ref} aria-hidden="true" className={`${LINE_CLASSES} -z-5`} />
         ))}
       >
         SETS
