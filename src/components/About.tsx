@@ -12,6 +12,9 @@ const TEXT_BLOCK_CLASSES = {
     "mt-4 max-w-2xl whitespace-pre-line text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
   rest:
     "mt-6 max-w-2xl whitespace-pre-line text-base font-light leading-relaxed text-foreground/70 sm:text-lg",
+  // first paragraph of the second column: aligned with the first column from sm up
+  columnStart:
+    "mt-6 max-w-2xl whitespace-pre-line text-base font-light leading-relaxed text-foreground/70 sm:mt-4 sm:text-lg",
 };
 
 const EASE_OUT = "easeOut";
@@ -70,15 +73,47 @@ const TEXT: Record<Topic, Record<Lang, string[]>> = {
   },
 };
 
-function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
+// Paragraph index where the second column starts (from sm up)
+const COLUMN_SPLIT: Partial<Record<Topic, number>> = { tonsammler: 5 };
+
+function Paragraphs({
+  paragraphs,
+  columnStart = false,
+}: {
+  paragraphs: string[];
+  columnStart?: boolean;
+}) {
   return paragraphs.map((text, index) => (
     <p
       key={index}
-      className={index === 0 ? TEXT_BLOCK_CLASSES.first : TEXT_BLOCK_CLASSES.rest}
+      className={
+        index > 0
+          ? TEXT_BLOCK_CLASSES.rest
+          : columnStart
+            ? TEXT_BLOCK_CLASSES.columnStart
+            : TEXT_BLOCK_CLASSES.first
+      }
     >
       {text}
     </p>
   ));
+}
+
+function TextBlock({ topic, lang }: { topic: Topic; lang: Lang }) {
+  const paragraphs = TEXT[topic][lang];
+  const split = COLUMN_SPLIT[topic];
+  if (split === undefined) return <Paragraphs paragraphs={paragraphs} />;
+
+  return (
+    <div className="sm:grid sm:max-w-6xl sm:grid-cols-[3fr_2fr] sm:gap-x-16">
+      <div>
+        <Paragraphs paragraphs={paragraphs.slice(0, split)} />
+      </div>
+      <div>
+        <Paragraphs paragraphs={paragraphs.slice(split)} columnStart />
+      </div>
+    </div>
+  );
 }
 
 export default function About() {
@@ -273,7 +308,7 @@ export default function About() {
                   aria-hidden="true"
                   className="invisible col-start-1 row-start-1"
                 >
-                  <Paragraphs paragraphs={TEXT[topic][sizerLang]} />
+                  <TextBlock topic={topic} lang={sizerLang} />
                 </div>
               ))}
 
@@ -286,7 +321,7 @@ export default function About() {
                   transition={{ duration: 0.4, ease: EASE_OUT }}
                   className="col-start-1 row-start-1"
                 >
-                  <Paragraphs paragraphs={TEXT[topic][lang]} />
+                  <TextBlock topic={topic} lang={lang} />
                 </motion.div>
               </AnimatePresence>
             </div>
