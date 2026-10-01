@@ -13,8 +13,9 @@ import {
 
 // "Y": both arms continue upwards at their own angle (±57°, measured from the glyph),
 // starting just inside the arm so the square line end stays hidden behind its
-// horizontal top cut, up to the end of the Sets content, fading out
+// horizontal top cut, fading out halfway to the end of the Sets content (or the screen edge)
 const Y_ARM_INSET = 0.012;
+const Y_ARM_REACH = 0.5;
 const HEADING_LINES: HeadlineLineSpec[] = [
   {
     char: 5,
@@ -24,6 +25,7 @@ const HEADING_LINES: HeadlineLineSpec[] = [
     width: 0.0327,
     inset: Y_ARM_INSET,
     until: { elementId: "sets", edge: "contentBottom" },
+    reach: Y_ARM_REACH,
   },
   {
     char: 5,
@@ -33,6 +35,7 @@ const HEADING_LINES: HeadlineLineSpec[] = [
     width: 0.0331,
     inset: Y_ARM_INSET,
     until: { elementId: "sets", edge: "contentBottom" },
+    reach: Y_ARM_REACH,
   },
 ];
 

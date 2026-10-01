@@ -115,7 +115,7 @@ function TextBlock({ topic, lang }: { topic: Topic; lang: Lang }) {
   if (split === undefined) return <Paragraphs paragraphs={paragraphs} />;
 
   return (
-    <div className="sm:grid sm:max-w-6xl sm:grid-cols-[3fr_2fr] sm:gap-x-16">
+    <div className="sm:grid sm:grid-cols-[repeat(2,minmax(0,42rem))] sm:gap-x-16">
       <div>
         <Paragraphs paragraphs={paragraphs.slice(0, split)} />
       </div>

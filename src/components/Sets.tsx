@@ -5,25 +5,6 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
-import {
-  LINE_CLASSES,
-  useHeadlineLines,
-  type HeadlineLineSpec,
-} from "@/lib/headline-lines";
-
-// Last "S": continues the upper terminal stroke (38° down-right, measured from the
-// glyph) through the whole section, behind the content and in front of the video
-const HEADING_LINES: HeadlineLineSpec[] = [
-  {
-    char: 3,
-    direction: "angle",
-    start: [0.5186, -0.6204],
-    angle: 37.99,
-    width: 0.0315,
-    inset: 0,
-    until: { elementId: "sets", edge: "bottom" },
-  },
-];
 
 // How far the video reaches up into Releases' 400px bottom whitespace
 const VIDEO_TOP_OVERLAP = 240;
@@ -60,12 +41,9 @@ const PLATFORMS = [
 export default function Sets() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const { refs: lineRefs } = useHeadlineLines(headingRef, HEADING_LINES);
 
   useGSAP(
     () => {
-      const lines = lineRefs.map((ref) => ref.current);
       gsap.set(contentRef.current, { opacity: 0, y: 75 });
 
       ScrollTrigger.create({
@@ -81,22 +59,6 @@ export default function Sets() {
           });
         },
       });
-
-      // Coupled to the scroll position: drawn while the section scrolls through
-      gsap.fromTo(
-        lines,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
-            end: "bottom bottom",
-            scrub: true,
-          },
-        }
-      );
     },
     { scope: sectionRef }
   );
@@ -105,7 +67,7 @@ export default function Sets() {
     <section
       ref={sectionRef}
       id="sets"
-      className="relative isolate w-full overflow-x-clip scroll-mt-24 px-6 pt-[25px] pb-[500px] sm:scroll-mt-20 sm:px-10"
+      className="relative isolate w-full scroll-mt-24 px-6 pt-[25px] pb-[500px] sm:scroll-mt-20 sm:px-10"
     >
       <div
         aria-hidden="true"
@@ -136,14 +98,7 @@ export default function Sets() {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <SectionHeading
-        ref={headingRef}
-        lines={lineRefs.map((ref, i) => (
-          <span key={i} ref={ref} aria-hidden="true" className={`${LINE_CLASSES} -z-5`} />
-        ))}
-      >
-        SETS
-      </SectionHeading>
+      <SectionHeading>SETS</SectionHeading>
 
       <div ref={contentRef}>
         <div className="mt-12 divide-y divide-white/10 border-y border-white/10 overflow-hidden sm:mt-16">

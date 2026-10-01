@@ -45,6 +45,8 @@ export type HeadlineLineSpec =
       inset: number;
       /** the line runs until this boundary or the screen edge, whichever comes first */
       until: Boundary;
+      /** fraction of that run the line covers (default 1) */
+      reach?: number;
     };
 
 let measureCanvas: HTMLCanvasElement | undefined;
@@ -281,7 +283,7 @@ function positionLines(
       const stopY = boundaryY(spec.until);
       if (stopY !== null && c.dy !== 0 && (stopY - c.y) / c.dy > 0) limits.push((stopY - c.y) / c.dy);
 
-      placeLine(line, box, c.x, c.y, spec.angle, Math.min(...limits), stroke);
+      placeLine(line, box, c.x, c.y, spec.angle, Math.min(...limits) * (spec.reach ?? 1), stroke);
       return;
     }
 
@@ -309,8 +311,15 @@ function positionLines(
       // Top corner (T crossbar): continue the bar itself
       ({ x, y } = continueStroke(startX, local.top + stroke / 2, angle, stroke, OVERLAP));
     } else {
-      // Bottom corner (R): no stroke to continue, the line's bottom edge sits on the letter's
-      [x, y] = toLayout(right ? startX - OVERLAP : startX + OVERLAP, local.bottom - stroke / 2);
+      // Bottom corner (R): no stroke to continue, the line's bottom edge sits on the letter's.
+      // It starts at the letter's edge where the line's top edge meets it, so a slanted leg
+      // leaves no gap above the line
+      const edgeY = local.bottom - stroke + 0.25;
+      let edgeX = startX;
+      while (Math.abs(edgeX - startX) < geo.fontSize * 0.2 && geo.coverage(edgeX, edgeY) < 0.5) {
+        edgeX += right ? -0.05 : 0.05;
+      }
+      [x, y] = toLayout(right ? edgeX - OVERLAP : edgeX + OVERLAP, local.bottom - stroke / 2);
     }
 
     placeLine(line, box, x, y, angle, right ? viewportRight - x + overshoot : x + overshoot, stroke);

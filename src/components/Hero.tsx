@@ -103,9 +103,11 @@ export default function Hero() {
           Milan-Joel Pawlick aka
         </p>
 
+        {/* Own compositing layer, also after the slide-in: without it the browser paints
+            the text ~0.5px bolder once the animation ends and the lines look too thin */}
         <h1
           ref={headlineRef}
-          className="relative whitespace-nowrap text-[clamp(2.25rem,10.5vw,12.5rem)] font-extralight leading-[0.88] tracking-tight"
+          className="relative whitespace-nowrap text-[clamp(2.25rem,10.5vw,12.5rem)] font-extralight leading-[0.88] tracking-tight will-change-transform"
         >
           TONSAMMLER
           {lineRefs.map((ref, i) => (
