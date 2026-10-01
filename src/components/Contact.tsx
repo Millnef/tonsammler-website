@@ -6,6 +6,11 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import {
+  HORIZONTAL_LINE_CLASSES,
+  useHeadlineLines,
+  type HeadlineLineSpec,
+} from "@/lib/headline-lines";
+import {
   InstagramIcon,
   SpotifyIcon,
   SoundCloudIcon,
@@ -100,16 +105,25 @@ function CopyValue({
   );
 }
 
+// Last "T": top-right corner → right edge
+const HEADING_LINES: HeadlineLineSpec[] = [
+  { char: 6, anchor: "top-right", direction: "right" },
+];
+
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const emailRef = useRef<HTMLAnchorElement>(null);
   const blocksRef = useRef<HTMLDivElement>(null);
+  const { refs: lineRefs } = useHeadlineLines(headingRef, HEADING_LINES);
 
   useGSAP(
     () => {
       const blocks = blocksRef.current ? [...blocksRef.current.children] : [];
+      const lines = lineRefs.map((ref) => ref.current);
       gsap.set(emailRef.current, { clipPath: "inset(0 100% 0 0)" });
       gsap.set(blocks, { opacity: 0, y: 75 });
+      gsap.set(lines, { scaleX: 0 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -136,6 +150,8 @@ export default function Contact() {
             },
             0.15
           );
+
+          tl.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" }, 0);
         },
       });
     },
@@ -162,7 +178,14 @@ export default function Contact() {
       </div>
 
       <div className="relative z-10">
-        <SectionHeading>CONTACT</SectionHeading>
+        <SectionHeading
+          ref={headingRef}
+          lines={lineRefs.map((ref, i) => (
+            <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+          ))}
+        >
+          CONTACT
+        </SectionHeading>
 
         <p className="mt-1 max-w-xl text-lg font-light text-foreground/70 sm:text-xl">
           Let&apos;s create something together.

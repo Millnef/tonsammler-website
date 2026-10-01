@@ -4,6 +4,16 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+import {
+  HORIZONTAL_LINE_CLASSES,
+  useHeadlineLines,
+  type HeadlineLineSpec,
+} from "@/lib/headline-lines";
+
+// Last "S": top-right corner → right edge
+const HEADING_LINES: HeadlineLineSpec[] = [
+  { char: 3, anchor: "top-right", direction: "right" },
+];
 import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 
 // How far the video reaches up into Releases' 400px bottom whitespace
@@ -41,10 +51,14 @@ const PLATFORMS = [
 export default function Sets() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const { refs: lineRefs } = useHeadlineLines(headingRef, HEADING_LINES);
 
   useGSAP(
     () => {
+      const lines = lineRefs.map((ref) => ref.current);
       gsap.set(contentRef.current, { opacity: 0, y: 75 });
+      gsap.set(lines, { scaleX: 0 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -57,6 +71,8 @@ export default function Sets() {
             duration: 0.9,
             ease: "power2.out",
           });
+
+          gsap.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" });
         },
       });
     },
@@ -67,7 +83,7 @@ export default function Sets() {
     <section
       ref={sectionRef}
       id="sets"
-      className="relative isolate w-full scroll-mt-24 px-6 pt-[25px] pb-[500px] sm:scroll-mt-20 sm:px-10"
+      className="relative isolate w-full overflow-x-clip scroll-mt-24 px-6 pt-[25px] pb-[500px] sm:scroll-mt-20 sm:px-10"
     >
       <div
         aria-hidden="true"
@@ -98,7 +114,14 @@ export default function Sets() {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <SectionHeading>SETS</SectionHeading>
+      <SectionHeading
+        ref={headingRef}
+        lines={lineRefs.map((ref, i) => (
+          <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+        ))}
+      >
+        SETS
+      </SectionHeading>
 
       <div ref={contentRef}>
         <div className="mt-12 divide-y divide-white/10 border-y border-white/10 overflow-hidden sm:mt-16">

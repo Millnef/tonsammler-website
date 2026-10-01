@@ -5,6 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+import {
+  HORIZONTAL_LINE_CLASSES,
+  VERTICAL_LINE_CLASSES,
+  useHeadlineLines,
+  type HeadlineLineSpec,
+} from "@/lib/headline-lines";
 import { SpotifyIcon, SoundCloudIcon, YouTubeIcon } from "@/components/icons";
 
 type PlatformKey = "spotify" | "soundcloud" | "youtube";
@@ -32,14 +38,30 @@ const PLATFORMS: {
 
 const EASE_OUT = "easeOut";
 
+// First "R": bottom-left corner → left edge. "L": from the top of its stem upwards,
+// reaching 300px into About's 400px bottom whitespace.
+const HEADING_LINES: HeadlineLineSpec[] = [
+  { char: 0, anchor: "bottom-left", direction: "left" },
+  {
+    char: 2,
+    anchor: "top-left",
+    direction: "up",
+    reachAbove: { elementId: "releases", offset: 300 },
+  },
+];
+
 export default function Releases() {
   const [active, setActive] = useState<PlatformKey>("spotify");
   const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const { refs: lineRefs } = useHeadlineLines(headingRef, HEADING_LINES);
 
   useGSAP(
     () => {
+      const [leftLine, upLine] = lineRefs.map((ref) => ref.current);
       gsap.set(contentRef.current, { opacity: 0, y: 75 });
+      gsap.set(leftLine, { scaleX: 0 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -52,8 +74,24 @@ export default function Releases() {
             duration: 0.9,
             ease: "power2.out",
           });
+
+          gsap.to(leftLine, { scaleX: 1, duration: 0.8, ease: "power2.out" });
         },
       });
+
+      // Coupled to the scroll position over the whole section: grows during the
+      // first half, fades out during the second
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        })
+        .fromTo(upLine, { scaleY: 0, opacity: 1 }, { scaleY: 1, ease: "none", duration: 0.5 })
+        .to(upLine, { opacity: 0, ease: "none", duration: 0.5 });
     },
     { scope: sectionRef }
   );
@@ -62,9 +100,21 @@ export default function Releases() {
     <section
       ref={sectionRef}
       id="releases"
-      className="w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
+      className="w-full overflow-x-clip scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
     >
-      <SectionHeading>RELEASES</SectionHeading>
+      <SectionHeading
+        ref={headingRef}
+        lines={lineRefs.map((ref, i) => (
+          <span
+            key={i}
+            ref={ref}
+            aria-hidden="true"
+            className={HEADING_LINES[i].direction === "up" ? VERTICAL_LINE_CLASSES : HORIZONTAL_LINE_CLASSES}
+          />
+        ))}
+      >
+        RELEASES
+      </SectionHeading>
 
       <div ref={contentRef} className="lg:grid lg:grid-cols-[280px_1fr] lg:items-start lg:gap-16">
         <div className="mt-12 divide-y divide-white/10 border-y border-white/10 overflow-hidden sm:mt-16 lg:mt-0">

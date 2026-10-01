@@ -6,6 +6,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
+import {
+  HORIZONTAL_LINE_CLASSES,
+  useHeadlineLines,
+  type HeadlineLineSpec,
+} from "@/lib/headline-lines";
+
+// Last "T": top-right corner → right edge
+const HEADING_LINES: HeadlineLineSpec[] = [
+  { char: 4, anchor: "top-right", direction: "right" },
+];
 
 const TEXT_BLOCK_CLASSES = {
   first:
@@ -128,6 +138,7 @@ export default function About() {
   const statValueRefs = useRef<HTMLDivElement[]>([]);
   const desktopImageRef = useRef<HTMLDivElement>(null);
   const mobileImageRef = useRef<HTMLDivElement>(null);
+  const { refs: lineRefs } = useHeadlineLines(headingRef, HEADING_LINES);
 
   // The grid holds both languages of the current topic, so it is always as tall as the
   // longer one; its height drives the animated wrapper when the topic changes
@@ -143,7 +154,9 @@ export default function About() {
   useGSAP(
     () => {
       const elements = [headingRef.current, textRef.current, statsRef.current];
+      const lines = lineRefs.map((ref) => ref.current);
       gsap.set(elements, { opacity: 0, y: 75 });
+      gsap.set(lines, { scaleX: 0 });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -157,6 +170,8 @@ export default function About() {
             ease: "power2.out",
             stagger: 0.09,
           });
+
+          gsap.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" });
 
           STATS.forEach((stat, index) => {
             const el = statValueRefs.current[index];
@@ -205,7 +220,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative z-10 w-full scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
+      className="relative z-10 w-full overflow-x-clip scroll-mt-24 px-6 pt-[25px] pb-[400px] sm:scroll-mt-20 sm:px-10"
     >
       <div
         aria-hidden="true"
@@ -250,7 +265,14 @@ export default function About() {
       </div>
 
       <div className="relative z-10">
-        <SectionHeading ref={headingRef}>ABOUT</SectionHeading>
+        <SectionHeading
+          ref={headingRef}
+          lines={lineRefs.map((ref, i) => (
+            <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+          ))}
+        >
+          ABOUT
+        </SectionHeading>
 
         <div className="mt-8 flex w-fit max-w-full overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1">
           {TOPICS.map((item) => {

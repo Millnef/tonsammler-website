@@ -4,14 +4,32 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import {
+  HORIZONTAL_LINE_CLASSES,
+  useHeadlineLines,
+  type HeadlineLineSpec,
+} from "@/lib/headline-lines";
+
+// T: top-left corner → left edge; R: bottom-right corner → right edge
+const HEADLINE_LINES: HeadlineLineSpec[] = [
+  { char: 0, anchor: "top-left", direction: "left" },
+  { char: 9, anchor: "bottom-right", direction: "right" },
+];
 
 export default function Hero() {
   const photoRef = useRef<HTMLDivElement>(null);
   const kickerRef = useRef<HTMLParagraphElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
+  const { refs: lineRefs, measure: measureLines } = useHeadlineLines(
+    headlineRef,
+    HEADLINE_LINES
+  );
 
   useGSAP(() => {
+    const lines = lineRefs.map((ref) => ref.current);
+    gsap.set(lines, { scaleX: 0 });
+
     const tl = gsap.timeline();
 
     tl.fromTo(
@@ -41,12 +59,16 @@ export default function Hero() {
       { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
       0.35
     );
+
+    // Lines start once the intro is done; re-measure first since the headline has moved
+    tl.call(measureLines);
+    tl.to(lines, { scaleX: 1, duration: 0.8, ease: "power2.out" });
   });
 
   return (
     <section
       id="top"
-      className="relative flex min-h-[calc(92svh_+_100px)] items-end pt-[464px] pb-[236px] sm:pt-[400px] sm:pb-[300px]"
+      className="relative flex min-h-[calc(92svh_+_100px)] items-end overflow-x-clip pt-[464px] pb-[236px] sm:pt-[400px] sm:pb-[300px]"
     >
       <div
         ref={photoRef}
@@ -79,16 +101,19 @@ export default function Hero() {
 
         <h1
           ref={headlineRef}
-          className="whitespace-nowrap text-[clamp(2.25rem,10.5vw,12.5rem)] font-extralight leading-[0.88] tracking-tight"
+          className="relative whitespace-nowrap text-[clamp(2.25rem,10.5vw,12.5rem)] font-extralight leading-[0.88] tracking-tight"
         >
           TONSAMMLER
+          {lineRefs.map((ref, i) => (
+            <span key={i} ref={ref} aria-hidden="true" className={HORIZONTAL_LINE_CLASSES} />
+          ))}
         </h1>
 
         <p
           ref={subRef}
           className="mt-8 max-w-md text-base font-light text-foreground/60 sm:text-lg"
         >
-          „collecting feelings through sound"
+          „collecting feelings through sound&quot;
         </p>
       </div>
     </section>
