@@ -134,7 +134,8 @@ export default function Gallery() {
         GALERY
       </SectionHeading>
 
-      <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-12 sm:mt-16 sm:grid-cols-2 sm:gap-x-6">
+      {/* Cards at 75% of the full column width, packed to the left */}
+      <div className="mt-12 grid grid-cols-[75%] gap-x-10 gap-y-12 sm:mt-16 sm:grid-cols-[repeat(2,calc((100%_-_1.5rem)_*_0.375))] sm:gap-x-6">
         {ITEMS.map((item, index) => (
           <div key={item.src}>
             <div
@@ -147,7 +148,7 @@ export default function Gallery() {
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes="(min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 640px) 38vw, 75vw"
                 className={`object-cover ${item.objectPosition}`}
               />
             </div>
