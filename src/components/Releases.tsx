@@ -48,20 +48,25 @@ const PLATFORMS: {
 ];
 
 // Players for the EP "I"; YouTube shows its main track
-const EMBEDS: Record<PlatformKey, { title: string; src: string; allow?: string }> = {
+const EMBEDS: Record<
+  PlatformKey,
+  { title: string; src: string; allow?: string; square?: boolean }
+> = {
   spotify: {
     title: "I von TONSAMMLER auf Spotify",
-    src: "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&si=21d4f937f9d94343",
+    src: "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&theme=0&si=4ed2d71ae6c54168",
     allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
   },
   soundcloud: {
     title: "I von TONSAMMLER auf SoundCloud",
-    src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2308592472&color=%23ffebb5&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
+    src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2308592472&color=%23242424&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true",
     allow: "autoplay; encrypted-media",
   },
   bandcamp: {
     title: "I von TONSAMMLER auf Bandcamp",
-    src: "https://bandcamp.com/EmbeddedPlayer/album=1577328459/size=large/bgcol=333333/linkcol=ffebb5/tracklist=true/artwork=small/transparent=true/",
+    src: "https://bandcamp.com/EmbeddedPlayer/album=1577328459/size=large/bgcol=333333/linkcol=ffebb5/minimal=true/transparent=true/",
+    // Cover player (title, buy and controls on hover): a square as large as the box allows
+    square: true,
   },
   youtube: {
     title: "TONSAMMLER auf YouTube",
@@ -69,15 +74,6 @@ const EMBEDS: Record<PlatformKey, { title: string; src: string; allow?: string }
     allow:
       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
   },
-};
-
-// Player box height (incl. 1px border): Spotify shows its full layout from 352px,
-// Bandcamp's player with two tracks is 196px tall, SoundCloud and YouTube stay 16:9
-const BOX_HEIGHTS: Record<PlatformKey, string> = {
-  spotify: "h-[354px]",
-  soundcloud: "h-[56.25cqw]",
-  bandcamp: "h-[198px]",
-  youtube: "h-[56.25cqw]",
 };
 
 const EASE_OUT = "easeOut";
@@ -215,7 +211,7 @@ export default function Releases() {
                         : "text-foreground/60 hover:text-foreground"
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-5 w-5" />
                   </span>
                 </button>
               );
@@ -223,16 +219,10 @@ export default function Releases() {
           </div>
         </div>
 
-        <div className="@container mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2 lg:mx-0 lg:mt-8 lg:w-3/4">
-          {/* Everything below moves with the height, so the scroll animations re-measure */}
-          <div
-            className={`relative w-full overflow-hidden border border-white/10 transition-[height] duration-300 ease-out ${BOX_HEIGHTS[active]}`}
-            onTransitionEnd={(e) => {
-              if (e.target === e.currentTarget && e.propertyName === "height") {
-                ScrollTrigger.refresh();
-              }
-            }}
-          >
+        {/* One box size for every player: 352px is Spotify's full layout, and at most
+            628px wide the YouTube video fills it at 16:9 (+1px border each side) */}
+        <div className="mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2 lg:mx-0 lg:mt-8 lg:w-3/4 lg:max-w-[628px]">
+          <div className="relative h-[354px] w-full overflow-hidden border border-white/10 [container-type:size]">
             <AnimatePresence initial={false}>
               <motion.div
                 key={active}
@@ -248,49 +238,54 @@ export default function Releases() {
                   allow={EMBEDS[active].allow}
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  className="h-full w-full"
+                  className={
+                    EMBEDS[active].square
+                      ? "absolute inset-0 m-auto size-[min(100cqw,100cqh)]"
+                      : "h-full w-full"
+                  }
                 />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {active === "soundcloud" && (
-            <div
-              style={{
-                fontSize: "10px",
-                color: "#cccccc",
-                lineBreak: "anywhere",
-                wordBreak: "normal",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                fontFamily:
-                  "Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif",
-                fontWeight: 100,
-              }}
-              className="mt-2"
+          {/* SoundCloud's credit line keeps its space for every player, so switching never
+              moves the content below (and the scroll animations stay in place) */}
+          <div
+            aria-hidden={active !== "soundcloud"}
+            style={{
+              fontSize: "10px",
+              color: "#cccccc",
+              lineBreak: "anywhere",
+              wordBreak: "normal",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              fontFamily:
+                "Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif",
+              fontWeight: 100,
+            }}
+            className={`mt-2 ${active === "soundcloud" ? "" : "invisible"}`}
+          >
+            <a
+              href="https://soundcloud.com/tonsammlermusic"
+              title="tonsammler"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#cccccc", textDecoration: "none" }}
             >
-              <a
-                href="https://soundcloud.com/tonsammlermusic"
-                title="tonsammler"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#cccccc", textDecoration: "none" }}
-              >
-                tonsammler
-              </a>{" "}
-              ·{" "}
-              <a
-                href="https://soundcloud.com/tonsammlermusic/sets/i"
-                title="I"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#cccccc", textDecoration: "none" }}
-              >
-                I
-              </a>
-            </div>
-          )}
+              tonsammler
+            </a>{" "}
+            ·{" "}
+            <a
+              href="https://soundcloud.com/tonsammlermusic/sets/i"
+              title="I"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#cccccc", textDecoration: "none" }}
+            >
+              I
+            </a>
+          </div>
         </div>
         </div>
       </div>
