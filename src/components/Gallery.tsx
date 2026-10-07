@@ -134,8 +134,9 @@ export default function Gallery() {
         GALERY
       </SectionHeading>
 
-      {/* Cards at 75% of the full column width, packed to the left */}
-      <div className="mt-12 grid grid-cols-[75%] gap-x-10 gap-y-12 sm:mt-16 sm:grid-cols-[repeat(2,calc((100%_-_1.5rem)_*_0.375))] sm:gap-x-6">
+      {/* Mobile: two cards per row across the full width. From sm: cards at 75% of the
+          full column width, packed to the left */}
+      <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 sm:mt-16 sm:grid-cols-[repeat(2,calc((100%_-_1.5rem)_*_0.375))] sm:gap-x-6">
         {ITEMS.map((item, index) => (
           <div key={item.src}>
             <div
@@ -148,14 +149,14 @@ export default function Gallery() {
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes="(min-width: 640px) 38vw, 75vw"
+                sizes="(min-width: 640px) 38vw, 50vw"
                 className={`object-cover ${item.objectPosition}`}
               />
             </div>
 
-            <div className="mt-4 flex items-start justify-between gap-4">
+            <div className="mt-3 flex items-start justify-between gap-2 sm:mt-4 sm:gap-4">
               <h3
-                className={`text-xl font-medium sm:text-2xl ${
+                className={`text-base font-medium sm:text-2xl ${
                   item.title ? "text-foreground" : "text-foreground/40"
                 }`}
               >
@@ -169,16 +170,18 @@ export default function Gallery() {
               </span>
             </div>
 
-            <div className="mt-2 flex items-start justify-between gap-4">
+            {/* Mobile: the date sits under the description, the half-width card is too narrow
+                for both side by side */}
+            <div className="mt-1 flex flex-col gap-1 sm:mt-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
               <p
-                className={`max-w-[70%] text-sm font-light ${
+                className={`text-xs font-light sm:max-w-[70%] sm:text-sm ${
                   item.description ? "text-foreground/60" : "text-foreground/40"
                 }`}
               >
                 {item.description ?? "Beschreibung folgt."}
               </p>
               <span
-                className={`shrink-0 text-right text-xs font-medium uppercase tracking-[0.15em] ${
+                className={`shrink-0 text-[10px] font-medium uppercase tracking-[0.15em] sm:text-right sm:text-xs ${
                   item.date ? "text-foreground/40" : "text-foreground/30"
                 }`}
               >
