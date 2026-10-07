@@ -45,6 +45,14 @@ export function SoundCloudIcon({ className }: IconProps) {
   );
 }
 
+export function BandcampIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="M2.5 17.5 8.5 6.5h13l-6 11z" />
+    </Icon>
+  );
+}
+
 export function YouTubeIcon({ className }: IconProps) {
   return (
     <Icon className={className}>

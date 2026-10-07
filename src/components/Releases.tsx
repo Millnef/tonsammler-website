@@ -6,9 +6,14 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { LINE_CLASSES, useHeadlineLines, type HeadlineLineSpec } from "@/lib/headline-lines";
-import { SpotifyIcon, SoundCloudIcon, YouTubeIcon } from "@/components/icons";
+import {
+  BandcampIcon,
+  SpotifyIcon,
+  SoundCloudIcon,
+  YouTubeIcon,
+} from "@/components/icons";
 
-type PlatformKey = "spotify" | "soundcloud" | "youtube";
+type PlatformKey = "spotify" | "soundcloud" | "bandcamp" | "youtube";
 
 const PLATFORMS: {
   key: PlatformKey;
@@ -16,12 +21,23 @@ const PLATFORMS: {
   href: string;
   icon: typeof SpotifyIcon;
 }[] = [
-  { key: "spotify", label: "Spotify", href: "#", icon: SpotifyIcon },
+  {
+    key: "spotify",
+    label: "Spotify",
+    href: "https://open.spotify.com/artist/1duyw9D875T8M1v7VaoPep",
+    icon: SpotifyIcon,
+  },
   {
     key: "soundcloud",
     label: "SoundCloud",
     href: "https://soundcloud.com/tonsammlermusic",
     icon: SoundCloudIcon,
+  },
+  {
+    key: "bandcamp",
+    label: "Bandcamp",
+    href: "https://tonsammler.bandcamp.com/album/i",
+    icon: BandcampIcon,
   },
   {
     key: "youtube",
@@ -30,6 +46,39 @@ const PLATFORMS: {
     icon: YouTubeIcon,
   },
 ];
+
+// Players for the EP "I"; YouTube shows its main track
+const EMBEDS: Record<PlatformKey, { title: string; src: string; allow?: string }> = {
+  spotify: {
+    title: "I von TONSAMMLER auf Spotify",
+    src: "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&si=21d4f937f9d94343",
+    allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
+  },
+  soundcloud: {
+    title: "I von TONSAMMLER auf SoundCloud",
+    src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2308592472&color=%23ffebb5&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
+    allow: "autoplay; encrypted-media",
+  },
+  bandcamp: {
+    title: "I von TONSAMMLER auf Bandcamp",
+    src: "https://bandcamp.com/EmbeddedPlayer/album=1577328459/size=large/bgcol=333333/linkcol=ffebb5/tracklist=true/artwork=small/transparent=true/",
+  },
+  youtube: {
+    title: "TONSAMMLER auf YouTube",
+    src: "https://www.youtube.com/embed/bCHRygiNuaI?si=AFty3pYyuIYx_3jC&start=345",
+    allow:
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+  },
+};
+
+// Player box height (incl. 1px border): Spotify shows its full layout from 352px,
+// Bandcamp's player with two tracks is 196px tall, SoundCloud and YouTube stay 16:9
+const BOX_HEIGHTS: Record<PlatformKey, string> = {
+  spotify: "h-[354px]",
+  soundcloud: "h-[56.25cqw]",
+  bandcamp: "h-[198px]",
+  youtube: "h-[56.25cqw]",
+};
 
 const EASE_OUT = "easeOut";
 
@@ -115,14 +164,13 @@ export default function Releases() {
         <div className="mt-12 divide-y divide-white/10 border-y border-white/10 overflow-hidden sm:mt-16 lg:mt-0">
           {PLATFORMS.map((platform) => {
             const Icon = platform.icon;
-            const isPlaceholder = platform.href === "#";
 
             return (
               <a
                 key={platform.key}
                 href={platform.href}
-                target={isPlaceholder ? undefined : "_blank"}
-                rel={isPlaceholder ? undefined : "noopener noreferrer"}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex origin-left items-center justify-between py-5 text-sm font-medium uppercase tracking-[0.15em] text-foreground/70 transition-all duration-200 ease-out hover:scale-105 hover:text-accent"
               >
                 <span className="flex items-center gap-3">
@@ -138,7 +186,9 @@ export default function Releases() {
         <div>
           <div className="mt-12 sm:mt-16 lg:mt-0">
           <div className="mx-auto flex w-fit max-w-full overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1 lg:mx-0">
+            {/* Icons instead of labels so four options stay narrow enough for any screen */}
             {PLATFORMS.map((platform) => {
+              const Icon = platform.icon;
               const isActive = active === platform.key;
 
               return (
@@ -147,7 +197,9 @@ export default function Releases() {
                   type="button"
                   onClick={() => setActive(platform.key)}
                   aria-pressed={isActive}
-                  className="relative rounded-full px-3 py-2 text-xs font-medium uppercase tracking-[0.15em] sm:px-5"
+                  aria-label={platform.label}
+                  title={platform.label}
+                  className="relative rounded-full px-4 py-2 sm:px-5"
                 >
                   {isActive && (
                     <motion.span
@@ -157,13 +209,13 @@ export default function Releases() {
                     />
                   )}
                   <span
-                    className={`relative z-10 transition-colors duration-200 ease-out ${
+                    className={`relative z-10 block transition-colors duration-200 ease-out ${
                       isActive
                         ? "text-black"
                         : "text-foreground/60 hover:text-foreground"
                     }`}
                   >
-                    {platform.label}
+                    <Icon className="h-4 w-4" />
                   </span>
                 </button>
               );
@@ -171,75 +223,34 @@ export default function Releases() {
           </div>
         </div>
 
-        <div className="mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2 lg:mx-0 lg:mt-8 lg:w-3/4">
-          <div className="relative aspect-video w-full overflow-hidden border border-white/10">
+        <div className="@container mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2 lg:mx-0 lg:mt-8 lg:w-3/4">
+          {/* Everything below moves with the height, so the scroll animations re-measure */}
+          <div
+            className={`relative w-full overflow-hidden border border-white/10 transition-[height] duration-300 ease-out ${BOX_HEIGHTS[active]}`}
+            onTransitionEnd={(e) => {
+              if (e.target === e.currentTarget && e.propertyName === "height") {
+                ScrollTrigger.refresh();
+              }
+            }}
+          >
             <AnimatePresence initial={false}>
-              {active === "spotify" && (
-                <motion.div
-                  key="spotify"
-                  className="absolute inset-0"
-                  initial={{ x: "100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ duration: 0.35, ease: EASE_OUT }}
-                >
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-white/[0.03] text-center">
-                    <span className="text-sm font-medium uppercase tracking-[0.15em] text-foreground/50">
-                      Spotify
-                    </span>
-                    <span className="text-xs font-light text-foreground/40">
-                      Embed folgt
-                    </span>
-                    <span className="mt-2 text-xs font-medium uppercase tracking-[0.1em] text-accent">
-                      Coming soon — 05.10.
-                    </span>
-                  </div>
-                </motion.div>
-              )}
-
-              {active === "soundcloud" && (
-                <motion.div
-                  key="soundcloud"
-                  className="absolute inset-0"
-                  initial={{ x: "100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ duration: 0.35, ease: EASE_OUT }}
-                >
-                  <iframe
-                    title="TONSAMMLER auf SoundCloud"
-                    width="100%"
-                    height="100%"
-                    scrolling="no"
-                    frameBorder="no"
-                    allow="autoplay; encrypted-media"
-                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1800748860&color=%23ffebb5&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-                    className="h-full w-full"
-                  />
-                </motion.div>
-              )}
-
-              {active === "youtube" && (
-                <motion.div
-                  key="youtube"
-                  className="absolute inset-0"
-                  initial={{ x: "100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ duration: 0.35, ease: EASE_OUT }}
-                >
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    className="h-full w-full"
-                    src="https://www.youtube.com/embed/qBRBy3EUuRc?si=_VsD10EOSAUlNOHY&start=900"
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </motion.div>
-              )}
+              <motion.div
+                key={active}
+                className="absolute inset-0"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ duration: 0.35, ease: EASE_OUT }}
+              >
+                <iframe
+                  title={EMBEDS[active].title}
+                  src={EMBEDS[active].src}
+                  allow={EMBEDS[active].allow}
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="h-full w-full"
+                />
+              </motion.div>
             </AnimatePresence>
           </div>
 
@@ -270,13 +281,13 @@ export default function Releases() {
               </a>{" "}
               ·{" "}
               <a
-                href="https://soundcloud.com/tonsammlermusic/carla"
-                title="CARLA"
+                href="https://soundcloud.com/tonsammlermusic/sets/i"
+                title="I"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "#cccccc", textDecoration: "none" }}
               >
-                CARLA
+                I
               </a>
             </div>
           )}

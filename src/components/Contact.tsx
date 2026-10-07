@@ -11,6 +11,7 @@ import {
   type HeadlineLineSpec,
 } from "@/lib/headline-lines";
 import {
+  BandcampIcon,
   InstagramIcon,
   SpotifyIcon,
   SoundCloudIcon,
@@ -54,8 +55,13 @@ const SOCIALS = [
   },
   {
     icon: SpotifyIcon,
-    href: null,
-    label: "Spotify (coming soon)",
+    href: "https://open.spotify.com/artist/1duyw9D875T8M1v7VaoPep",
+    label: "Spotify",
+  },
+  {
+    icon: BandcampIcon,
+    href: "https://tonsammler.bandcamp.com",
+    label: "Bandcamp",
   },
 ];
 
@@ -209,22 +215,11 @@ export default function Contact() {
         <div>
           <h3 className={LABEL_CLASSES}>Social Media</h3>
 
-          {/* negative margin aligns the first glyph (centred in its hit area) with the label */}
-          <div className="mt-2 -ml-3.5 flex flex-wrap gap-6 sm:-ml-4.5">
+          {/* negative margin aligns the first glyph (centred in its hit area) with the label;
+              the tighter mobile gap keeps all five icons in one row down to 360px */}
+          <div className="mt-2 -ml-3.5 flex flex-wrap gap-4 sm:-ml-4.5 sm:gap-6">
             {SOCIALS.map((social) => {
               const Icon = social.icon;
-
-              if (!social.href) {
-                return (
-                  <span
-                    key={social.label}
-                    aria-label={social.label}
-                    className="flex h-13 w-13 items-center justify-center text-foreground/25 sm:h-16 sm:w-16"
-                  >
-                    <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
-                  </span>
-                );
-              }
 
               return (
                 <a
