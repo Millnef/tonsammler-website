@@ -79,12 +79,33 @@ function letterGeometry(heading: HTMLElement, index: number) {
   const ctx = measureCanvas.getContext("2d", { willReadFrequently: true });
   if (!ctx) return null;
 
-  // Layout rounds the font ascent; painting snaps the baseline to whole CSS pixels
-  // (measured against painted text at device pixel ratios 1, 2 and 3)
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.font = `${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
+
+  // Layout rounds the font ascent. Chrome paints the baseline snapped to whole CSS
+  // pixels (measured against painted text at device pixel ratios 1, 2 and 3)
   const ascent = Math.round(ctx.measureText(text.data[index]).fontBoundingBoxAscent);
-  const baseline = Math.round(glyph.top + ascent);
+  let glyphLeft = glyph.left;
+  let baseline = Math.round(glyph.top + ascent);
+
+  if (navigator.vendor?.startsWith("Apple")) {
+    // WebKit (Safari and every browser on iOS) snaps the baseline to device pixels
+    // instead, and floors the left edge of character rects to whole CSS pixels. There the
+    // letter's origin follows from the heading box plus the advance of the text before it
+    // (kerning and letter spacing included).
+    const scroll = window.scrollY;
+    baseline = Math.round((glyph.top + ascent + scroll) * dpr) / dpr - scroll;
+
+    const box = heading.getBoundingClientRect();
+    const spacing = parseFloat(style.letterSpacing) || 0;
+    glyphLeft =
+      box.left +
+      parseFloat(style.borderLeftWidth) +
+      parseFloat(style.paddingLeft) +
+      ctx.measureText(text.data.slice(0, index + 1)).width -
+      ctx.measureText(text.data[index]).width +
+      index * spacing;
+  }
 
   const pad = Math.ceil(fontSize * 0.3);
   const width = Math.ceil((glyph.width + pad * 2) * dpr);
@@ -93,7 +114,7 @@ function letterGeometry(heading: HTMLElement, index: number) {
   measureCanvas.height = height;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.font = `${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
-  const phase = glyph.left * dpr - Math.floor(glyph.left * dpr);
+  const phase = glyphLeft * dpr - Math.floor(glyphLeft * dpr);
   const originX = pad + phase / dpr;
   const originY = Math.round(fontSize * 1.2 * dpr) / dpr;
   ctx.fillText(text.data[index], originX, originY);
@@ -141,11 +162,11 @@ function letterGeometry(heading: HTMLElement, index: number) {
   return {
     fontSize,
     coverage,
-    originX: glyph.left,
+    originX: glyphLeft,
     baseline,
     ink: {
-      left: glyph.left + (left / dpr - originX),
-      right: glyph.left + (right / dpr - originX),
+      left: glyphLeft + (left / dpr - originX),
+      right: glyphLeft + (right / dpr - originX),
       top: baseline + (top / dpr - originY),
       bottom: baseline + (bottom / dpr - originY),
     },
