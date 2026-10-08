@@ -48,10 +48,7 @@ const PLATFORMS: {
 ];
 
 // Players for the EP "I"; YouTube shows its main track
-const EMBEDS: Record<
-  PlatformKey,
-  { title: string; src: string; allow?: string; square?: boolean }
-> = {
+const EMBEDS: Record<PlatformKey, { title: string; src: string; allow?: string }> = {
   spotify: {
     title: "I von TONSAMMLER auf Spotify",
     src: "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&theme=0&si=4ed2d71ae6c54168",
@@ -64,9 +61,7 @@ const EMBEDS: Record<
   },
   bandcamp: {
     title: "I von TONSAMMLER auf Bandcamp",
-    src: "https://bandcamp.com/EmbeddedPlayer/album=1577328459/size=large/bgcol=333333/linkcol=ffebb5/minimal=true/transparent=true/",
-    // Cover player (title, buy and controls on hover): a square as large as the box allows
-    square: true,
+    src: "https://bandcamp.com/EmbeddedPlayer/album=1577328459/size=large/bgcol=333333/linkcol=ffebb5/tracklist=true/artwork=small/transparent=true/",
   },
   youtube: {
     title: "TONSAMMLER auf YouTube",
@@ -222,7 +217,7 @@ export default function Releases() {
         {/* One box size for every player: 352px is Spotify's full layout, and at most
             628px wide the YouTube video fills it at 16:9 (+1px border each side) */}
         <div className="mt-12 w-full sm:mx-auto sm:mt-16 sm:w-1/2 lg:mx-0 lg:mt-8 lg:w-3/4 lg:max-w-[628px]">
-          <div className="relative h-[354px] w-full overflow-hidden border border-white/10 [container-type:size]">
+          <div className="relative h-[354px] w-full overflow-hidden border border-white/10">
             <AnimatePresence initial={false}>
               <motion.div
                 key={active}
@@ -238,11 +233,7 @@ export default function Releases() {
                   allow={EMBEDS[active].allow}
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  className={
-                    EMBEDS[active].square
-                      ? "absolute inset-0 m-auto size-[min(100cqw,100cqh)]"
-                      : "h-full w-full"
-                  }
+                  className="h-full w-full"
                 />
               </motion.div>
             </AnimatePresence>
