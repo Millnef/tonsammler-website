@@ -134,9 +134,11 @@ export default function Gallery() {
         GALERY
       </SectionHeading>
 
-      {/* Mobile: two cards per row across the full width. From sm: cards at 75% of the
-          full column width, packed to the left */}
-      <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 sm:mt-16 sm:grid-cols-[repeat(2,calc((100%_-_1.5rem)_*_0.375))] sm:gap-x-6">
+      {/* Mobile: two cards per row across the full width. From sm: cards at 75% of a
+          two-column layout inside the section padding (5rem) with a 1.5rem gap, the grid
+          spans the full screen width and spreads the space evenly: screen edge, between
+          the cards and screen edge are the same */}
+      <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 sm:-mx-10 sm:mt-16 sm:grid-cols-[repeat(2,calc((100%_-_6.5rem)_*_0.375))] sm:justify-evenly sm:gap-x-0">
         {ITEMS.map((item, index) => (
           <div key={item.src}>
             <div
