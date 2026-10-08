@@ -50,7 +50,7 @@ const TEXT: Record<Topic, Record<Lang, string[]>> = {
       "Aufgewachsen zwischen Augsburg und München, zieht sich elektronische Musik seit 10 Jahren durch mein Leben. Angefangen mit Techno zwischen 125 BPM und 130 BPM, viel Bass und so minimalen Veränderungen, dass meine Freunde in der 6. Klasse dachten, ich höre 2 Stunden lang das Gleiche.",
       "Danach wurde es kurzzeitig schnell: Hardtechno und Schranz, bis zu 180 BPM.",
       "Irgendwann kam der Punkt, an dem ich realisierte, dass es nicht um schneller und härter, sondern um tiefer und reduzierter geht.",
-      "Sets und Tracks, die sich Zeit nehmen, damit man sich fallen lassen kann.\nBei denen man Gedanken noch wahrnehmen und im gleichen Zug fließen lassen kann. Die Raum für Interpretation lassen.\nMusik, bei der ich mehr fühle, wenn ich meine Augen schließe.",
+      "Sets und Tracks, die sich Zeit nehmen, damit man sich fallen lassen kann.\nBei denen man Gedanken noch wahrnehmen und im gleichen Zug fließen lassen kann. Die Raum für Interpretation lassen.\nMusik, bei der ich mehr fühle, wenn ich meine Augen zumache.",
       "Gleichzeitig geht es weiterhin um Energielevels, die ich erreichen und weitergeben will. Nur eben auf eine andere, natürlichere Art.",
       "Diese Gefühlsmischung versuche ich mit allen meinen Releases, Sets und Veranstaltungen einzufangen.",
       "Mit IMPEDANZ hatte ich unter anderem auf 10 unserer eigenen Veranstaltungen die Ehre, Menschen meinen Sound näherzubringen, ihnen genau diese Gefühlsmischung zu vermitteln und sie vielleicht ein Stück weit nachhaltig positiv zu beeinflussen.",
