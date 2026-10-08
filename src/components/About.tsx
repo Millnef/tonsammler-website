@@ -47,24 +47,24 @@ const STATS = [
 const TEXT: Record<Topic, Record<Lang, string[]>> = {
   tonsammler: {
     de: [
-      "Aufgewachsen zwischen Augsburg und München, zieht sich elektronische Musik seit 10 Jahren durch mein Leben. Angefangen mit Techno zwischen 125 BPM und 130 BPM, tiefen Bässen und so minimalen Veränderungen, dass meine Mitschüler in der 6. Klasse dachten, ich höre 2 Stunden lang das Gleiche.",
-      "Danach wurde es schnell: Hardtechno, Schranz mit bis zu 180 BPM.",
-      "Irgendwann kam die Realisation, dass es nicht um schneller und härter, sondern um tiefer und reduzierter geht. Sets, die sich Zeit nehmen und teilweise erst nach der zweiten Stunde zeigen, wohin sie wollen. Raum für Interpretation, um sich fallen zu lassen, Gedanken noch wahrnehmen können und im gleichen Zug fließen lassen, meine Augen schließen zu können.",
+      "Aufgewachsen zwischen Augsburg und München, zieht sich elektronische Musik seit 10 Jahren durch mein Leben. Angefangen mit Techno zwischen 125 BPM und 130 BPM, viel Bass und so minimalen Veränderungen, dass meine Freunde in der 6. Klasse dachten, ich höre 2 Stunden lang das Gleiche.",
+      "Danach wurde es kurzzeitig schnell: Hardtechno und Schranz, bis zu 180 BPM.",
+      "Irgendwann kam der Punkt, an dem ich realisierte, dass es nicht um schneller und härter, sondern um tiefer und reduzierter geht.",
+      "Sets und Tracks, die sich Zeit nehmen, damit man sich fallen lassen kann.\nBei denen man Gedanken noch wahrnehmen und im gleichen Zug fließen lassen kann. Die Raum für Interpretation lassen.\nMusik, bei der ich mehr fühle, wenn ich meine Augen schließe.",
       "Gleichzeitig geht es weiterhin um Energielevels, die ich erreichen und weitergeben will. Nur eben auf eine andere, natürlichere Art.",
       "Diese Gefühlsmischung versuche ich mit allen meinen Releases, Sets und Veranstaltungen einzufangen.",
-      "Ich habe in meinem Leben schon viele Leute von der Musik überzeugt, auch die, die Techno für „zu monoton“ gehalten haben. Jeder von ihnen ist heute, wahrscheinlich auch wegen der Musik, ein anderer Mensch, im positivsten Sinne.",
-      "Mit IMPEDANZ hatte ich unter anderem auf zehn unserer eigenen Veranstaltungen die Ehre, Menschen meinen Sound näherzubringen, ihnen genau diese Gefühlsmischung zu vermitteln und sie vielleicht ein Stück weit nachhaltig positiv zu beeinflussen.",
+      "Mit IMPEDANZ hatte ich unter anderem auf 10 unserer eigenen Veranstaltungen die Ehre, Menschen meinen Sound näherzubringen, ihnen genau diese Gefühlsmischung zu vermitteln und sie vielleicht ein Stück weit nachhaltig positiv zu beeinflussen.",
       "Trotz meiner Erfahrung als DJ und Veranstalter stehe ich mit meinen 23 Jahren als Künstler erst am Anfang und freue mich unglaublich auf das, was noch kommt.",
     ],
     en: [
-      "Growing up between Augsburg and Munich, electronic music has run through my life for 10 years now. It started with techno between 125 and 130 BPM, deep basslines, and changes so minimal that my classmates in 6th grade thought I was listening to the same thing for two hours straight.",
-      "After that it got fast: hardtechno and Schranz at up to 180 BPM.",
-      "At some point I realized it's not about faster and harder, but about deeper and more reduced. Sets that take their time and sometimes only reveal where they're heading after the second hour. Room for interpretation, to let go, to still be aware of your thoughts while letting them flow at the same time, to be able to close my eyes.",
-      "At the same time, it's still about the energy levels I want to reach and pass on. Just in a different, more natural way.",
-      "I try to capture this mix of emotions in every one of my releases, sets, and events.",
-      "Throughout my life, I've won a lot of people over to this music, even those who thought techno was \"too monotonous.\" Every one of them is, probably partly because of the music, a different person today, in the most positive sense.",
-      "With IMPEDANZ, among other things, I've had the privilege of introducing people to my sound at ten of our own events, passing on this exact mix of emotions and maybe leaving a lasting, positive mark on some of them.",
-      "Despite my experience as a DJ and promoter, at 23 I'm still only at the beginning as an artist, and I'm incredibly excited for what's still to come.",
+      "I grew up between Augsburg and Munich, and electronic music has been part of my life for 10 years now. It started with techno between 125 and 130 BPM, a lot of bass, and changes so minimal that my friends in 6th grade thought I was listening to the same thing for two hours straight.",
+      "After that, things got fast for a while: hardtechno and Schranz, up to 180 BPM.",
+      "At some point I realized that it's not about faster and harder, but about deeper and more reduced.",
+      "Sets and tracks that take their time, so you can let yourself fall. Where you can still notice your thoughts while letting them flow at the same time. That leave room for interpretation. Music where I feel more when I close my eyes.",
+      "At the same time, it's still about energy levels that I want to reach and pass on, just in a different, more natural way.",
+      "I try to capture this mix of emotions in all my releases, sets, and events.",
+      "Among other things, with IMPEDANZ I've had the privilege, at 10 of our own events, of bringing people closer to my sound, conveying exactly this mix of emotions to them, and maybe even leaving a lasting positive impact on them.",
+      "Despite my experience as a DJ and event organizer, at 23 I'm only at the beginning as an artist, and I'm incredibly excited for what's still to come.",
     ],
   },
   events: {
@@ -84,7 +84,7 @@ const TEXT: Record<Topic, Record<Lang, string[]>> = {
 };
 
 // Paragraph index where the second column starts (from sm up)
-const COLUMN_SPLIT: Partial<Record<Topic, number>> = { tonsammler: 5 };
+const COLUMN_SPLIT: Partial<Record<Topic, number>> = { tonsammler: 4 };
 
 function Paragraphs({
   paragraphs,
