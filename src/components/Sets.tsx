@@ -130,50 +130,49 @@ export default function Sets() {
                 SoundCloud
               </span>
 
-              <div className="mt-4 w-full">
+              {/* Same 16:9 box as the YouTube player next to it */}
+              <div className="mt-4 aspect-video w-full overflow-hidden border border-white/10">
                 <iframe
-                  title="TONSAMMLER auf SoundCloud"
-                  width="100%"
-                  height="300"
-                  scrolling="no"
-                  frameBorder="no"
+                  title="LAUT IN LOVE || TONSAMMLER auf SoundCloud"
                   allow="autoplay; encrypted-media"
-                  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1800748860&color=%23ffebb5&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+                  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2415263193&color=%234c2c4c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+                  className="h-full w-full"
                 />
-                <div
-                  style={{
-                    fontSize: "10px",
-                    color: "#cccccc",
-                    lineBreak: "anywhere",
-                    wordBreak: "normal",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                    fontFamily:
-                      "Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif",
-                    fontWeight: 100,
-                  }}
+              </div>
+              <div
+                className="mt-2"
+                style={{
+                  fontSize: "10px",
+                  color: "#cccccc",
+                  lineBreak: "anywhere",
+                  wordBreak: "normal",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  fontFamily:
+                    "Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif",
+                  fontWeight: 100,
+                }}
+              >
+                <a
+                  href="https://soundcloud.com/tonsammlermusic"
+                  title="tonsammler"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#cccccc", textDecoration: "none" }}
                 >
-                  <a
-                    href="https://soundcloud.com/tonsammlermusic"
-                    title="tonsammler"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "#cccccc", textDecoration: "none" }}
-                  >
-                    tonsammler
-                  </a>{" "}
-                  ·{" "}
-                  <a
-                    href="https://soundcloud.com/tonsammlermusic/carla"
-                    title="CARLA"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "#cccccc", textDecoration: "none" }}
-                  >
-                    CARLA
-                  </a>
-                </div>
+                  tonsammler
+                </a>{" "}
+                ·{" "}
+                <a
+                  href="https://soundcloud.com/tonsammlermusic/laut-in-love-tonsammler"
+                  title="LAUT IN LOVE || TONSAMMLER"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#cccccc", textDecoration: "none" }}
+                >
+                  LAUT IN LOVE || TONSAMMLER
+                </a>
               </div>
             </div>
 
