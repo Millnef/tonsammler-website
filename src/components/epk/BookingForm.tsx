@@ -74,9 +74,10 @@ export default function BookingForm({ t }: { t: EpkText["contact"] }) {
         </button>
         <span className="text-xs font-light text-foreground/50">{t.formNote}</span>
       </div>
-      {/* PDF: the form cannot be sent from there, so it links to the online form */}
+      {/* PDF: the form cannot be sent from there, so it links to the online form. The
+          query makes Chrome keep it a web link instead of a jump within the PDF. */}
       <a
-        href="#anfrage"
+        href="?online#anfrage"
         className="hidden text-xs font-medium uppercase tracking-[0.15em] text-accent sm:col-span-2 print:block"
       >
         {t.formOnline} ↗
