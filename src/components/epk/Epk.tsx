@@ -189,8 +189,8 @@ export default function Epk({ lang }: { lang: EpkLang }) {
         </section>
 
         <div className={CONTAINER}>
-          {/* 2 – Listen: one set and the EP */}
-          <Section id="hoeren" index="01" title={t.listen.title}>
+          {/* 2 – Music: one set and the EP */}
+          <Section id="musik" index="01" title={t.listen.title}>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-10">
               <div>
                 <div className="relative aspect-video w-full overflow-hidden border border-white/10">
@@ -300,10 +300,11 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {t.references.venues.map((venue) => (
                     <li
-                      key={venue}
+                      key={venue.name}
                       className="rounded-full border border-white/15 px-4 py-2 text-sm font-light text-foreground/90"
                     >
-                      {venue}
+                      {venue.name}
+                      <span className="text-foreground/50"> · {venue.city[lang]}</span>
                     </li>
                   ))}
                 </ul>
@@ -341,6 +342,12 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                 <p className="mt-4 text-base font-light leading-relaxed text-foreground/80 sm:text-lg">
                   {t.bio.short}
                 </p>
+                <Link
+                  href="/#about"
+                  className="mt-4 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-accent hover:text-foreground"
+                >
+                  {t.bio.more} ↗
+                </Link>
               </div>
               <div>
                 <CardHeading
@@ -361,13 +368,13 @@ export default function Epk({ lang }: { lang: EpkLang }) {
               {PHOTOS.map((photo) => (
                 <li key={photo.src}>
                   <a href={photo.src} download className="group block">
-                    <span className="relative block aspect-[2/3] overflow-hidden border border-white/10 print:aspect-[4/5]">
+                    <span className="relative block aspect-[2/3] overflow-hidden border border-white/10 print:aspect-square">
                       <Image
                         src={photo.src}
                         alt="Pressefoto TONSAMMLER"
                         fill
                         sizes="(min-width: 1024px) 22rem, 33vw"
-                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] print:object-[center_20%]"
                       />
                     </span>
                     <span className="mt-2 flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
@@ -402,7 +409,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
 
           {/* 6 – Contact and request */}
           <Section id="anfrage" index="05" title={t.contact.title}>
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:gap-16 print:block">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:gap-16">
               <div>
                 <CardHeading
                   label={t.contact.email}
@@ -428,7 +435,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                 </div>
               </div>
 
-              <div className="print:hidden">
+              <div>
                 <h3 className={LABEL}>{t.contact.formLabel}</h3>
                 <div className="mt-5">
                   <BookingForm t={t.contact} />

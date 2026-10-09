@@ -52,7 +52,16 @@ const TRACKS = [
   { title: "thoughts2", length: "7:42" },
 ];
 
-const VENUES = ["Laut In Love Festival", "Katchin im Feierwerk", "YOU LOFT München-Allach", "CityClub"];
+type Venue = { name: string; city: Record<EpkLang, string> };
+const MUNICH = { de: "München", en: "Munich" };
+
+const VENUES: Venue[] = [
+  { name: "CityClub", city: { de: "Augsburg", en: "Augsburg" } },
+  { name: "Laut In Love", city: { de: "Berlin", en: "Berlin" } },
+  { name: "Katchin im Feierwerk", city: MUNICH },
+  { name: "YOU LOFT", city: MUNICH },
+  { name: "Allach", city: MUNICH },
+];
 
 export const EPK = {
   de: {
@@ -62,7 +71,7 @@ export const EPK = {
         "Techno & Groove aus München: repetitiv, treibend. Set und EP zum Reinhören, Referenzen, Bio, Pressefotos und Booking-Anfrage.",
     },
     nav: [
-      ["hoeren", "Hören"],
+      ["musik", "Musik"],
       ["referenzen", "Referenzen"],
       ["bio", "Bio"],
       ["downloads", "Downloads"],
@@ -76,15 +85,15 @@ export const EPK = {
     hero: {
       kicker: "Booking · Electronic Press Kit",
       role: "Milan-Joel Pawlick · DJ & Producer · München",
-      sound: "Treibender, repetitiver Techno mit Groove – direkt, organisch und voller Bewegung.",
+      sound: "Treibender, repetitiver Groove-Techno.",
       facts: [
         ["Genre", "Techno, Groove"],
         ["Sound", "Repetitiv, treibend"],
-        ["Set", "90 Minuten"],
+        ["Set", "min. 90 min"],
       ],
     },
     listen: {
-      title: "Hören",
+      title: "Musik",
       set: { title: "Laut In Love Festival", meta: "Bunker, 03:00–04:30 · 90 min · SoundCloud" },
       setFallback: "Set anhören auf SoundCloud",
       releaseKicker: "Debüt-EP · 05.10.2026",
@@ -111,10 +120,11 @@ export const EPK = {
       title: "Bio",
       shortLabel: "Kurzbio",
       short:
-        "Aufgewachsen zwischen Augsburg und München, begleitet mich elektronische Musik seit zehn Jahren. Nach einer kurzen, schnellen Phase mit Hardtechno und Schranz bis 180 BPM kam der Punkt, an dem ich realisierte: Es geht nicht um schneller und härter, sondern um tiefer und reduzierter. Heute spiele ich Sets, die sich Zeit nehmen, Raum für Interpretation lassen und trotzdem Energie weitergeben – nur auf eine natürlichere Art. Mit IMPEDANZ habe ich zehn eigene Events organisiert, und mit 23 stehe ich als Künstler erst am Anfang.",
+        "Aufgewachsen zwischen Augsburg und München, begleitet mich elektronische Musik seit zehn Jahren – von Hardtechno und Schranz bis zu der Erkenntnis, dass es nicht um schneller und härter geht, sondern um tiefer und reduzierter. Heute spiele ich Sets, die sich Zeit nehmen und Energie auf eine natürlichere Art weitergeben.",
+      more: "Mehr über mich auf der Website",
       pressLabel: "Pressetext",
       press:
-        "Ich erschaffe Sets und Tracks, die auf der Tanzfläche eine intensive Atmosphäre entfalten. Ob dunkel und kraftvoll oder verspielt und trippy – mein Sound bleibt direkt, organisch und voller Bewegung.",
+        "TONSAMMLER bringt Techno mit tiefen, treibenden, repetitiven Loops, gebaut für die Tanzfläche, um Leute zu bewegen, physisch wie emotional.",
     },
     downloads: {
       title: "Downloads",
@@ -142,6 +152,7 @@ export const EPK = {
       },
       submit: "Anfrage senden",
       formNote: "Öffnet dein E-Mail-Programm mit der fertigen Anfrage.",
+      formOnline: "Anfrage online senden",
       mailSubject: "Booking-Anfrage TONSAMMLER",
       greeting: "Hallo Milan,",
     },
@@ -154,7 +165,7 @@ export const EPK = {
         "Techno & groove from Munich: repetitive, driving. A set and an EP to listen to, references, bio, press photos and booking request.",
     },
     nav: [
-      ["hoeren", "Listen"],
+      ["musik", "Music"],
       ["referenzen", "References"],
       ["bio", "Bio"],
       ["downloads", "Downloads"],
@@ -168,15 +179,15 @@ export const EPK = {
     hero: {
       kicker: "Booking · Electronic press kit",
       role: "Milan-Joel Pawlick · DJ & producer · Munich",
-      sound: "Driving, repetitive techno with groove – direct, organic and full of movement.",
+      sound: "Driving, repetitive groove techno.",
       facts: [
         ["Genre", "Techno, groove"],
         ["Sound", "Repetitive, driving"],
-        ["Set", "90 minutes"],
+        ["Set", "min. 90 min"],
       ],
     },
     listen: {
-      title: "Listen",
+      title: "Music",
       set: { title: "Laut In Love Festival", meta: "Bunker, 3–4:30 am · 90 min · SoundCloud" },
       setFallback: "Listen to the set on SoundCloud",
       releaseKicker: "Debut EP · 05.10.2026",
@@ -203,10 +214,11 @@ export const EPK = {
       title: "Bio",
       shortLabel: "Short bio",
       short:
-        "I grew up between Augsburg and Munich, and electronic music has been part of my life for ten years. After a short, fast phase of hardtechno and Schranz at up to 180 BPM, I realised it's not about faster and harder, but about deeper and more reduced. Today I play sets that take their time, leave room for interpretation and still pass on energy – just in a more natural way. With IMPEDANZ I've organised ten events of my own, and at 23 I'm only at the beginning as an artist.",
+        "I grew up between Augsburg and Munich, and electronic music has been part of my life for ten years – from hardtechno and Schranz to the realisation that it's not about faster and harder, but about deeper and more reduced. Today I play sets that take their time and pass on energy in a more natural way.",
+      more: "More about me on the website",
       pressLabel: "Press text",
       press:
-        "I create sets and tracks that unfold an intense atmosphere on the dancefloor. Whether dark and powerful or playful and trippy – my sound remains direct, organic, and full of movement.",
+        "TONSAMMLER brings techno with deep, driving, repetitive loops, built for the dance floor to move people, both physically and emotionally.",
     },
     downloads: {
       title: "Downloads",
@@ -234,6 +246,7 @@ export const EPK = {
       },
       submit: "Send request",
       formNote: "Opens your email app with the request ready to send.",
+      formOnline: "Send the request online",
       mailSubject: "Booking request TONSAMMLER",
       greeting: "Hi Milan,",
     },

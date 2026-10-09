@@ -40,7 +40,7 @@ export default function BookingForm({ t }: { t: EpkText["contact"] }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 print:gap-y-3">
       <label className="block">
         <span className={LABEL}>{t.fields.name} *</span>
         <input name="name" required autoComplete="name" className={FIELD} />
@@ -61,11 +61,11 @@ export default function BookingForm({ t }: { t: EpkText["contact"] }) {
         <span className={LABEL}>{t.fields.fee}</span>
         <input name="fee" className={FIELD} />
       </label>
-      <label className="block sm:col-span-2">
+      <label className="block sm:col-span-2 print:hidden">
         <span className={LABEL}>{t.fields.message}</span>
         <textarea name="message" rows={3} className={`${FIELD} resize-none`} />
       </label>
-      <div className="flex flex-wrap items-center gap-4 sm:col-span-2">
+      <div className="flex flex-wrap items-center gap-4 sm:col-span-2 print:hidden">
         <button
           type="submit"
           className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-xs font-medium uppercase tracking-[0.15em] text-black transition-colors duration-200 ease-out hover:bg-foreground"
@@ -74,6 +74,13 @@ export default function BookingForm({ t }: { t: EpkText["contact"] }) {
         </button>
         <span className="text-xs font-light text-foreground/50">{t.formNote}</span>
       </div>
+      {/* PDF: the form cannot be sent from there, so it links to the online form */}
+      <a
+        href="#anfrage"
+        className="hidden text-xs font-medium uppercase tracking-[0.15em] text-accent sm:col-span-2 print:block"
+      >
+        {t.formOnline} ↗
+      </a>
     </form>
   );
 }
