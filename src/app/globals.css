@@ -32,3 +32,18 @@ body {
   background: var(--accent);
   color: var(--background);
 }
+
+/* Print / PDF (EPK): keep the black design edge to edge */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: var(--background);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
