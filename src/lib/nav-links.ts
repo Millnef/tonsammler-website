@@ -5,4 +5,5 @@ export const LINKS = [
   { href: "#sets", label: "Sets" },
   { href: "#gallery", label: "Galery" },
   { href: "#contact", label: "Contact" },
+  { href: "/booking", label: "EPK" },
 ];

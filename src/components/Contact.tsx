@@ -236,6 +236,16 @@ export default function Contact() {
             })}
           </div>
         </div>
+
+        <div>
+          <h3 className={LABEL_CLASSES}>EPK</h3>
+          <a
+            href="/booking"
+            className="mt-3 inline-flex origin-left items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-xs font-medium uppercase tracking-[0.15em] text-foreground transition-all duration-200 ease-out hover:scale-105 hover:border-accent hover:text-accent"
+          >
+            Electronic Press Kit & Booking ↗
+          </a>
+        </div>
       </div>
     </section>
   );

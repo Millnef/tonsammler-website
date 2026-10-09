@@ -68,8 +68,8 @@ export default function Nav() {
         <div className="relative z-50 flex items-center justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
           <Logo />
 
-          <div className="relative hidden h-6 sm:block">
-            <div aria-hidden="true" className="invisible flex items-center gap-8">
+          <div className="relative hidden h-6 md:block">
+            <div aria-hidden="true" className="invisible flex items-center gap-6 lg:gap-8">
               {LINKS.map((link) => (
                 <span
                   key={link.href}
@@ -88,7 +88,7 @@ export default function Nav() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.25, ease: EASE_OUT }}
-                  className="absolute inset-0 flex items-center gap-8"
+                  className="absolute inset-0 flex items-center gap-6 lg:gap-8"
                 >
                   {LINKS.map((link) => (
                     <a
@@ -122,7 +122,7 @@ export default function Nav() {
           <HamburgerIcon
             open={open}
             onClick={() => setOpen((v) => !v)}
-            className="sm:hidden"
+            className="md:hidden"
           />
         </div>
 
