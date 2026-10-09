@@ -1,8 +1,9 @@
-// Content of the Electronic Press Kit (/epk German, /epk/en English)
+// Content of the booking page / press kit (/booking German, /booking/en English).
+// Its downloads (photos, logos, PDFs) live under /epk/*.
 
 export type EpkLang = "de" | "en";
 
-export const EPK_PATHS: Record<EpkLang, string> = { de: "/epk", en: "/epk/en" };
+export const EPK_PATHS: Record<EpkLang, string> = { de: "/booking", en: "/booking/en" };
 
 export const EMAIL = "tonsammlermusic@gmail.com";
 export const PHONE = "+49 151 10468852";
@@ -18,7 +19,6 @@ export const LINKS = {
   soundcloudLilo: "https://soundcloud.com/tonsammlermusic/laut-in-love-tonsammler",
   youtube: "https://www.youtube.com/@TONSAMMLER",
   youtubeThoughts2: "https://www.youtube.com/watch?v=bCHRygiNuaI",
-  youtubeSet: "https://www.youtube.com/watch?v=qBRBy3EUuRc",
   instagram: "https://www.instagram.com/ton.sammler/",
   impedanz: "https://www.instagram.com/impedanz.kollektiv/",
 };
@@ -28,7 +28,6 @@ export const EMBEDS = {
     "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&theme=0",
   soundcloudLilo:
     "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2415263193&color=%234c2c4c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
-  youtubeSet: "https://www.youtube.com/embed/qBRBy3EUuRc?start=900",
 };
 
 export const PDF: Record<EpkLang, string> = {
@@ -36,19 +35,16 @@ export const PDF: Record<EpkLang, string> = {
   en: "/epk/TONSAMMLER-EPK-EN.pdf",
 };
 export const PRESS_ZIP = "/epk/TONSAMMLER-Pressefotos.zip";
+export const LOGOS = {
+  white: "/epk/TONSAMMLER-Logo-weiss.png",
+  black: "/epk/TONSAMMLER-Logo-schwarz.png",
+};
 
-export const LOGOS = [
-  { src: "/epk/TONSAMMLER-Logo-weiss.png", on: "dark" },
-  { src: "/epk/TONSAMMLER-Logo-schwarz.png", on: "light" },
-] as const;
-
+// Full-resolution originals; the colour portrait sits in the middle
 export const PHOTOS = [
-  { src: "/images/hero-portrait.jpg", file: "TONSAMMLER-Portrait-sw.jpg", size: "1284 × 2000", position: "object-[center_22%]" },
-  { src: "/images/gallery/gallery-portrait.jpg", file: "TONSAMMLER-Portrait-Farbe.jpg", size: "1334 × 2000", position: "object-[center_30%]" },
-  { src: "/images/gallery/gallery-event-scopez.jpg", file: "TONSAMMLER-Live-Scopez-Events.jpg", size: "1333 × 2000", position: "object-top" },
-  { src: "/images/gallery/gallery-event-3.jpg", file: "TONSAMMLER-Live-OH-BOI.jpg", size: "1204 × 1600", position: "object-center" },
-  { src: "/images/gallery/gallery-event-1.jpg", file: "TONSAMMLER-Live-YOU-LOFT.jpg", size: "1069 × 1600", position: "object-top" },
-  { src: "/images/gallery/gallery-event-karo10.jpg", file: "TONSAMMLER-Live-KARO10.jpg", size: "2000 × 1333", position: "object-center" },
+  { src: "/epk/photos/TONSAMMLER-Portrait-sw-1.jpg", size: "3287 × 5120" },
+  { src: "/epk/photos/TONSAMMLER-Portrait-Farbe.jpg", size: "3415 × 5120" },
+  { src: "/epk/photos/TONSAMMLER-Portrait-sw-2.jpg", size: "3415 × 5120" },
 ] as const;
 
 const TRACKS = [
@@ -56,229 +52,192 @@ const TRACKS = [
   { title: "thoughts2", length: "7:42" },
 ];
 
-// `when` is a date or, without one, a short tag
-type Gig = { when: string; venue: string; place?: Record<EpkLang, string>; note: Record<EpkLang, string> };
-
-const GIGS: Gig[] = [
-  { when: "Festival", venue: "Laut In Love Festival", note: { de: "Bei Berlin · Bunker, 03:00–04:30", en: "Near Berlin · bunker, 3–4:30 am" } },
-  { when: "02.05.2026", venue: "Scopez Events", note: { de: "Private Summer Outdoor", en: "Private summer outdoor" } },
-  { when: "20.12.2025", venue: "KARO10", note: { de: "IMPEDANZ Kollektiv", en: "IMPEDANZ collective" } },
-  { when: "05.12.2025", venue: "OH BOI", note: { de: "8 Stunden All Night Long", en: "8-hour all night long" } },
-  { when: "19.04.2024", venue: "YOU LOFT", place: { de: "München", en: "Munich" }, note: { de: "Sinister Basslines Kollektiv", en: "Sinister Basslines collective" } },
-];
-
-const MORE_VENUES = ["Gruam", "Katchin im Feierwerk"];
+const VENUES = ["Laut In Love Festival", "Katchin im Feierwerk", "YOU LOFT München-Allach", "CityClub"];
 
 export const EPK = {
   de: {
     meta: {
-      title: "TONSAMMLER – Electronic Press Kit",
+      title: "TONSAMMLER – Booking",
       description:
-        "DJ & Producer aus München: Minimal, Deep House, Techno. Bio, Musik, Referenzen, Pressefotos, Technical Rider und Booking.",
+        "Techno & Groove aus München: repetitiv, treibend. Set und EP zum Reinhören, Referenzen, Bio, Pressefotos und Booking-Anfrage.",
     },
     nav: [
-      ["bio", "Bio"],
-      ["musik", "Musik"],
+      ["hoeren", "Hören"],
       ["referenzen", "Referenzen"],
-      ["presse", "Presse"],
-      ["rider", "Rider"],
-      ["kontakt", "Kontakt"],
+      ["bio", "Bio"],
+      ["downloads", "Downloads"],
+      ["anfrage", "Anfrage"],
     ],
     switchLabel: "EN",
     switchAria: "English version",
     booking: "Booking anfragen",
-    pdf: "EPK als PDF",
     copy: "Kopieren",
     copied: "Kopiert!",
     hero: {
-      kicker: "Electronic Press Kit",
+      kicker: "Booking · Electronic Press Kit",
       role: "Milan-Joel Pawlick · DJ & Producer · München",
-      tagline: "„collecting feelings through sound“",
-      genres: ["Minimal", "Deep House", "Techno"],
-    },
-    facts: [
-      { value: "60+", label: "Gigs" },
-      { value: "10", label: "Eigene Events mit IMPEDANZ" },
-      { value: "8 h", label: "Längstes Set, All Night Long" },
-      { value: "3", label: "Jahre aktiv" },
-    ],
-    bio: {
-      title: "Bio",
-      shortLabel: "Kurzbio",
-      short:
-        "TONSAMMLER bringt in den Genres von Minimal bis Techno tiefe, treibende, repetitive Loops mit Energie. Sein Sound ist für die Tanzfläche gebaut, um Leute zu bewegen, physisch wie emotional.",
-      longLabel: "Pressetext",
-      long: [
-        "Hinter TONSAMMLER steht Milan-Joel Pawlick, aufgewachsen zwischen Augsburg und München. Elektronische Musik begleitet ihn seit zehn Jahren: angefangen mit Techno um 125 BPM, über eine kurze, schnelle Phase mit Hardtechno und Schranz, bis zu der Erkenntnis, dass es nicht um schneller und härter geht, sondern um tiefer und reduzierter.",
-        "Heute steht der Name für Minimal, Deep House und Techno, die sich Zeit nehmen: tiefe, treibende, repetitive Loops, die Raum für Interpretation lassen und trotzdem Energie aufbauen. „Collecting feelings through sound“ ist dabei mehr Haltung als Slogan. Seine Stärke sind lange Sets, bis hin zu acht Stunden All Night Long.",
-        "Über 60 Gigs, unter anderem in der Gruam, im YOU LOFT und bei Katchin im Feierwerk in München, dazu Festival-Auftritte wie auf dem Laut In Love Festival bei Berlin. Als Mitgründer des IMPEDANZ Kollektivs hat er zehn eigene Events in Augsburg verantwortet, von Konzept und Booking bis Design und Promotion. Im Oktober 2026 erschien seine Debüt-EP „I“.",
-      ],
-      details: [
-        ["Genre", "Minimal, Deep House, Techno"],
-        ["Sound", "Tief, treibend, repetitiv"],
-        ["Sets", "90 Minuten bis All Night Long"],
-        ["Base", "München"],
+      sound: "Treibender, repetitiver Techno mit Groove – direkt, organisch und voller Bewegung.",
+      facts: [
+        ["Genre", "Techno, Groove"],
+        ["Sound", "Repetitiv, treibend"],
+        ["Set", "90 Minuten"],
       ],
     },
-    music: {
-      title: "Musik",
+    listen: {
+      title: "Hören",
+      set: { title: "Laut In Love Festival", meta: "Bunker, 03:00–04:30 · 90 min · SoundCloud" },
+      setFallback: "Set anhören auf SoundCloud",
       releaseKicker: "Debüt-EP · 05.10.2026",
       releaseTitle: "I · TONSAMMLER",
       tracks: TRACKS,
       buy: "Kaufen",
-      setsLabel: "Sets",
-      sets: [
-        { title: "Laut In Love Festival", meta: "Bunker · 03:00–04:30 · 90 min", platform: "SoundCloud" },
-        { title: "Minimal / Deep House Set", meta: "Scopez Events · Outdoor", platform: "YouTube" },
-      ],
-      allSets: "Alle Sets auf SoundCloud",
     },
     references: {
       title: "Referenzen",
-      gigs: GIGS,
-      moreLabel: "Außerdem in München",
-      more: MORE_VENUES,
+      facts: [
+        { value: "60+", label: "Gigs" },
+        { value: "10", label: "Eigene Events" },
+        { value: "Festivals", label: "u. a. Laut In Love" },
+      ],
+      venuesLabel: "Gespielt u. a.",
+      venues: VENUES,
       impedanz: {
         kicker: "Mitgründer",
         name: "IMPEDANZ Kollektiv",
         text: "Drei Mitglieder, zehn eigene Events in Augsburg. Verantwortung für Konzept, Organisation, Booking, Design, Promotion und Social Media. Jeder Abend folgt einer klaren Linie, getragen von Acts, die genau dafür ausgewählt werden.",
       },
     },
-    press: {
-      title: "Presse",
-      photosLabel: "Pressefotos",
-      download: "Download",
-      zip: "Alle Fotos & Logos (ZIP)",
-      logoLabel: "Logo",
-      logoNames: { dark: "Weiß, transparent (PNG)", light: "Schwarz, transparent (PNG)" },
-      note: "Frei zur Verwendung für die Promotion von TONSAMMLER-Auftritten.",
+    bio: {
+      title: "Bio",
+      shortLabel: "Kurzbio",
+      short:
+        "Aufgewachsen zwischen Augsburg und München, begleitet mich elektronische Musik seit zehn Jahren. Nach einer kurzen, schnellen Phase mit Hardtechno und Schranz bis 180 BPM kam der Punkt, an dem ich realisierte: Es geht nicht um schneller und härter, sondern um tiefer und reduzierter. Heute spiele ich Sets, die sich Zeit nehmen, Raum für Interpretation lassen und trotzdem Energie weitergeben – nur auf eine natürlichere Art. Mit IMPEDANZ habe ich zehn eigene Events organisiert, und mit 23 stehe ich als Künstler erst am Anfang.",
+      pressLabel: "Pressetext",
+      press:
+        "Ich erschaffe Sets und Tracks, die auf der Tanzfläche eine intensive Atmosphäre entfalten. Ob dunkel und kraftvoll oder verspielt und trippy – mein Sound bleibt direkt, organisch und voller Bewegung.",
     },
-    rider: {
-      title: "Technical Rider",
-      items: [
-        ["Player", "2× Pioneer CDJ-3000 (alternativ CDJ-2000NXS2)"],
-        ["Mixer", "Allen & Heath Xone:96 oder Pioneer DJM-900NXS2 / DJM-V10"],
-        ["Medium", "USB-Stick, laptopfrei"],
-        ["Monitoring", "2 Booth-Monitore, separat regelbar"],
-        ["Set-Länge", "90 Minuten bis All Night Long"],
-      ],
+    downloads: {
+      title: "Downloads",
+      photosLabel: "Pressefotos in voller Auflösung",
+      download: "Download",
+      zip: "Alle Fotos & Logo (ZIP)",
+      logoWhite: "Logo weiß (PNG)",
+      logoBlack: "Logo schwarz (PNG)",
+      pdf: "EPK als PDF",
+      techLabel: "Technik",
+      tech: "Ich spiele auf jedem gängigen Setup – am wichtigsten ist mir gutes Booth-Monitoring.",
     },
     contact: {
-      title: "Kontakt",
-      lead: "Booking, Anfragen und Kollaborationen",
+      title: "Anfrage",
       email: "E-Mail",
       phone: "Mobil",
-      social: "Social Media & Musik",
-      website: "Website",
-      mailSubject: "Booking TONSAMMLER",
-      mailBody: "Hallo Milan,\n\nDatum:\nLocation / Reihe:\nSlot & Spielzeit:\nGage:\n\n",
+      formLabel: "Kurze Anfrage",
+      fields: {
+        name: "Name",
+        event: "Veranstaltung / Location",
+        date: "Datum",
+        slot: "Slot & Spielzeit",
+        fee: "Gage / Budget",
+        message: "Nachricht",
+      },
+      submit: "Anfrage senden",
+      formNote: "Öffnet dein E-Mail-Programm mit der fertigen Anfrage.",
+      mailSubject: "Booking-Anfrage TONSAMMLER",
+      greeting: "Hallo Milan,",
     },
-    footer: "Electronic Press Kit",
+    footer: "Booking & Electronic Press Kit",
   },
   en: {
     meta: {
-      title: "TONSAMMLER – Electronic Press Kit",
+      title: "TONSAMMLER – Booking",
       description:
-        "DJ & producer from Munich: minimal, deep house, techno. Bio, music, references, press photos, technical rider and booking.",
+        "Techno & groove from Munich: repetitive, driving. A set and an EP to listen to, references, bio, press photos and booking request.",
     },
     nav: [
-      ["bio", "Bio"],
-      ["musik", "Music"],
+      ["hoeren", "Listen"],
       ["referenzen", "References"],
-      ["presse", "Press"],
-      ["rider", "Rider"],
-      ["kontakt", "Contact"],
+      ["bio", "Bio"],
+      ["downloads", "Downloads"],
+      ["anfrage", "Request"],
     ],
     switchLabel: "DE",
     switchAria: "Deutsche Version",
     booking: "Booking request",
-    pdf: "EPK as PDF",
     copy: "Copy",
     copied: "Copied!",
     hero: {
-      kicker: "Electronic Press Kit",
+      kicker: "Booking · Electronic press kit",
       role: "Milan-Joel Pawlick · DJ & producer · Munich",
-      tagline: "“collecting feelings through sound”",
-      genres: ["Minimal", "Deep House", "Techno"],
-    },
-    facts: [
-      { value: "60+", label: "Gigs" },
-      { value: "10", label: "Own events with IMPEDANZ" },
-      { value: "8 h", label: "Longest set, all night long" },
-      { value: "3", label: "Years active" },
-    ],
-    bio: {
-      title: "Bio",
-      shortLabel: "Short bio",
-      short:
-        "TONSAMMLER brings deep, driving, repetitive loops with energy to genres ranging from minimal to techno. His sound is made for the dance floor, built to move people, both physically and emotionally.",
-      longLabel: "Press text",
-      long: [
-        "TONSAMMLER is Milan-Joel Pawlick, who grew up between Augsburg and Munich. Electronic music has been part of his life for ten years: from techno around 125 BPM, through a short, fast phase of hardtechno and Schranz, to the realisation that it's not about faster and harder, but about deeper and more reduced.",
-        "Today the name stands for minimal, deep house and techno that take their time: deep, driving, repetitive loops that leave room for interpretation while still building energy. “Collecting feelings through sound” is more of an attitude than a slogan. Long sets are his strength, up to eight hours all night long.",
-        "More than 60 gigs, among them Gruam, YOU LOFT and Katchin at Feierwerk in Munich, plus festival slots such as Laut In Love Festival near Berlin. As co-founder of the IMPEDANZ collective he has run ten events of his own in Augsburg, from concept and booking to design and promotion. His debut EP “I” came out in October 2026.",
-      ],
-      details: [
-        ["Genre", "Minimal, deep house, techno"],
-        ["Sound", "Deep, driving, repetitive"],
-        ["Sets", "90 minutes to all night long"],
-        ["Base", "Munich, Germany"],
+      sound: "Driving, repetitive techno with groove – direct, organic and full of movement.",
+      facts: [
+        ["Genre", "Techno, groove"],
+        ["Sound", "Repetitive, driving"],
+        ["Set", "90 minutes"],
       ],
     },
-    music: {
-      title: "Music",
+    listen: {
+      title: "Listen",
+      set: { title: "Laut In Love Festival", meta: "Bunker, 3–4:30 am · 90 min · SoundCloud" },
+      setFallback: "Listen to the set on SoundCloud",
       releaseKicker: "Debut EP · 05.10.2026",
       releaseTitle: "I · TONSAMMLER",
       tracks: TRACKS,
       buy: "Buy",
-      setsLabel: "Sets",
-      sets: [
-        { title: "Laut In Love Festival", meta: "Bunker · 3–4:30 am · 90 min", platform: "SoundCloud" },
-        { title: "Minimal / Deep House Set", meta: "Scopez Events · outdoor", platform: "YouTube" },
-      ],
-      allSets: "All sets on SoundCloud",
     },
     references: {
       title: "References",
-      gigs: GIGS,
-      moreLabel: "Also in Munich",
-      more: MORE_VENUES,
+      facts: [
+        { value: "60+", label: "Gigs" },
+        { value: "10", label: "Own events" },
+        { value: "Festivals", label: "incl. Laut In Love" },
+      ],
+      venuesLabel: "Played at",
+      venues: VENUES,
       impedanz: {
         kicker: "Co-founder",
         name: "IMPEDANZ collective",
         text: "Three members, ten events of their own in Augsburg. Responsible for concept, organisation, booking, design, promotion and social media. Every night follows a clear line, carried by acts chosen for exactly that.",
       },
     },
-    press: {
-      title: "Press",
-      photosLabel: "Press photos",
-      download: "Download",
-      zip: "All photos & logos (ZIP)",
-      logoLabel: "Logo",
-      logoNames: { dark: "White, transparent (PNG)", light: "Black, transparent (PNG)" },
-      note: "Free to use for promoting TONSAMMLER performances.",
+    bio: {
+      title: "Bio",
+      shortLabel: "Short bio",
+      short:
+        "I grew up between Augsburg and Munich, and electronic music has been part of my life for ten years. After a short, fast phase of hardtechno and Schranz at up to 180 BPM, I realised it's not about faster and harder, but about deeper and more reduced. Today I play sets that take their time, leave room for interpretation and still pass on energy – just in a more natural way. With IMPEDANZ I've organised ten events of my own, and at 23 I'm only at the beginning as an artist.",
+      pressLabel: "Press text",
+      press:
+        "I create sets and tracks that unfold an intense atmosphere on the dancefloor. Whether dark and powerful or playful and trippy – my sound remains direct, organic, and full of movement.",
     },
-    rider: {
-      title: "Technical rider",
-      items: [
-        ["Players", "2× Pioneer CDJ-3000 (alternatively CDJ-2000NXS2)"],
-        ["Mixer", "Allen & Heath Xone:96 or Pioneer DJM-900NXS2 / DJM-V10"],
-        ["Media", "USB stick, no laptop"],
-        ["Monitoring", "2 booth monitors, separately adjustable"],
-        ["Set length", "90 minutes to all night long"],
-      ],
+    downloads: {
+      title: "Downloads",
+      photosLabel: "Press photos in full resolution",
+      download: "Download",
+      zip: "All photos & logo (ZIP)",
+      logoWhite: "Logo white (PNG)",
+      logoBlack: "Logo black (PNG)",
+      pdf: "EPK as PDF",
+      techLabel: "Tech",
+      tech: "I play on any standard setup – good booth monitoring matters most to me.",
     },
     contact: {
-      title: "Contact",
-      lead: "Booking, enquiries and collaborations",
+      title: "Request",
       email: "Email",
       phone: "Phone",
-      social: "Social media & music",
-      website: "Website",
-      mailSubject: "Booking TONSAMMLER",
-      mailBody: "Hi Milan,\n\nDate:\nVenue / series:\nSlot & set length:\nFee:\n\n",
+      formLabel: "Quick request",
+      fields: {
+        name: "Name",
+        event: "Event / venue",
+        date: "Date",
+        slot: "Slot & set length",
+        fee: "Fee / budget",
+        message: "Message",
+      },
+      submit: "Send request",
+      formNote: "Opens your email app with the request ready to send.",
+      mailSubject: "Booking request TONSAMMLER",
+      greeting: "Hi Milan,",
     },
-    footer: "Electronic press kit",
+    footer: "Booking & electronic press kit",
   },
 } satisfies Record<EpkLang, unknown>;
 

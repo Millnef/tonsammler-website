@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import BookingForm from "@/components/epk/BookingForm";
 import CopyButton from "@/components/epk/CopyButton";
 import {
   BandcampIcon,
@@ -43,24 +44,24 @@ function Section({
   id: string;
   index: string;
   title: string;
-  /** PDF: start this section on a new page */
+  /** PDF: start this section on the second page */
   printBreak?: boolean;
   children: ReactNode;
 }) {
   return (
     <section
       id={id}
-      className={`scroll-mt-20 border-t border-white/10 py-16 sm:py-24 print:py-12 ${
-        printBreak ? "print:break-before-page print:border-t-0" : ""
+      className={`scroll-mt-20 border-t border-white/10 py-12 sm:py-16 print:py-8 ${
+        printBreak ? "print:break-before-page print:border-t-0 print:pt-12" : ""
       }`}
     >
       <div className="flex items-baseline gap-4">
         <span className="text-xs font-medium tracking-[0.2em] text-accent">{index}</span>
-        <h2 className="text-[clamp(2rem,5vw,3.5rem)] font-extralight leading-none tracking-tight">
+        <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-extralight leading-none tracking-tight">
           {title}
         </h2>
       </div>
-      <div className="mt-10 sm:mt-12">{children}</div>
+      <div className="mt-8 sm:mt-10">{children}</div>
     </section>
   );
 }
@@ -71,7 +72,7 @@ function PlatformLink({ href, icon: Icon, label }: { href: string; icon: Icon; l
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] text-foreground/80 transition-colors duration-200 ease-out hover:border-accent hover:text-accent"
+      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.15em] text-foreground/80 transition-colors duration-200 ease-out hover:border-accent hover:text-accent"
     >
       <Icon className="h-4 w-4" />
       {label}
@@ -91,14 +92,13 @@ function CardHeading({ label, copy }: { label: string; copy?: ReactNode }) {
 export default function Epk({ lang }: { lang: EpkLang }) {
   const t = EPK[lang];
   const other: EpkLang = lang === "de" ? "en" : "de";
-  const booking = `mailto:${EMAIL}?subject=${encodeURIComponent(t.contact.mailSubject)}&body=${encodeURIComponent(t.contact.mailBody)}`;
 
-  const socials: { href: string; icon: Icon; label: string; handle: string }[] = [
-    { href: LINKS.instagram, icon: InstagramIcon, label: "Instagram", handle: "@ton.sammler" },
-    { href: LINKS.soundcloud, icon: SoundCloudIcon, label: "SoundCloud", handle: "tonsammlermusic" },
-    { href: LINKS.youtube, icon: YouTubeIcon, label: "YouTube", handle: "@TONSAMMLER" },
-    { href: LINKS.spotifyArtist, icon: SpotifyIcon, label: "Spotify", handle: "TONSAMMLER" },
-    { href: LINKS.bandcamp, icon: BandcampIcon, label: "Bandcamp", handle: "tonsammler.bandcamp.com" },
+  const socials: { href: string; icon: Icon; label: string }[] = [
+    { href: LINKS.instagram, icon: InstagramIcon, label: "Instagram" },
+    { href: LINKS.soundcloud, icon: SoundCloudIcon, label: "SoundCloud" },
+    { href: LINKS.youtube, icon: YouTubeIcon, label: "YouTube" },
+    { href: LINKS.spotifyArtist, icon: SpotifyIcon, label: "Spotify" },
+    { href: LINKS.bandcamp, icon: BandcampIcon, label: "Bandcamp" },
   ];
 
   return (
@@ -106,7 +106,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
       <header className="sticky top-0 z-40 border-b border-white/10 bg-black/85 backdrop-blur-sm print:hidden">
         <div className={`${CONTAINER} flex h-16 items-center justify-between gap-6`}>
           <Link href="/" className="whitespace-nowrap text-sm font-medium tracking-[0.1em]">
-            TONSAMMLER <span className="text-foreground/40">· EPK</span>
+            TONSAMMLER <span className="text-foreground/40">· Booking</span>
           </Link>
           <nav className="hidden items-center gap-6 lg:flex">
             {t.nav.map(([id, label]) => (
@@ -127,7 +127,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
             >
               {t.switchLabel}
             </Link>
-            <a href={booking} className={`hidden sm:inline-flex ${PRIMARY}`}>
+            <a href="#anfrage" className={`hidden sm:inline-flex ${PRIMARY}`}>
               {t.booking}
             </a>
           </div>
@@ -135,54 +135,52 @@ export default function Epk({ lang }: { lang: EpkLang }) {
       </header>
 
       <main>
-        {/* Hero */}
+        {/* 1 – Who and how it sounds, at a glance */}
         <section
-          className={`${CONTAINER} grid grid-cols-1 items-center gap-8 pb-14 pt-8 sm:pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:gap-12 lg:pt-12`}
+          className={`${CONTAINER} grid grid-cols-1 items-center gap-8 pb-12 pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] lg:gap-12 lg:pt-10 print:pb-8 print:pt-12`}
         >
           {/* The fade into the black is baked into the image (a CSS mask leaves a hairline
               in the PDF export) */}
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-xs sm:max-w-sm lg:order-last lg:max-w-none">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[15rem] sm:max-w-xs lg:order-last lg:max-w-none">
             <Image
               src="/epk/portrait-hero.jpg"
               alt="Portrait von TONSAMMLER"
               fill
               preload
-              sizes="(min-width: 1024px) 25rem, 24rem"
+              sizes="(min-width: 1024px) 21rem, 20rem"
               className="object-cover"
             />
           </div>
 
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.3em] text-accent">
-              {t.hero.kicker}
-            </p>
-            <h1 className="mt-4 whitespace-nowrap text-[clamp(2.5rem,12vw,7.5rem)] font-extralight leading-[0.9] tracking-tight lg:text-[clamp(4.5rem,7.2vw,6.5rem)]">
+            <p className="text-xs font-medium uppercase tracking-[0.3em] text-accent">{t.hero.kicker}</p>
+            <h1 className="mt-4 whitespace-nowrap text-[clamp(2.5rem,12vw,7rem)] font-extralight leading-[0.9] tracking-tight lg:text-[clamp(4.5rem,7.4vw,6.75rem)]">
               TONSAMMLER
             </h1>
-            <p className="mt-6 text-base font-light text-foreground/70 sm:text-lg">{t.hero.role}</p>
-            <p className="mt-1 text-base font-light text-foreground/70 sm:text-lg">{t.hero.tagline}</p>
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {t.hero.genres.map((genre) => (
-                <li
-                  key={genre}
-                  className="rounded-full border border-white/15 px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-foreground/80"
-                >
-                  {genre}
-                </li>
+            <p className="mt-4 text-sm font-light text-foreground/60 sm:text-base">{t.hero.role}</p>
+            <p className="mt-5 max-w-xl text-lg font-light leading-snug text-foreground/90 sm:text-2xl">
+              {t.hero.sound}
+            </p>
+            <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+              {t.hero.facts.map(([term, value]) => (
+                <div key={term}>
+                  <dt className="text-[10px] font-medium uppercase tracking-[0.15em] text-foreground/50">{term}</dt>
+                  <dd className="mt-1 text-sm font-medium text-foreground/90">{value}</dd>
+                </div>
               ))}
-            </ul>
+            </dl>
             <div className="mt-8 flex flex-wrap gap-3 print:hidden">
-              <a href={booking} className={`inline-flex ${PRIMARY}`}>
+              <a href="#anfrage" className={`inline-flex ${PRIMARY}`}>
                 {t.booking}
               </a>
               <a href={PDF[lang]} download className={`inline-flex ${SECONDARY}`}>
-                {t.pdf} ↓
+                {t.downloads.pdf} ↓
               </a>
             </div>
             {/* PDF only, where the buttons above are left out */}
-            <p className="mt-8 hidden text-sm font-light text-foreground/80 print:block">
+            <p className="mt-6 hidden text-sm font-light text-foreground/80 print:block">
               Booking:{" "}
-              <a href={booking} className="text-accent">
+              <a href={`mailto:${EMAIL}`} className="text-accent">
                 {EMAIL}
               </a>{" "}
               · <a href={PHONE_HREF}>{PHONE}</a>
@@ -191,106 +189,84 @@ export default function Epk({ lang }: { lang: EpkLang }) {
         </section>
 
         <div className={CONTAINER}>
-          {/* Key facts */}
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/10 py-10 sm:grid-cols-4 sm:py-12">
-            {t.facts.map((fact) => (
-              <div key={fact.label} className="flex flex-col-reverse justify-end">
-                <dt className="mt-2 max-w-[12rem] text-xs font-medium uppercase tracking-[0.15em] text-foreground/60">
-                  {fact.label}
-                </dt>
-                <dd className="text-3xl font-medium sm:text-4xl">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
-
-          {/* Bio */}
-          <Section id="bio" index="01" title={t.bio.title}>
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.55fr)] lg:gap-16">
+          {/* 2 – Listen: one set and the EP */}
+          <Section id="hoeren" index="01" title={t.listen.title}>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-10">
               <div>
-                <CardHeading
-                  label={t.bio.shortLabel}
-                  copy={<CopyButton text={t.bio.short} label={t.copy} copiedLabel={t.copied} />}
-                />
-                <p className="mt-4 text-lg font-light leading-relaxed text-foreground/90 sm:text-xl">
-                  {t.bio.short}
-                </p>
-                <dl className="mt-10 divide-y divide-white/10 border-y border-white/10">
-                  {[...t.bio.details, ["Booking", EMAIL]].map(([term, value]) => (
-                    <div key={term} className="flex items-baseline justify-between gap-6 py-3 text-sm">
-                      <dt className="text-foreground/50">{term}</dt>
-                      <dd className="text-right font-light text-foreground/90">
-                        {value === EMAIL ? (
-                          <a href={booking} className="text-accent hover:underline">
-                            {EMAIL}
-                          </a>
-                        ) : (
-                          value
-                        )}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+                <div className="relative aspect-video w-full overflow-hidden border border-white/10">
+                  <iframe
+                    title={`${t.listen.set.title} – TONSAMMLER`}
+                    src={EMBEDS.soundcloudLilo}
+                    loading="lazy"
+                    allow="autoplay; encrypted-media"
+                    className="h-full w-full print:hidden"
+                  />
+                  {/* PDF: the set's artwork instead of the player */}
+                  <a href={LINKS.soundcloudLilo} className="absolute inset-0 hidden print:block">
+                    <Image
+                      src="/epk/lilo-artwork.jpg"
+                      alt="Laut In Love Festival – TONSAMMLER"
+                      fill
+                      loading="eager"
+                      sizes="36rem"
+                      className="object-cover"
+                    />
+                  </a>
+                </div>
+                <a
+                  href={LINKS.soundcloudLilo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group mt-4 flex items-start justify-between gap-4"
+                >
+                  <span>
+                    <span className="block text-lg font-medium transition-colors duration-200 ease-out group-hover:text-accent">
+                      {t.listen.set.title}
+                    </span>
+                    <span className="mt-1 block text-sm font-light text-foreground/60">{t.listen.set.meta}</span>
+                    <span className="mt-2 hidden text-xs font-medium uppercase tracking-[0.15em] text-accent print:block">
+                      ▶ {t.listen.setFallback}
+                    </span>
+                  </span>
+                  <span aria-hidden="true" className="text-foreground/50">
+                    ↗
+                  </span>
+                </a>
               </div>
-
-              <div>
-                <CardHeading
-                  label={t.bio.longLabel}
-                  copy={
-                    <CopyButton text={t.bio.long.join("\n\n")} label={t.copy} copiedLabel={t.copied} />
-                  }
-                />
-                {t.bio.long.map((paragraph) => (
-                  <p
-                    key={paragraph.slice(0, 24)}
-                    className="mt-4 text-base font-light leading-relaxed text-foreground/70 sm:text-lg"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </Section>
-
-          {/* Music */}
-          <Section id="musik" index="02" title={t.music.title} printBreak>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)] sm:gap-10 lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
-              <a
-                href={LINKS.bandcampEp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-40 sm:w-full"
-              >
-                <Image
-                  src="/epk/ep-i-cover.jpg"
-                  alt="Cover der EP „I“"
-                  width={817}
-                  height={1200}
-                  sizes="(min-width: 1024px) 15rem, 12rem"
-                  className="w-full border border-white/10"
-                />
-              </a>
 
               <div className="min-w-0">
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
-                  {t.music.releaseKicker}
-                </p>
-                <h3 className="mt-3 text-3xl font-extralight leading-tight sm:text-4xl">{t.music.releaseTitle}</h3>
-                <ol className="mt-6 divide-y divide-white/10 border-y border-white/10">
-                  {t.music.tracks.map((track, index) => (
-                    <li key={track.title} className="flex items-baseline gap-4 py-3 text-sm">
-                      <span className="text-foreground/40">0{index + 1}</span>
-                      <span className="flex-1 font-light">{track.title}</span>
-                      <span className="text-foreground/50">{track.length}</span>
-                    </li>
-                  ))}
-                </ol>
-                <div className="mt-6 flex flex-wrap gap-2">
+                <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-5 sm:grid-cols-[7.5rem_minmax(0,1fr)]">
+                  <a href={LINKS.bandcampEp} target="_blank" rel="noopener noreferrer" className="block">
+                    <Image
+                      src="/epk/ep-i-cover.jpg"
+                      alt="Cover der EP „I“"
+                      width={817}
+                      height={1200}
+                      sizes="7.5rem"
+                      className="w-full border border-white/10"
+                    />
+                  </a>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-accent">
+                      {t.listen.releaseKicker}
+                    </p>
+                    <h3 className="mt-2 text-2xl font-extralight leading-tight sm:text-3xl">
+                      {t.listen.releaseTitle}
+                    </h3>
+                    <ol className="mt-3 text-sm">
+                      {t.listen.tracks.map((track, index) => (
+                        <li key={track.title} className="flex items-baseline gap-3 py-1">
+                          <span className="text-foreground/40">0{index + 1}</span>
+                          <span className="flex-1 font-light">{track.title}</span>
+                          <span className="text-foreground/50">{track.length}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+                <div className="mt-5 flex flex-wrap gap-2">
                   <PlatformLink href={LINKS.spotifyEp} icon={SpotifyIcon} label="Spotify" />
-                  <PlatformLink
-                    href={LINKS.bandcampEp}
-                    icon={BandcampIcon}
-                    label={`Bandcamp · ${t.music.buy}`}
-                  />
+                  <PlatformLink href={LINKS.bandcampEp} icon={BandcampIcon} label={`Bandcamp · ${t.listen.buy}`} />
                   <PlatformLink href={LINKS.soundcloudEp} icon={SoundCloudIcon} label="SoundCloud" />
                   <PlatformLink href={LINKS.youtubeThoughts2} icon={YouTubeIcon} label="YouTube" />
                 </div>
@@ -300,111 +276,52 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                   height={152}
                   loading="lazy"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  className="mt-6 w-full rounded-xl print:hidden"
+                  className="mt-5 w-full rounded-xl print:hidden"
                 />
               </div>
             </div>
-
-            <h3 className={`${LABEL} mt-16`}>{t.music.setsLabel}</h3>
-            <div className="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-6">
-              {[
-                { set: t.music.sets[0], src: EMBEDS.soundcloudLilo, href: LINKS.soundcloudLilo, allow: "autoplay; encrypted-media" },
-                {
-                  set: t.music.sets[1],
-                  src: EMBEDS.youtubeSet,
-                  href: LINKS.youtubeSet,
-                  allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
-                },
-              ].map(({ set, src, href, allow }) => (
-                <div key={set.title}>
-                  <div className="aspect-video w-full overflow-hidden border border-white/10 print:hidden">
-                    <iframe
-                      title={`${set.title} – TONSAMMLER`}
-                      src={src}
-                      loading="lazy"
-                      allow={allow}
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                      className="h-full w-full"
-                    />
-                  </div>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group mt-4 flex items-start justify-between gap-4"
-                  >
-                    <span>
-                      <span className="block text-lg font-medium transition-colors duration-200 ease-out group-hover:text-accent">
-                        {set.title}
-                      </span>
-                      <span className="mt-1 block text-sm font-light text-foreground/60">
-                        {set.meta} · {set.platform}
-                      </span>
-                    </span>
-                    <span aria-hidden="true" className="text-foreground/50">
-                      ↗
-                    </span>
-                  </a>
-                </div>
-              ))}
-            </div>
-            <a
-              href={LINKS.soundcloud}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-10 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-accent hover:text-foreground"
-            >
-              {t.music.allSets} ↗
-            </a>
           </Section>
 
-          {/* References */}
-          <Section id="referenzen" index="03" title={t.references.title}>
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:gap-16">
-              <ul className="divide-y divide-white/10 border-y border-white/10">
-                {t.references.gigs.map((gig) => (
-                  <li
-                    key={gig.venue}
-                    className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-4 gap-y-1 py-4 sm:grid-cols-[7.5rem_minmax(0,1fr)_auto]"
-                  >
-                    <span className="pt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-foreground/40">
-                      {gig.when}
-                    </span>
-                    <span className="text-lg font-medium">
-                      {gig.venue}
-                      {gig.place && <span className="font-light text-foreground/50"> · {gig.place[lang]}</span>}
-                    </span>
-                    <span className="col-start-2 text-sm font-light text-foreground/60 sm:col-start-auto sm:pt-1 sm:text-right">
-                      {gig.note[lang]}
-                    </span>
-                  </li>
-                ))}
-                <li className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-4 py-4 sm:grid-cols-[7.5rem_minmax(0,1fr)]">
-                  <span className="pt-1.5 text-xs font-medium uppercase tracking-[0.15em] text-foreground/40">
-                    {t.references.moreLabel}
-                  </span>
-                  <span className="text-lg font-medium">{t.references.more.join(" · ")}</span>
-                </li>
-              </ul>
+          {/* 3 – Proof */}
+          <Section id="referenzen" index="02" title={t.references.title}>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-12">
+              <div>
+                <dl className="grid grid-cols-3 gap-6">
+                  {t.references.facts.map((fact) => (
+                    <div key={fact.label} className="flex flex-col-reverse justify-end">
+                      <dt className="mt-2 text-xs font-medium uppercase tracking-[0.15em] text-foreground/60">
+                        {fact.label}
+                      </dt>
+                      <dd className="text-2xl font-medium sm:text-4xl">{fact.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <h3 className={`${LABEL} mt-10`}>{t.references.venuesLabel}</h3>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {t.references.venues.map((venue) => (
+                    <li
+                      key={venue}
+                      className="rounded-full border border-white/15 px-4 py-2 text-sm font-light text-foreground/90"
+                    >
+                      {venue}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              <aside className="border border-white/10 p-6 sm:p-8 print:break-inside-avoid">
+              <aside className="border border-white/10 p-6 sm:p-7">
                 <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
                   {t.references.impedanz.kicker}
                 </p>
-                <h3 className="mt-3 text-2xl font-extralight sm:text-3xl">{t.references.impedanz.name}</h3>
-                <p className="mt-6 text-3xl font-medium sm:text-4xl">10</p>
-                <p className="mt-1 text-xs font-medium uppercase tracking-[0.15em] text-foreground/60">
-                  Events · Augsburg
-                </p>
-                <p className="mt-6 text-sm font-light leading-relaxed text-foreground/70">
+                <h3 className="mt-2 text-2xl font-extralight">{t.references.impedanz.name}</h3>
+                <p className="mt-4 text-sm font-light leading-relaxed text-foreground/70">
                   {t.references.impedanz.text}
                 </p>
                 <a
                   href={LINKS.impedanz}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-accent hover:text-foreground"
+                  className="mt-5 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-accent hover:text-foreground"
                 >
                   <InstagramIcon className="h-4 w-4" />
                   @impedanz.kollektiv ↗
@@ -413,140 +330,109 @@ export default function Epk({ lang }: { lang: EpkLang }) {
             </div>
           </Section>
 
-          {/* Press */}
-          <Section id="presse" index="04" title={t.press.title} printBreak>
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <h3 className={LABEL}>{t.press.photosLabel}</h3>
-              <a href={PRESS_ZIP} download className={`inline-flex ${SECONDARY} print:hidden`}>
-                {t.press.zip} ↓
-              </a>
+          {/* 4 – Bio (second PDF page starts here) */}
+          <Section id="bio" index="03" title={t.bio.title} printBreak>
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-12">
+              <div>
+                <CardHeading
+                  label={t.bio.shortLabel}
+                  copy={<CopyButton text={t.bio.short} label={t.copy} copiedLabel={t.copied} />}
+                />
+                <p className="mt-4 text-base font-light leading-relaxed text-foreground/80 sm:text-lg">
+                  {t.bio.short}
+                </p>
+              </div>
+              <div>
+                <CardHeading
+                  label={t.bio.pressLabel}
+                  copy={<CopyButton text={t.bio.press} label={t.copy} copiedLabel={t.copied} />}
+                />
+                <p className="mt-4 text-lg font-light leading-relaxed text-foreground/90 sm:text-xl">
+                  {t.bio.press}
+                </p>
+              </div>
             </div>
-            <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
+          </Section>
+
+          {/* 5 – Downloads */}
+          <Section id="downloads" index="04" title={t.downloads.title}>
+            <h3 className={LABEL}>{t.downloads.photosLabel}</h3>
+            <ul className="mt-4 grid grid-cols-3 gap-3 sm:gap-6">
               {PHOTOS.map((photo) => (
-                <li key={photo.src} className="print:break-inside-avoid">
-                  <a href={photo.src} download={photo.file} className="group block">
-                    <div className="relative aspect-[4/5] overflow-hidden border border-white/10">
+                <li key={photo.src}>
+                  <a href={photo.src} download className="group block">
+                    <span className="relative block aspect-[2/3] overflow-hidden border border-white/10 print:aspect-[4/5]">
                       <Image
                         src={photo.src}
-                        alt={photo.file.replace(".jpg", "").replaceAll("-", " ")}
+                        alt="Pressefoto TONSAMMLER"
                         fill
-                        sizes="(min-width: 640px) 30vw, 50vw"
-                        className={`object-cover ${photo.position} transition-transform duration-300 ease-out group-hover:scale-[1.03]`}
+                        sizes="(min-width: 1024px) 22rem, 33vw"
+                        className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
                       />
-                    </div>
-                    <span className="mt-2 flex items-baseline justify-between gap-2 text-xs">
+                    </span>
+                    <span className="mt-2 flex flex-wrap items-baseline justify-between gap-x-2 text-xs">
                       <span className="hidden text-foreground/50 sm:inline">{photo.size}</span>
-                      <span className="whitespace-nowrap font-medium uppercase tracking-[0.15em] text-accent print:hidden">
-                        {t.press.download} ↓
+                      <span className="whitespace-nowrap font-medium uppercase tracking-[0.15em] text-accent">
+                        {t.downloads.download} ↓
                       </span>
                     </span>
                   </a>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-sm font-light text-foreground/50">{t.press.note}</p>
-
-            <h3 className={`${LABEL} mt-14`}>{t.press.logoLabel}</h3>
-            <ul className="mt-6 grid gap-6 sm:grid-cols-2">
-              {LOGOS.map((logo) => (
-                <li key={logo.src} className="print:break-inside-avoid">
-                  <a href={logo.src} download className="group block">
-                    <span
-                      className={`flex aspect-[3/1] items-center justify-center border border-white/10 ${
-                        logo.on === "light" ? "bg-foreground" : "bg-black"
-                      }`}
-                    >
-                      <Image
-                        src={logo.src}
-                        alt="TONSAMMLER Logo"
-                        width={2849}
-                        height={520}
-                        sizes="(min-width: 640px) 30vw, 70vw"
-                        className="w-3/4"
-                      />
-                    </span>
-                    <span className="mt-2 flex items-baseline justify-between gap-2 text-xs">
-                      <span className="text-foreground/50">{t.press.logoNames[logo.on]}</span>
-                      <span className="whitespace-nowrap font-medium uppercase tracking-[0.15em] text-accent print:hidden">
-                        {t.press.download} ↓
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={PRESS_ZIP} download className={`inline-flex ${SECONDARY}`}>
+                {t.downloads.zip} ↓
+              </a>
+              <a href={LOGOS.white} download className={`inline-flex ${SECONDARY}`}>
+                {t.downloads.logoWhite} ↓
+              </a>
+              <a href={LOGOS.black} download className={`inline-flex ${SECONDARY}`}>
+                {t.downloads.logoBlack} ↓
+              </a>
+              <a href={PDF[lang]} download className={`inline-flex ${SECONDARY} print:hidden`}>
+                {t.downloads.pdf} ↓
+              </a>
+            </div>
+            <p className="mt-8 text-sm font-light text-foreground/70">
+              <span className={`${LABEL} mr-3`}>{t.downloads.techLabel}</span>
+              {t.downloads.tech}
+            </p>
           </Section>
 
-          {/* Technical rider */}
-          <Section id="rider" index="05" title={t.rider.title} printBreak>
-            <dl className="divide-y divide-white/10 border-y border-white/10">
-              {t.rider.items.map(([term, value]) => (
-                <div key={term} className="grid gap-1 py-4 sm:grid-cols-[12rem_minmax(0,1fr)] sm:gap-6">
-                  <dt className={`${LABEL} sm:pt-1`}>{term}</dt>
-                  <dd className="font-light text-foreground/85 sm:text-lg">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </Section>
-
-          {/* Contact */}
-          <Section id="kontakt" index="06" title={t.contact.title}>
-            <p className="text-lg font-light text-foreground/70">{t.contact.lead}</p>
-            <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* 6 – Contact and request */}
+          <Section id="anfrage" index="05" title={t.contact.title}>
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:gap-16 print:block">
               <div>
                 <CardHeading
                   label={t.contact.email}
                   copy={<CopyButton text={EMAIL} label={t.copy} copiedLabel={t.copied} />}
                 />
                 <a
-                  href={booking}
-                  className="mt-2 block whitespace-nowrap text-[clamp(1.125rem,5vw,2.25rem)] font-extralight text-accent transition-colors duration-200 ease-out hover:text-foreground"
+                  href={`mailto:${EMAIL}`}
+                  className="mt-2 block whitespace-nowrap text-[clamp(1.125rem,5vw,1.875rem)] font-extralight text-accent transition-colors duration-200 ease-out hover:text-foreground"
                 >
                   {EMAIL}
                 </a>
-                <h3 className={`${LABEL} mt-8`}>{t.contact.phone}</h3>
+                <h3 className={`${LABEL} mt-6`}>{t.contact.phone}</h3>
                 <a
                   href={PHONE_HREF}
-                  className="mt-2 block text-[clamp(1.125rem,5vw,2.25rem)] font-extralight transition-colors duration-200 ease-out hover:text-accent"
+                  className="mt-2 block text-[clamp(1.125rem,5vw,1.875rem)] font-extralight transition-colors duration-200 ease-out hover:text-accent"
                 >
                   {PHONE}
                 </a>
-                <a href={booking} className={`mt-10 inline-flex ${PRIMARY} print:hidden`}>
-                  {t.booking}
-                </a>
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {socials.map((social) => (
+                    <PlatformLink key={social.label} {...social} />
+                  ))}
+                </div>
               </div>
 
-              <div>
-                <h3 className={LABEL}>{t.contact.social}</h3>
-                <ul className="mt-4 divide-y divide-white/10 border-y border-white/10">
-                  {socials.map(({ href, icon: SocialIcon, label, handle }) => (
-                    <li key={label}>
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center gap-4 py-3.5"
-                      >
-                        <SocialIcon className="h-5 w-5 text-foreground/70 transition-colors duration-200 ease-out group-hover:text-accent" />
-                        <span className="w-28 text-xs font-medium uppercase tracking-[0.15em] text-foreground/70 group-hover:text-accent">
-                          {label}
-                        </span>
-                        <span className="min-w-0 flex-1 truncate text-sm font-light text-foreground/50">
-                          {handle}
-                        </span>
-                        <span aria-hidden="true" className="text-foreground/40">
-                          ↗
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/"
-                  className="mt-6 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-accent hover:text-foreground"
-                >
-                  {t.contact.website} ↗
-                </Link>
+              <div className="print:hidden">
+                <h3 className={LABEL}>{t.contact.formLabel}</h3>
+                <div className="mt-5">
+                  <BookingForm t={t.contact} />
+                </div>
               </div>
             </div>
           </Section>
@@ -554,11 +440,11 @@ export default function Epk({ lang }: { lang: EpkLang }) {
       </main>
 
       <footer
-        className={`${CONTAINER} flex flex-wrap items-center justify-between gap-4 border-t border-white/10 py-8 text-xs text-foreground/40`}
+        className={`${CONTAINER} flex flex-wrap items-center justify-between gap-4 border-t border-white/10 py-8 text-xs text-foreground/40 print:hidden`}
       >
         <span>© 2026 TONSAMMLER · {t.footer}</span>
-        <Link href={EPK_PATHS[other]} className="uppercase tracking-[0.15em] hover:text-accent print:hidden">
-          {t.switchLabel}
+        <Link href="/" className="uppercase tracking-[0.15em] hover:text-accent">
+          tonsammler-website.vercel.app
         </Link>
       </footer>
     </div>
