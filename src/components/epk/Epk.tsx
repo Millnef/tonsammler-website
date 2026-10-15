@@ -22,6 +22,7 @@ import {
   PHONE_HREF,
   PHOTOS,
   PRESS_ZIP,
+  SITE,
   type EpkLang,
 } from "@/lib/epk-content";
 
@@ -183,7 +184,10 @@ export default function Epk({ lang }: { lang: EpkLang }) {
               <a href={`mailto:${EMAIL}`} className="text-accent">
                 {EMAIL}
               </a>{" "}
-              · <a href={PHONE_HREF}>{PHONE}</a>
+              · <a href={PHONE_HREF}>{PHONE}</a> ·{" "}
+              <a href={SITE.url} className="text-accent">
+                {SITE.label}
+              </a>
             </p>
           </div>
         </section>
@@ -451,7 +455,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
       >
         <span>© 2026 TONSAMMLER · {t.footer}</span>
         <Link href="/" className="uppercase tracking-[0.15em] hover:text-accent">
-          tonsammler-website.vercel.app
+          {SITE.label}
         </Link>
       </footer>
     </div>

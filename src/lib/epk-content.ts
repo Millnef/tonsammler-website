@@ -5,6 +5,8 @@ export type EpkLang = "de" | "en";
 
 export const EPK_PATHS: Record<EpkLang, string> = { de: "/booking", en: "/booking/en" };
 
+export const SITE = { url: "https://www.tonsammler.com", label: "www.tonsammler.com" };
+
 export const EMAIL = "tonsammlermusic@gmail.com";
 export const PHONE = "+49 151 10468852";
 export const PHONE_HREF = "tel:+4915110468852";

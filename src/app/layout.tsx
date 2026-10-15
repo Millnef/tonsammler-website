@@ -9,6 +9,8 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
+  // Absolute URLs (link previews) point to the own domain, not the Vercel one
+  metadataBase: new URL("https://www.tonsammler.com"),
   title: "TONSAMMLER",
   description: "TONSAMMLER",
 };
