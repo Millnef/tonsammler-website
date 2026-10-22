@@ -1,6 +1,8 @@
 // Content of the booking page / press kit (/booking German, /booking/en English).
 // Its downloads (photos, logos, PDFs) live under /epk/*.
 
+import { RELEASE } from "@/lib/release";
+
 export type EpkLang = "de" | "en";
 
 export const EPK_PATHS: Record<EpkLang, string> = { de: "/booking", en: "/booking/en" };
@@ -13,21 +15,15 @@ export const PHONE_HREF = "tel:+4915110468852";
 
 export const LINKS = {
   spotifyArtist: "https://open.spotify.com/artist/1duyw9D875T8M1v7VaoPep",
-  spotifyEp: "https://open.spotify.com/album/4DRPNg4D5uykjGoGmWhm0o",
-  bandcampEp: "https://tonsammler.bandcamp.com/album/i",
   bandcamp: "https://tonsammler.bandcamp.com",
   soundcloud: "https://soundcloud.com/tonsammlermusic",
-  soundcloudEp: "https://soundcloud.com/tonsammlermusic/sets/i",
   soundcloudLilo: "https://soundcloud.com/tonsammlermusic/laut-in-love-tonsammler",
   youtube: "https://www.youtube.com/@TONSAMMLER",
-  youtubeThoughts2: "https://www.youtube.com/watch?v=bCHRygiNuaI",
   instagram: "https://www.instagram.com/ton.sammler/",
   impedanz: "https://www.instagram.com/impedanz.kollektiv/",
 };
 
 export const EMBEDS = {
-  spotifyEp:
-    "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&theme=0",
   soundcloudLilo:
     "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2415263193&color=%234c2c4c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
 };
@@ -49,11 +45,6 @@ export const PHOTOS = [
   { src: "/epk/photos/TONSAMMLER-Portrait-sw-2.jpg", size: "3415 × 5120" },
 ] as const;
 
-const TRACKS = [
-  { title: "first", length: "8:30" },
-  { title: "thoughts2", length: "7:42" },
-];
-
 type Venue = { name: string; city: Record<EpkLang, string> };
 const MUNICH = { de: "München", en: "Munich" };
 
@@ -70,7 +61,7 @@ export const EPK = {
     meta: {
       title: "TONSAMMLER – Booking",
       description:
-        "Techno & Groove aus München: repetitiv, treibend. Set und EP zum Reinhören, Referenzen, Bio, Pressefotos und Booking-Anfrage.",
+        "Techno & Groove aus München: repetitiv, treibend. Set und neue Musik zum Reinhören, Referenzen, Bio, Pressefotos und Booking-Anfrage.",
     },
     nav: [
       ["musik", "Musik"],
@@ -98,9 +89,9 @@ export const EPK = {
       title: "Musik",
       set: { title: "Laut In Love Festival", meta: "Bunker, 03:00–04:30 · 90 min · SoundCloud" },
       setFallback: "Set anhören auf SoundCloud",
-      releaseKicker: "Debüt-EP · 05.10.2026",
-      releaseTitle: "I · TONSAMMLER",
-      tracks: TRACKS,
+      releaseKicker: `${RELEASE.type.de} · ${RELEASE.date}`,
+      releaseTitle: `${RELEASE.title} · TONSAMMLER`,
+      tracks: RELEASE.tracks,
       buy: "Kaufen",
     },
     references: {
@@ -164,7 +155,7 @@ export const EPK = {
     meta: {
       title: "TONSAMMLER – Booking",
       description:
-        "Techno & groove from Munich: repetitive, driving. A set and an EP to listen to, references, bio, press photos and booking request.",
+        "Techno & groove from Munich: repetitive, driving. A set and new music to listen to, references, bio, press photos and booking request.",
     },
     nav: [
       ["musik", "Music"],
@@ -192,9 +183,9 @@ export const EPK = {
       title: "Music",
       set: { title: "Laut In Love Festival", meta: "Bunker, 3–4:30 am · 90 min · SoundCloud" },
       setFallback: "Listen to the set on SoundCloud",
-      releaseKicker: "Debut EP · 05.10.2026",
-      releaseTitle: "I · TONSAMMLER",
-      tracks: TRACKS,
+      releaseKicker: `${RELEASE.type.en} · ${RELEASE.date}`,
+      releaseTitle: `${RELEASE.title} · TONSAMMLER`,
+      tracks: RELEASE.tracks,
       buy: "Buy",
     },
     references: {

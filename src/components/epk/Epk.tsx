@@ -25,6 +25,7 @@ import {
   SITE,
   type EpkLang,
 } from "@/lib/epk-content";
+import { RELEASE } from "@/lib/release";
 
 const CONTAINER = "mx-auto w-full max-w-6xl px-6 sm:px-10";
 const LABEL = "text-xs font-medium uppercase tracking-[0.15em] text-foreground/50";
@@ -193,7 +194,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
         </section>
 
         <div className={CONTAINER}>
-          {/* 2 – Music: one set and the EP */}
+          {/* 2 – Music: one set and the current release */}
           <Section id="musik" index="01" title={t.listen.title}>
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-10">
               <div>
@@ -240,12 +241,12 @@ export default function Epk({ lang }: { lang: EpkLang }) {
 
               <div className="min-w-0">
                 <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-5 sm:grid-cols-[7.5rem_minmax(0,1fr)]">
-                  <a href={LINKS.bandcampEp} target="_blank" rel="noopener noreferrer" className="block">
+                  <a href={RELEASE.links.bandcamp} target="_blank" rel="noopener noreferrer" className="block">
                     <Image
-                      src="/epk/ep-i-cover.jpg"
-                      alt="Cover der EP „I“"
-                      width={817}
-                      height={1200}
+                      src={RELEASE.cover.src}
+                      alt={`Cover „${RELEASE.title}“`}
+                      width={RELEASE.cover.width}
+                      height={RELEASE.cover.height}
                       sizes="7.5rem"
                       className="w-full border border-white/10"
                     />
@@ -269,14 +270,14 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                   </div>
                 </div>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  <PlatformLink href={LINKS.spotifyEp} icon={SpotifyIcon} label="Spotify" />
-                  <PlatformLink href={LINKS.bandcampEp} icon={BandcampIcon} label={`Bandcamp · ${t.listen.buy}`} />
-                  <PlatformLink href={LINKS.soundcloudEp} icon={SoundCloudIcon} label="SoundCloud" />
-                  <PlatformLink href={LINKS.youtubeThoughts2} icon={YouTubeIcon} label="YouTube" />
+                  <PlatformLink href={RELEASE.links.spotify} icon={SpotifyIcon} label="Spotify" />
+                  <PlatformLink href={RELEASE.links.bandcamp} icon={BandcampIcon} label={`Bandcamp · ${t.listen.buy}`} />
+                  <PlatformLink href={RELEASE.links.soundcloud} icon={SoundCloudIcon} label="SoundCloud" />
+                  <PlatformLink href={RELEASE.links.youtube} icon={YouTubeIcon} label="YouTube" />
                 </div>
                 <iframe
-                  title="I von TONSAMMLER auf Spotify"
-                  src={EMBEDS.spotifyEp}
+                  title={`${RELEASE.title} von TONSAMMLER auf Spotify`}
+                  src={RELEASE.embeds.spotify}
                   height={152}
                   loading="lazy"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"

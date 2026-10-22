@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { LINE_CLASSES, useHeadlineLines, type HeadlineLineSpec } from "@/lib/headline-lines";
+import { RELEASE } from "@/lib/release";
 import {
   BandcampIcon,
   SpotifyIcon,
@@ -36,7 +37,7 @@ const PLATFORMS: {
   {
     key: "bandcamp",
     label: "Bandcamp",
-    href: "https://tonsammler.bandcamp.com/album/i",
+    href: RELEASE.links.bandcamp,
     icon: BandcampIcon,
   },
   {
@@ -47,25 +48,25 @@ const PLATFORMS: {
   },
 ];
 
-// Players for the EP "I"; YouTube shows its main track
+// Players for the current release (src/lib/release.ts)
 const EMBEDS: Record<PlatformKey, { title: string; src: string; allow?: string }> = {
   spotify: {
-    title: "I von TONSAMMLER auf Spotify",
-    src: "https://open.spotify.com/embed/album/4DRPNg4D5uykjGoGmWhm0o?utm_source=generator&theme=0&si=4ed2d71ae6c54168",
+    title: `${RELEASE.title} von TONSAMMLER auf Spotify`,
+    src: RELEASE.embeds.spotify,
     allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
   },
   soundcloud: {
-    title: "I von TONSAMMLER auf SoundCloud",
-    src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%253Aplaylists%253A2308592472&color=%23242424&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true",
+    title: `${RELEASE.title} von TONSAMMLER auf SoundCloud`,
+    src: RELEASE.embeds.soundcloud,
     allow: "autoplay; encrypted-media",
   },
   bandcamp: {
-    title: "I von TONSAMMLER auf Bandcamp",
-    src: "https://bandcamp.com/EmbeddedPlayer/album=1577328459/size=large/bgcol=333333/linkcol=ffebb5/tracklist=true/artwork=small/transparent=true/",
+    title: `${RELEASE.title} von TONSAMMLER auf Bandcamp`,
+    src: RELEASE.embeds.bandcamp,
   },
   youtube: {
-    title: "TONSAMMLER auf YouTube",
-    src: "https://www.youtube.com/embed/bCHRygiNuaI?si=AFty3pYyuIYx_3jC&start=345",
+    title: `${RELEASE.title} von TONSAMMLER auf YouTube`,
+    src: RELEASE.embeds.youtube,
     allow:
       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
   },
@@ -268,13 +269,13 @@ export default function Releases() {
             </a>{" "}
             ·{" "}
             <a
-              href="https://soundcloud.com/tonsammlermusic/sets/i"
-              title="I"
+              href={RELEASE.links.soundcloud}
+              title={RELEASE.title}
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: "#cccccc", textDecoration: "none" }}
             >
-              I
+              {RELEASE.title}
             </a>
           </div>
         </div>
