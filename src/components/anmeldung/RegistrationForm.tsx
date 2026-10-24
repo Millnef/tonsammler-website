@@ -143,10 +143,12 @@ export default function RegistrationForm() {
           {status === "sending" ? "Wird gesendet …" : "Anmelden"}
         </button>
         <p className="text-xs font-light leading-relaxed text-foreground/50">
-          * Pflichtfeld. Deine Angaben nutzen wir nur für dieses Event.{" "}
+          {/* Not "only for this event": the optional checkbox allows future invitations */}
+          * Pflichtfeld. Wofür wir deine Angaben nutzen, steht im{" "}
           <Link href="/anmeldung/rechtliches#datenschutz" className="underline underline-offset-4 hover:text-accent">
             Datenschutz
           </Link>
+          .
         </p>
       </div>
     </form>

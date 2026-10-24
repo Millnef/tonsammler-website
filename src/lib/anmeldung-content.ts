@@ -1,6 +1,7 @@
 // Registration page for the listening in Raik Holetz' studio (/anmeldung).
 // A page of its own: not linked from the website, not indexed, only reachable by link.
 
+// Milan's name: "Tonsammler" in running text, "TONSAMMLER" only in titles and headings
 export const EVENT = {
   // Working title, the final name is still open
   name: "Farbton",
@@ -34,9 +35,9 @@ export const INTRO = {
   lead: "Ein Nachmittag, an dem Bild und Klang denselben Raum teilen.",
   paragraphs: [
     "Raik Holetz öffnet sein Atelier: Gemälde, die draußen in der Landschaft beginnen und im Studio weiterwachsen.",
-    "Währenddessen legt TONSAMMLER auf – ein Bogen von Ambient über House bis in hypnotischen Techno.",
+    "Währenddessen legt Tonsammler auf – ein Bogen von Ambient über House bis in hypnotischen Techno.",
     "Musik auf Augenhöhe und Zeit zum Hinsehen.",
-    "Während des vierstündigen Sets von TONSAMMLER malt Raik in einer Live-Session von 18–19 Uhr ein Bild.",
+    "Während des vierstündigen Sets von Tonsammler malt Raik in einer Live-Session von 18–19 Uhr ein Bild.",
   ],
   closing: ["Sa 28.11. · 15–19 Uhr · Friedberg", "Begrenzte Plätze, nur mit Anmeldung."],
 };
@@ -72,8 +73,8 @@ export const ARTISTS = [
   {
     name: "TONSAMMLER",
     role: "DJ & Producer · München",
-    text: "TONSAMMLER bringt Techno mit tiefen, treibenden, repetitiven Loops, gebaut für die Tanzfläche, um Leute zu bewegen, physisch wie emotional. Mitgründer des Kollektivs IMPEDANZ.",
-    image: { src: "/epk/photos/TONSAMMLER-Portrait-sw-1.jpg", width: 3287, height: 5120, alt: "Porträt TONSAMMLER" },
+    text: "Tonsammler bringt Techno mit tiefen, treibenden, repetitiven Loops, gebaut für die Tanzfläche, um Leute zu bewegen, physisch wie emotional. Mitgründer des Kollektivs IMPEDANZ.",
+    image: { src: "/epk/photos/TONSAMMLER-Portrait-sw-1.jpg", width: 3287, height: 5120, alt: "Porträt Tonsammler" },
     links: [
       { label: "tonsammler.com", href: "https://www.tonsammler.com" },
       { label: "Instagram", href: "https://www.instagram.com/ton.sammler/" },
@@ -81,13 +82,13 @@ export const ARTISTS = [
   },
 ];
 
-export const HEARD_FROM = ["Instagram", "Freunde", "Raik Holetz", "TONSAMMLER / IMPEDANZ", "Sonstiges"];
+export const HEARD_FROM = ["Instagram", "Freunde", "Raik Holetz", "Tonsammler", "Sonstiges"];
 
 export const CONSENT_MEDIA =
-  "Ich bin einverstanden, dass beim Event fotografiert und gefilmt wird und Aufnahmen, auf denen ich zu sehen bin, von Raik Holetz und TONSAMMLER veröffentlicht werden dürfen, z. B. auf Instagram und ihren Websites. Diese Einwilligung kann ich jederzeit für die Zukunft widerrufen.";
+  "Ich bin einverstanden, dass beim Event fotografiert und gefilmt wird und Aufnahmen, auf denen ich zu sehen bin, von Raik Holetz und Tonsammler veröffentlicht werden dürfen, z. B. auf Instagram und ihren Websites. Diese Einwilligung kann ich jederzeit für die Zukunft widerrufen.";
 
 // Optional, separate consent: lets the guest list be used for future invitations
-export const CONSENT_NEWS = "Ja, informiert mich per E-Mail über künftige Events von Raik Holetz und TONSAMMLER. (optional)";
+export const CONSENT_NEWS = "Ja, informiert mich per E-Mail über künftige Events von Raik Holetz und Tonsammler. (optional)";
 
 // Responsible person for the page (imprint and privacy notice)
 export const OPERATOR = {

@@ -47,7 +47,7 @@ export default function RechtlichesPage() {
           <h3 className={H3}>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
           <p className={P}>{address}</p>
           <h3 className={H3}>Bildrechte</h3>
-          <p className={P}>Alle Gemälde © Raik Holetz. Porträt TONSAMMLER © Milan-Joel Pawlick.</p>
+          <p className={P}>Alle Gemälde © Raik Holetz. Porträt Tonsammler © Milan-Joel Pawlick.</p>
         </section>
 
         <section id="datenschutz" className="mt-24 scroll-mt-8 border-t border-white/10 pt-16">
@@ -90,7 +90,7 @@ export default function RechtlichesPage() {
 
           <Block title="5. Foto- und Videoaufnahmen">
             Beim Event wird fotografiert und gefilmt. Mit deiner Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) dürfen
-            Raik Holetz und TONSAMMLER Aufnahmen, auf denen du zu sehen bist, veröffentlichen, z. B. auf Instagram
+            Raik Holetz und Tonsammler Aufnahmen, auf denen du zu sehen bist, veröffentlichen, z. B. auf Instagram
             und auf raikholetz.com und tonsammler.com. Du kannst die Einwilligung jederzeit für die Zukunft
             widerrufen, eine E-Mail an <Mail /> genügt. Bereits veröffentlichte Beiträge mit dir nehmen wir dann auf
             Wunsch herunter, soweit uns das möglich ist.
@@ -98,7 +98,7 @@ export default function RechtlichesPage() {
 
           <Block title="6. Links zu anderen Seiten">
             Die Seite verlinkt auf {VENUE.maps ? `Google Maps (Route zum ${VENUE.name}), ` : ""}Instagram und die
-            Websites von Raik Holetz und TONSAMMLER. Erst wenn du einen Link anklickst, werden Daten an den jeweiligen Anbieter übertragen;
+            Websites von Raik Holetz und Tonsammler. Erst wenn du einen Link anklickst, werden Daten an den jeweiligen Anbieter übertragen;
             dort gelten dessen Datenschutzbestimmungen.
           </Block>
 

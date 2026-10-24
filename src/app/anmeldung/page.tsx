@@ -187,20 +187,10 @@ export default function AnmeldungPage() {
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-accent">Anmeldung</p>
               <h2 className={`${H2} mt-4`}>Platz sichern</h2>
+              {/* Date and place are already at the top of the page */}
               <p className="mt-6 font-light leading-relaxed text-foreground/70">
-                Eintritt frei, die Plätze sind begrenzt. Melde dich bis {EVENT.deadlineLabel} an, die Bestätigung kommt
-                per E-Mail. Sind alle Plätze vergeben, kommst du auf die Warteliste.
-              </p>
-              <p className="mt-8 border-l border-accent/60 pl-4 text-sm font-light leading-relaxed text-foreground/70">
-                {EVENT.dateShort} · {EVENT.time}
-                <br />
-                {VENUE.name}, {VENUE.town}
-                {VENUE.street && (
-                  <>
-                    <br />
-                    {VENUE.street}
-                  </>
-                )}
+                Melde dich bis {EVENT.deadlineLabel} an, die Bestätigung kommt per E-Mail. Sind alle Plätze vergeben,
+                kommst du auf die Warteliste.
               </p>
             </div>
             <RegistrationForm />
