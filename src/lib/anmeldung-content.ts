@@ -30,14 +30,13 @@ export const VENUE = {
 // the confirmation e-mail. Empty until it is deployed: the form then runs in test mode.
 export const ENDPOINT = "";
 
-// Milan's text (2026-10-24): the lead sentence, the paragraphs, the closing lines
+// Milan's text (2026-10-24): the lead sentence, three equal blocks, the closing lines
 export const INTRO = {
   lead: "Ein Nachmittag, an dem Bild und Klang denselben Raum teilen.",
   paragraphs: [
     "Raik Holetz öffnet sein Atelier: Gemälde, die draußen in der Landschaft beginnen und im Studio weiterwachsen.",
-    "Währenddessen legt Tonsammler auf.",
-    "Musik auf Augenhöhe und Zeit zum Hinsehen.",
-    "Während des vierstündigen Sets von Tonsammler malt Raik von 18–19 Uhr.",
+    "Tonsammler untermalt mit einem vierstündigen Set von Ambient über House bis zu hypnotischem Techno die Atmosphäre.",
+    "Zusammen kreieren sie eine neue Erfahrung und machen das Studio selbst zum Kunstwerk. Musik auf Augenhöhe und Zeit zum Hinsehen.",
   ],
   closing: ["Sa 28.11. · 15–19 Uhr · Landsberg am Lech", "Begrenzte Plätze, nur mit Anmeldung."],
 };

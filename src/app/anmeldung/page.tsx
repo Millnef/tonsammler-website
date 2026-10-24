@@ -94,15 +94,9 @@ export default function AnmeldungPage() {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
             <h2 className={`${SERIF} text-4xl italic leading-tight sm:text-5xl`}>{INTRO.lead}</h2>
             <div>
-              {INTRO.paragraphs.map((paragraph, index) => (
-                <p
-                  key={paragraph}
-                  className={
-                    index === 0
-                      ? "text-xl font-light leading-relaxed sm:text-2xl"
-                      : "mt-6 font-light leading-relaxed text-foreground/70 sm:text-lg"
-                  }
-                >
+              {/* All blocks carry the same weight */}
+              {INTRO.paragraphs.map((paragraph) => (
+                <p key={paragraph} className="mt-8 text-xl font-light leading-relaxed first:mt-0 sm:text-2xl">
                   {paragraph}
                 </p>
               ))}
