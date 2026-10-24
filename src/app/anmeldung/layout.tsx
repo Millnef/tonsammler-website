@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
 import { EVENT } from "@/lib/anmeldung-content";
@@ -24,10 +24,7 @@ export const metadata: Metadata = {
 
 export default function AnmeldungLayout({ children }: { children: ReactNode }) {
   return (
-    <div
-      className={`${garamond.variable} min-h-screen`}
-      style={{ "--raik-blue": "#3156c4", "--raik-blue-light": "#a9c3f0" } as CSSProperties}
-    >
+    <div className={`${garamond.variable} min-h-screen`}>
       {children}
     </div>
   );

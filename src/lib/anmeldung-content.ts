@@ -15,41 +15,37 @@ export const EVENT = {
   capacity: 80,
 };
 
+// Street and route link stay empty until the exact address is known; the page then
+// shows the town only and says the address follows with the confirmation
 export const VENUE = {
   name: "Kunstraum Raik Holetz",
-  street: "Am Seelberg 55",
-  city: "86899 Landsberg am Lech",
-  maps: "https://www.google.com/maps/search/?api=1&query=Kunstraum%20Raik%20Holetz%2C%20Am%20Seelberg%2055%2C%2086899%20Landsberg%20am%20Lech",
+  town: "Friedberg",
+  region: "bei Augsburg",
+  street: "",
+  maps: "",
 };
 
 // Google Apps Script web app that writes into the guest list (Google Sheet) and sends
 // the confirmation e-mail. Empty until it is deployed: the form then runs in test mode.
 export const ENDPOINT = "";
 
-export const INTRO = [
-  "Ein Nachmittag, an dem Bild und Klang denselben Raum teilen. Raik Holetz öffnet sein Atelier: Gemälde, die draußen in der Landschaft beginnen und im Studio weiterwachsen.",
-  "Dazwischen legt TONSAMMLER auf – ein langsamer Bogen von Ambient über House und Groove bis in hypnotischen Techno. Kein Club, keine Bühne: Musik auf Augenhöhe, Zeit zum Hinsehen und Zuhören.",
-];
+// Milan's text (2026-10-24): the lead sentence, the paragraphs, the closing lines
+export const INTRO = {
+  lead: "Ein Nachmittag, an dem Bild und Klang denselben Raum teilen.",
+  paragraphs: [
+    "Raik Holetz öffnet sein Atelier: Gemälde, die draußen in der Landschaft beginnen und im Studio weiterwachsen.",
+    "Währenddessen legt TONSAMMLER auf – ein Bogen von Ambient über House bis in hypnotischen Techno.",
+    "Musik auf Augenhöhe und Zeit zum Hinsehen.",
+    "Während des vierstündigen Sets von TONSAMMLER malt Raik in einer Live-Session von 18–19 Uhr ein Bild.",
+  ],
+  closing: ["Sa 28.11. · 15–19 Uhr · Friedberg", "Begrenzte Plätze, nur mit Anmeldung."],
+};
 
 export const FACTS = [
   { label: "Wann", value: EVENT.date, note: `${EVENT.time}, Einlass ab 15 Uhr` },
   { label: "Eintritt", value: "Frei, nur mit Anmeldung", note: `Begrenzte Plätze · Anmeldeschluss ${EVENT.deadlineLabel}` },
   { label: "Getränke", value: "Gegen Spende", note: "Bier, Wein, Softdrinks" },
 ];
-
-// The afternoon's musical arc; times and tempos are a guide
-export const ARC = [
-  { time: "15:00", minute: 0, bpm: 115, title: "Ankommen", music: "Ambient · ~115 BPM" },
-  { time: "15:45", minute: 45, bpm: 115, title: "Begrüßung", music: "Raik & Milan" },
-  { time: "16:00", minute: 60, bpm: 120, title: "House", music: "120–128 BPM" },
-  { time: "17:15", minute: 135, bpm: 128, title: "Groove → Hypnotic", music: "128–140 BPM" },
-  { time: "18:30", minute: 210, bpm: 139, title: "Ausklang", music: "bis 19 Uhr" },
-];
-// Tempo curve over the 240 minutes, including the way back down at the end; it runs
-// through every phase above, so their markers sit on the line
-export const ARC_CURVE = [
-  [0, 115], [45, 115], [60, 120], [135, 128], [195, 140], [210, 139], [240, 120],
-] as const;
 
 export const ARTWORKS = [
   { src: "/anmeldung/raik-21.jpg", width: 1600, height: 1325 },
@@ -65,9 +61,9 @@ export const HERO_ART = { src: "/anmeldung/raik-18.jpg", width: 1538, height: 16
 export const ARTISTS = [
   {
     name: "Raik Holetz",
-    role: "Maler · Landsberg am Lech",
+    role: "Malerei & Skulptur",
     text: "Seine Bilder beginnen draußen am Lech, mitten in der Landschaft, und wachsen im Atelier weiter: Horizonte, Licht und Gesichter, die den Geist eines Ortes zeigen.",
-    image: { src: "/anmeldung/raik-holetz.jpg", width: 900, height: 1600, alt: "Raik Holetz beim Malen im Feld" },
+    image: { src: "/anmeldung/raik-holetz-atelier.jpg", width: 1066, height: 1600, alt: "Raik Holetz in seinem Atelier vor seinen Bildern" },
     links: [
       { label: "raikholetz.com", href: "https://www.raikholetz.com" },
       { label: "Instagram", href: "https://www.instagram.com/raikholetz/" },

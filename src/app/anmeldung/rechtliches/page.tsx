@@ -97,8 +97,8 @@ export default function RechtlichesPage() {
           </Block>
 
           <Block title="6. Links zu anderen Seiten">
-            Die Seite verlinkt auf Google Maps (Route zum {VENUE.name}), Instagram und die Websites von Raik Holetz
-            und TONSAMMLER. Erst wenn du einen Link anklickst, werden Daten an den jeweiligen Anbieter übertragen;
+            Die Seite verlinkt auf {VENUE.maps ? `Google Maps (Route zum ${VENUE.name}), ` : ""}Instagram und die
+            Websites von Raik Holetz und TONSAMMLER. Erst wenn du einen Link anklickst, werden Daten an den jeweiligen Anbieter übertragen;
             dort gelten dessen Datenschutzbestimmungen.
           </Block>
 

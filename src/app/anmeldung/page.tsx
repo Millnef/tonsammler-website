@@ -1,9 +1,8 @@
 import Image from "next/image";
 import EventFooter from "@/components/anmeldung/EventFooter";
 import RegistrationForm from "@/components/anmeldung/RegistrationForm";
-import TempoArc from "@/components/anmeldung/TempoArc";
 import { CONTAINER, LABEL, PRIMARY, SECONDARY, SERIF } from "@/components/anmeldung/styles";
-import { ARC, ARTISTS, ARTWORKS, EVENT, FACTS, HERO_ART, INTRO, VENUE } from "@/lib/anmeldung-content";
+import { ARTISTS, ARTWORKS, EVENT, FACTS, HERO_ART, INTRO, VENUE } from "@/lib/anmeldung-content";
 
 const SECTION = "border-t border-white/10 py-24 sm:py-32";
 const H2 = `${SERIF} text-4xl leading-tight sm:text-5xl`;
@@ -38,41 +37,51 @@ export default function AnmeldungPage() {
             <p className="text-xs font-medium uppercase tracking-[0.25em] text-accent">{EVENT.subtitle}</p>
             <h1 className={`${SERIF} mt-4 text-[clamp(5rem,24vw,15rem)] leading-[0.8] tracking-[-0.02em]`}>{EVENT.name}</h1>
             <p className="mt-8 text-lg font-light text-foreground/90 sm:text-xl">
-              {EVENT.dateShort} · {EVENT.time} · Landsberg am Lech
+              {EVENT.dateShort} · {EVENT.time} · {VENUE.town}
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <a href="#anmeldung" className={PRIMARY}>
                 Platz sichern
               </a>
-              <a href={VENUE.maps} target="_blank" rel="noopener noreferrer" className={SECONDARY}>
-                Route ↗
-              </a>
+              {VENUE.maps && (
+                <a href={VENUE.maps} target="_blank" rel="noopener noreferrer" className={SECONDARY}>
+                  Route ↗
+                </a>
+              )}
             </div>
           </div>
         </section>
 
-        {/* The facts at a glance */}
+        {/* The facts at a glance: no frame, fine lines only between the blocks */}
         <section className={`${CONTAINER} py-24 sm:py-32`}>
-          <dl className="grid grid-cols-1 gap-px border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="grid grid-cols-1 divide-y divide-white/10 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
             {FACTS.slice(0, 1).map((fact) => (
               <Fact key={fact.label} {...fact} />
             ))}
-            <div className="flex flex-col bg-black p-6 sm:p-8">
+            <div className={FACT}>
               <dt className={LABEL}>Wo</dt>
               <dd className={`${SERIF} mt-3 text-2xl leading-snug`}>{VENUE.name}</dd>
               <dd className="mt-2 text-sm font-light text-foreground/60">
-                {VENUE.street}, {VENUE.city}
+                {VENUE.street ? `${VENUE.street}, ${VENUE.town}` : `${VENUE.town} ${VENUE.region}`}
+                {!VENUE.street && (
+                  <>
+                    <br />
+                    Die genaue Adresse kommt mit der Bestätigung.
+                  </>
+                )}
               </dd>
-              <dd className="mt-auto pt-4">
-                <a
-                  href={VENUE.maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-medium uppercase tracking-[0.15em] text-accent transition-colors duration-200 ease-out hover:text-foreground"
-                >
-                  Route planen ↗
-                </a>
-              </dd>
+              {VENUE.maps && (
+                <dd className="pt-4">
+                  <a
+                    href={VENUE.maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-medium uppercase tracking-[0.15em] text-accent transition-colors duration-200 ease-out hover:text-foreground"
+                  >
+                    Route planen ↗
+                  </a>
+                </dd>
+              )}
             </div>
             {FACTS.slice(1).map((fact) => (
               <Fact key={fact.label} {...fact} />
@@ -83,40 +92,26 @@ export default function AnmeldungPage() {
         {/* What the afternoon is */}
         <section className={`${CONTAINER} pb-24 sm:pb-32`}>
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
-            <h2 className={`${SERIF} text-4xl italic leading-tight sm:text-6xl`}>
-              Bild und Klang
-              <br />
-              in einem Raum.
-            </h2>
+            <h2 className={`${SERIF} text-4xl italic leading-tight sm:text-5xl`}>{INTRO.lead}</h2>
             <div>
-              <p className="text-xl font-light leading-relaxed sm:text-2xl">{INTRO[0]}</p>
-              <p className="mt-6 font-light leading-relaxed text-foreground/70 sm:text-lg">{INTRO[1]}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* The musical arc */}
-        <section className={SECTION}>
-          <div className={CONTAINER}>
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <h2 className={H2}>Der Bogen</h2>
-              <p className={LABEL}>115 → 140 BPM</p>
-            </div>
-            <p className="mt-4 max-w-xl font-light leading-relaxed text-foreground/60">
-              Vom ruhigen Ankommen bis in den hypnotischen Höhepunkt. Die Zeiten sind ein grober Plan.
-            </p>
-            <div className="mt-12 sm:mt-16">
-              <TempoArc />
-            </div>
-            <ol className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-              {ARC.map((phase) => (
-                <li key={phase.time} className="border-l border-white/15 pl-4">
-                  <p className="text-xs font-medium tracking-[0.15em] text-accent">{phase.time}</p>
-                  <p className={`${SERIF} mt-2 text-2xl leading-tight`}>{phase.title}</p>
-                  <p className="mt-1 text-sm font-light text-foreground/60">{phase.music}</p>
-                </li>
+              {INTRO.paragraphs.map((paragraph, index) => (
+                <p
+                  key={paragraph}
+                  className={
+                    index === 0
+                      ? "text-xl font-light leading-relaxed sm:text-2xl"
+                      : "mt-6 font-light leading-relaxed text-foreground/70 sm:text-lg"
+                  }
+                >
+                  {paragraph}
+                </p>
               ))}
-            </ol>
+              <p className="mt-10 border-l border-accent/60 pl-4 font-light leading-relaxed">
+                <span className="text-accent">{INTRO.closing[0]}</span>
+                <br />
+                {INTRO.closing[1]}
+              </p>
+            </div>
           </div>
         </section>
 
@@ -199,9 +194,13 @@ export default function AnmeldungPage() {
               <p className="mt-8 border-l border-accent/60 pl-4 text-sm font-light leading-relaxed text-foreground/70">
                 {EVENT.dateShort} · {EVENT.time}
                 <br />
-                {VENUE.name}
-                <br />
-                {VENUE.street}, {VENUE.city}
+                {VENUE.name}, {VENUE.town}
+                {VENUE.street && (
+                  <>
+                    <br />
+                    {VENUE.street}
+                  </>
+                )}
               </p>
             </div>
             <RegistrationForm />
@@ -213,9 +212,12 @@ export default function AnmeldungPage() {
   );
 }
 
+// Padding: the lines between the blocks run horizontally on phones and vertically from lg
+const FACT = "py-6 lg:px-8 lg:py-2 lg:first:pl-0 lg:last:pr-0";
+
 function Fact({ label, value, note }: { label: string; value: string; note: string }) {
   return (
-    <div className="bg-black p-6 sm:p-8">
+    <div className={FACT}>
       <dt className={LABEL}>{label}</dt>
       <dd className={`${SERIF} mt-3 text-2xl leading-snug`}>{value}</dd>
       <dd className="mt-2 text-sm font-light text-foreground/60">{note}</dd>
