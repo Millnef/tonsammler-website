@@ -16,14 +16,14 @@ export const EVENT = {
   capacity: 80,
 };
 
-// Street and route link stay empty until the exact address is known; the page then
-// shows the town only and says the address follows with the confirmation
+// Raik's studio as listed on Google Maps ("Kunstraum - Raik Holetz"). Without a street
+// the page shows the town only and says the address follows with the confirmation.
 export const VENUE = {
   name: "Kunstraum Raik Holetz",
-  town: "Friedberg",
-  region: "bei Augsburg",
-  street: "",
-  maps: "",
+  town: "Landsberg am Lech",
+  street: "Am Seelberg 55",
+  city: "86899 Landsberg am Lech",
+  maps: "https://www.google.com/maps/search/?api=1&query=Kunstraum%20Raik%20Holetz%2C%20Am%20Seelberg%2055%2C%2086899%20Landsberg%20am%20Lech",
 };
 
 // Google Apps Script web app that writes into the guest list (Google Sheet) and sends
@@ -35,11 +35,11 @@ export const INTRO = {
   lead: "Ein Nachmittag, an dem Bild und Klang denselben Raum teilen.",
   paragraphs: [
     "Raik Holetz öffnet sein Atelier: Gemälde, die draußen in der Landschaft beginnen und im Studio weiterwachsen.",
-    "Währenddessen legt Tonsammler auf – ein Bogen von Ambient über House bis in hypnotischen Techno.",
+    "Währenddessen legt Tonsammler auf.",
     "Musik auf Augenhöhe und Zeit zum Hinsehen.",
-    "Während des vierstündigen Sets von Tonsammler malt Raik in einer Live-Session von 18–19 Uhr ein Bild.",
+    "Während des vierstündigen Sets von Tonsammler malt Raik von 18–19 Uhr.",
   ],
-  closing: ["Sa 28.11. · 15–19 Uhr · Friedberg", "Begrenzte Plätze, nur mit Anmeldung."],
+  closing: ["Sa 28.11. · 15–19 Uhr · Landsberg am Lech", "Begrenzte Plätze, nur mit Anmeldung."],
 };
 
 export const FACTS = [

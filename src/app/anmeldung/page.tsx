@@ -62,7 +62,7 @@ export default function AnmeldungPage() {
               <dt className={LABEL}>Wo</dt>
               <dd className={`${SERIF} mt-3 text-2xl leading-snug`}>{VENUE.name}</dd>
               <dd className="mt-2 text-sm font-light text-foreground/60">
-                {VENUE.street ? `${VENUE.street}, ${VENUE.town}` : `${VENUE.town} ${VENUE.region}`}
+                {VENUE.street ? `${VENUE.street}, ${VENUE.city}` : VENUE.town}
                 {!VENUE.street && (
                   <>
                     <br />
