@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BookingForm from "@/components/epk/BookingForm";
 import CopyButton from "@/components/epk/CopyButton";
+import ConsentEmbed from "@/components/ConsentEmbed";
 import {
   BandcampIcon,
   InstagramIcon,
@@ -25,6 +26,7 @@ import {
   SITE,
   type EpkLang,
 } from "@/lib/epk-content";
+import { LEGAL_PATHS } from "@/lib/legal";
 import { RELEASE } from "@/lib/release";
 
 const CONTAINER = "mx-auto w-full max-w-6xl px-6 sm:px-10";
@@ -199,10 +201,11 @@ export default function Epk({ lang }: { lang: EpkLang }) {
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-10">
               <div>
                 <div className="relative aspect-video w-full overflow-hidden border border-white/10">
-                  <iframe
+                  <ConsentEmbed
+                    provider="soundcloud"
+                    lang={lang}
                     title={`${t.listen.set.title} – TONSAMMLER`}
                     src={EMBEDS.soundcloudLilo}
-                    loading="lazy"
                     allow="autoplay; encrypted-media"
                     className="h-full w-full print:hidden"
                   />
@@ -275,11 +278,12 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                   <PlatformLink href={RELEASE.links.soundcloud} icon={SoundCloudIcon} label="SoundCloud" />
                   <PlatformLink href={RELEASE.links.youtube} icon={YouTubeIcon} label="YouTube" />
                 </div>
-                <iframe
+                <ConsentEmbed
+                  provider="spotify"
+                  lang={lang}
                   title={`${RELEASE.title} von TONSAMMLER auf Spotify`}
                   src={RELEASE.embeds.spotify}
                   height={152}
-                  loading="lazy"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   className="mt-5 w-full rounded-xl print:hidden"
                 />
@@ -455,9 +459,17 @@ export default function Epk({ lang }: { lang: EpkLang }) {
         className={`${CONTAINER} flex flex-wrap items-center justify-between gap-4 border-t border-white/10 py-8 text-xs text-foreground/40 print:hidden`}
       >
         <span>© 2026 TONSAMMLER · {t.footer}</span>
-        <Link href="/" className="uppercase tracking-[0.15em] hover:text-accent">
-          {SITE.label}
-        </Link>
+        <span className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Link href={LEGAL_PATHS.imprint[lang]} className="hover:text-accent">
+            {lang === "de" ? "Impressum" : "Legal notice"}
+          </Link>
+          <Link href={LEGAL_PATHS.privacy[lang]} className="hover:text-accent">
+            {lang === "de" ? "Datenschutz" : "Privacy"}
+          </Link>
+          <Link href="/" className="uppercase tracking-[0.15em] hover:text-accent">
+            {SITE.label}
+          </Link>
+        </span>
       </footer>
     </div>
   );

@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { SoundCloudIcon, YouTubeIcon } from "@/components/icons";
+import ConsentEmbed from "@/components/ConsentEmbed";
 
 // How far the video reaches up into Releases' 400px bottom whitespace
 const VIDEO_TOP_OVERLAP = 240;
@@ -132,7 +133,8 @@ export default function Sets() {
 
               {/* Same 16:9 box as the YouTube player next to it */}
               <div className="mt-4 aspect-video w-full overflow-hidden border border-white/10">
-                <iframe
+                <ConsentEmbed
+                  provider="soundcloud"
                   title="LAUT IN LOVE || TONSAMMLER auf SoundCloud"
                   allow="autoplay; encrypted-media"
                   src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2415263193&color=%234c2c4c&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
@@ -182,15 +184,12 @@ export default function Sets() {
               </span>
 
               <div className="mt-4 aspect-video w-full overflow-hidden border border-white/10">
-                <iframe
-                  width="100%"
-                  height="100%"
+                <ConsentEmbed
+                  provider="youtube"
                   className="h-full w-full"
-                  src="https://www.youtube.com/embed/qBRBy3EUuRc?si=_VsD10EOSAUlNOHY&start=900"
+                  src="https://www.youtube-nocookie.com/embed/qBRBy3EUuRc?start=900"
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
                 />
               </div>
             </div>

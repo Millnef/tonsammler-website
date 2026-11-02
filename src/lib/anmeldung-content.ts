@@ -89,11 +89,5 @@ export const CONSENT_MEDIA =
 // Optional, separate consent: lets the guest list be used for future invitations
 export const CONSENT_NEWS = "Ja, informiert mich per E-Mail über künftige Events von Raik Holetz und Tonsammler. (optional)";
 
-// Responsible person for the page (imprint and privacy notice)
-export const OPERATOR = {
-  name: "Milan-Joel Pawlick",
-  street: "Floriansmühlstraße 11",
-  city: "80939 München",
-  email: "tonsammlermusic@gmail.com",
-  phone: "+49 151 10468852",
-};
+// Responsible person for the page (imprint and privacy notice), shared with the website
+export { OPERATOR } from "@/lib/legal";

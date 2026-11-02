@@ -7,6 +7,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeading from "@/components/SectionHeading";
 import { LINE_CLASSES, useHeadlineLines, type HeadlineLineSpec } from "@/lib/headline-lines";
 import { RELEASE } from "@/lib/release";
+import ConsentEmbed from "@/components/ConsentEmbed";
 import {
   BandcampIcon,
   SpotifyIcon,
@@ -228,12 +229,11 @@ export default function Releases() {
                 exit={{ x: "-100%" }}
                 transition={{ duration: 0.35, ease: EASE_OUT }}
               >
-                <iframe
+                <ConsentEmbed
+                  provider={active}
                   title={EMBEDS[active].title}
                   src={EMBEDS[active].src}
                   allow={EMBEDS[active].allow}
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
                   className="h-full w-full"
                 />
               </motion.div>

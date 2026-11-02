@@ -1,6 +1,10 @@
 import { Fragment } from "react";
 import Logo from "@/components/Logo";
+import Link from "next/link";
 import { LINKS } from "@/lib/nav-links";
+import { LEGAL_PATHS } from "@/lib/legal";
+
+const LEGAL = "text-[10px] font-medium uppercase tracking-[0.1em] text-foreground/40 transition-colors duration-200 ease-out hover:text-accent md:text-[11px] md:tracking-[0.15em]";
 
 export default function Footer() {
   return (
@@ -29,6 +33,16 @@ export default function Footer() {
             </Fragment>
           ))}
         </div>
+      </div>
+
+      {/* Imprint and privacy notice, reachable from every part of the site */}
+      <div className="-mt-2 flex gap-6 px-6 pb-6 sm:px-10 sm:pb-8 md:-mt-4 md:justify-end">
+        <Link href={LEGAL_PATHS.imprint.de} className={LEGAL}>
+          Impressum
+        </Link>
+        <Link href={LEGAL_PATHS.privacy.de} className={LEGAL}>
+          Datenschutz
+        </Link>
       </div>
     </footer>
   );

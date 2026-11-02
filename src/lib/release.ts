@@ -1,7 +1,8 @@
 // The current release, shown in the homepage's Releases section and on the booking page.
 // For a new release only this file changes (plus its cover in public/epk/).
 // Embed formats stay the same for every release: Spotify theme=0, SoundCloud classic
-// in #242424, Bandcamp with track list and small artwork on bgcol 333333.
+// in #242424, Bandcamp with track list and small artwork on bgcol 333333, YouTube in
+// privacy-enhanced mode (youtube-nocookie.com). All players load only after a click.
 
 export const RELEASE = {
   title: "abrasive",
@@ -22,6 +23,6 @@ export const RELEASE = {
       "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2421478929&color=%23242424&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true",
     bandcamp:
       "https://bandcamp.com/EmbeddedPlayer/track=3770052227/size=large/bgcol=333333/linkcol=ffebb5/tracklist=true/artwork=small/transparent=true/",
-    youtube: "https://www.youtube.com/embed/sl5_omSsVYc",
+    youtube: "https://www.youtube-nocookie.com/embed/sl5_omSsVYc",
   },
 };
