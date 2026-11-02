@@ -1,12 +1,12 @@
 // Registration page for the listening in Raik Holetz' studio (/anmeldung).
 // A page of its own: not linked from the website, not indexed, only reachable by link.
 
-// Milan's name: "Tonsammler" in running text, "TONSAMMLER" only in titles and headings
+// Milan's name is written "Tonsammler" on this page, in headings too (2026-11-02)
 export const EVENT = {
   // Working title, the final name is still open
   name: "Farbton",
   subtitle: "Listening im Atelier",
-  hosts: "Raik Holetz × TONSAMMLER",
+  hosts: "Raik Holetz × Tonsammler",
   date: "Samstag, 28. November 2026",
   dateShort: "Sa 28.11.2026",
   time: "15–19 Uhr",
@@ -70,9 +70,9 @@ export const ARTISTS = [
     ],
   },
   {
-    name: "TONSAMMLER",
+    name: "Tonsammler",
     role: "DJ & Producer · München",
-    text: "Tonsammler bringt Techno mit tiefen, treibenden, repetitiven Loops, gebaut für die Tanzfläche, um Leute zu bewegen, physisch wie emotional. Mitgründer des Kollektivs IMPEDANZ.",
+    text: "Tonsammler bringt tiefe, treibende Sounds, um Leute zu bewegen, physisch wie emotional.",
     image: { src: "/epk/photos/TONSAMMLER-Portrait-sw-1.jpg", width: 3287, height: 5120, alt: "Porträt Tonsammler" },
     links: [
       { label: "tonsammler.com", href: "https://www.tonsammler.com" },
