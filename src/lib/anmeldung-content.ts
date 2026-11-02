@@ -9,7 +9,7 @@ export const EVENT = {
   hosts: "Raik Holetz × Tonsammler",
   date: "Samstag, 28. November 2026",
   dateShort: "Sa 28.11.2026",
-  time: "15–19 Uhr",
+  time: "16–20 Uhr",
   // Registration closes at the end of this day (German time)
   deadline: "2026-11-22T23:59:59+01:00",
   deadlineLabel: "Sonntag, 22. November",
@@ -42,7 +42,7 @@ export const INTRO = {
 };
 
 export const FACTS = [
-  { label: "Wann", value: EVENT.date, note: `${EVENT.time}, Einlass ab 15 Uhr` },
+  { label: "Wann", value: EVENT.date, note: `${EVENT.time}, Einlass ab 16 Uhr` },
   { label: "Eintritt", value: "Frei, nur mit Anmeldung", note: `Begrenzte Plätze · Anmeldeschluss ${EVENT.deadlineLabel}` },
   { label: "Getränke", value: "Gegen Spende", note: "Bier, Wein, Softdrinks" },
 ];
