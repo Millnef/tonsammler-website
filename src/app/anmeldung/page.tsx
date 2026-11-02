@@ -89,10 +89,15 @@ export default function AnmeldungPage() {
           </dl>
         </section>
 
-        {/* What the afternoon is */}
+        {/* What the afternoon is: the flyer's spaced-out heading, its text beside it */}
         <section className={`${CONTAINER} pb-24 sm:pb-32`}>
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
-            <h2 className={`${SERIF} text-4xl italic leading-tight sm:text-5xl`}>{INTRO.lead}</h2>
+            <h2 className={`${SERIF} text-2xl uppercase leading-[1.7] tracking-[0.3em] sm:text-3xl`}>
+              <span className="block">{EVENT.name} —</span>
+              {/* No-break spaces keep "Live Painting" and "DJ Set" whole and each "·" with the
+                  word before it, so lines only break after a "·" */}
+              {INTRO.formats.map((format) => format.replaceAll(" ", "\u00a0")).join("\u00a0· ")}
+            </h2>
             <div>
               {/* All blocks carry the same weight */}
               {INTRO.paragraphs.map((paragraph) => (
@@ -100,11 +105,6 @@ export default function AnmeldungPage() {
                   {paragraph}
                 </p>
               ))}
-              <p className="mt-10 border-l border-accent/60 pl-4 font-light leading-relaxed">
-                <span className="text-accent">{INTRO.closing[0]}</span>
-                <br />
-                {INTRO.closing[1]}
-              </p>
             </div>
           </div>
         </section>

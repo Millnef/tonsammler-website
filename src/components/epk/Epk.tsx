@@ -97,12 +97,9 @@ export default function Epk({ lang }: { lang: EpkLang }) {
   const t = EPK[lang];
   const other: EpkLang = lang === "de" ? "en" : "de";
 
+  // Streaming platforms are already linked in the music section, so contact keeps Instagram only
   const socials: { href: string; icon: Icon; label: string }[] = [
     { href: LINKS.instagram, icon: InstagramIcon, label: "Instagram" },
-    { href: LINKS.soundcloud, icon: SoundCloudIcon, label: "SoundCloud" },
-    { href: LINKS.youtube, icon: YouTubeIcon, label: "YouTube" },
-    { href: LINKS.spotifyArtist, icon: SpotifyIcon, label: "Spotify" },
-    { href: LINKS.bandcamp, icon: BandcampIcon, label: "Bandcamp" },
   ];
 
   return (

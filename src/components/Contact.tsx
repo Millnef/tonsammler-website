@@ -19,8 +19,6 @@ import {
 } from "@/components/icons";
 
 const EMAIL = "tonsammlermusic@gmail.com";
-const PHONE = "+49 151 10468852";
-const PHONE_HREF = "tel:+4915110468852";
 const EASE_OUT = "easeOut";
 
 const VIDEO_SRC = "/videos/contact-background.mp4";
@@ -205,11 +203,6 @@ export default function Contact() {
         <div>
           <h3 className={LABEL_CLASSES}>E-Mail</h3>
           <CopyValue value={EMAIL} href={`mailto:${EMAIL}`} valueRef={emailRef} />
-        </div>
-
-        <div>
-          <h3 className={LABEL_CLASSES}>Mobil</h3>
-          <CopyValue value={PHONE} href={PHONE_HREF} />
         </div>
 
         <div>

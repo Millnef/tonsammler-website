@@ -30,15 +30,15 @@ export const VENUE = {
 // the confirmation e-mail. Empty until it is deployed: the form then runs in test mode.
 export const ENDPOINT = "";
 
-// Milan's text (2026-10-24): the lead sentence, three equal blocks, the closing lines
+// Heading and description from Raik's flyer (2026-11-02)
 export const INTRO = {
-  lead: "Ein Nachmittag, an dem Bild und Klang denselben Raum teilen.",
+  formats: ["Ausstellung", "Live Painting", "DJ Set"],
   paragraphs: [
-    "Raik Holetz öffnet sein Atelier: Gemälde, die draußen in der Landschaft beginnen und im Studio weiterwachsen.",
-    "Tonsammler untermalt mit einem vierstündigen Set von Ambient über House bis zu hypnotischem Techno die Atmosphäre.",
-    "Zusammen kreieren sie eine neue Erfahrung und machen das Studio selbst zum Kunstwerk. Musik auf Augenhöhe und Zeit zum Hinsehen.",
+    "Im KUNSTRAUM treffen großformatige Gemälde, intime Skizzen auf warmes Licht, elektronische Musik und eine offene Atelieratmosphäre.",
+    "Während Raik Holetz live ein neues Gemälde entstehen lässt, nimmt euch Tonsammler aus München mit auf ein vierstündiges DJ-Set, von entspanntem Ambient / House bis hin zu treibenden elektronischen Beats.",
+    "Die Musik verändert den Raum, das Bild wächst mit jedem Pinselstrich.",
+    "Dazwischen gibt es Drinks, Gespräche, Interaktives und die Möglichkeit, Kunst einmal aus einer anderen Perspektive zu erleben.",
   ],
-  closing: ["Sa 28.11. · 15–19 Uhr · Landsberg am Lech", "Begrenzte Plätze, nur mit Anmeldung."],
 };
 
 export const FACTS = [
