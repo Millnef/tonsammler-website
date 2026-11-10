@@ -1,13 +1,13 @@
 // Farbton – guest list for www.tonsammler.com/anmeldung (Raik Holetz × Tonsammler)
 //
-// Google Apps Script, bound to the Google Sheet "Farbton – Anmeldungen" in Milan's
-// pawlickmilan@gmail.com account (where all his sheets live). Every registration from the
-// website lands here as one row; the guest gets a confirmation email from that account,
-// with replies going to tonsammlermusic@gmail.com.
+// Google Apps Script, bound to the Google Sheet "Farbton – Anmeldungen". The sheet lives in
+// Milan's pawlickmilan@gmail.com account and is shared (editor) with tonsammlermusic@gmail.com.
+// The web app is deployed from tonsammlermusic@gmail.com and runs as that account, so guests
+// only ever see the Tonsammler address. Every registration lands here as one row.
 //
-// Setup (once): Extensions → Apps Script → paste this file → run "setup" → Deploy →
-// New deployment → Web app, execute as "Me", access "Anyone" → copy the web app URL
-// into ENDPOINT in src/lib/anmeldung-content.ts.
+// Setup (once): Extensions → Apps Script → paste this file. Then, signed in as
+// tonsammlermusic@gmail.com: run "setup" → Deploy → New deployment → Web app, execute as
+// "Me", access "Anyone" → copy the web app URL into ENDPOINT in src/lib/anmeldung-content.ts.
 
 const CONFIG = {
   sheetName: "Anmeldungen",
