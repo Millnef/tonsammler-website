@@ -9,7 +9,9 @@ import { LABEL, PRIMARY, SERIF } from "@/components/anmeldung/styles";
 const FIELD =
   "mt-2 w-full border-b border-white/20 bg-transparent py-2.5 text-base font-light text-foreground outline-none transition-colors duration-200 ease-out placeholder:text-foreground/30 focus:border-accent";
 
-type Status = "idle" | "sending" | "confirmed" | "waitlist" | "duplicate" | "closed" | "error" | "test";
+const OPTION = "bg-neutral-900 text-white";
+
+type Status ="idle" | "sending" | "confirmed" | "waitlist" | "duplicate" | "closed" | "error" | "test";
 
 const RESULT: Record<Exclude<Status, "idle" | "sending">, { title: string; text: string }> = {
   confirmed: {
@@ -117,9 +119,13 @@ export default function RegistrationForm() {
       <label className="block">
         <span className={LABEL}>Wie hast du davon erfahren?</span>
         <select name="heardFrom" defaultValue="" className={`${FIELD} [color-scheme:dark]`}>
-          <option value="">Bitte wählen (optional)</option>
+          {/* The open list would inherit the field's white text on the browser's light
+              background, so the options get their own dark colours */}
+          <option value="" className={OPTION}>
+            Bitte wählen (optional)
+          </option>
           {HEARD_FROM.map((option) => (
-            <option key={option} value={option}>
+            <option key={option} value={option} className={OPTION}>
               {option}
             </option>
           ))}
