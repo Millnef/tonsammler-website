@@ -1,8 +1,9 @@
 // Farbton – guest list for www.tonsammler.com/anmeldung (Raik Holetz × Tonsammler)
 //
-// Google Apps Script, bound to the Google Sheet "Farbton – Anmeldungen" in the
-// tonsammlermusic@gmail.com account. Every registration from the website lands here as
-// one row; the guest gets a confirmation email from that account.
+// Google Apps Script, bound to the Google Sheet "Farbton – Anmeldungen" in Milan's
+// pawlickmilan@gmail.com account (where all his sheets live). Every registration from the
+// website lands here as one row; the guest gets a confirmation email from that account,
+// with replies going to tonsammlermusic@gmail.com.
 //
 // Setup (once): Extensions → Apps Script → paste this file → run "setup" → Deploy →
 // New deployment → Web app, execute as "Me", access "Anyone" → copy the web app URL
