@@ -26,9 +26,11 @@ export const VENUE = {
   maps: "https://www.google.com/maps/search/?api=1&query=Kunstraum%20Raik%20Holetz%2C%20Am%20Seelberg%2055%2C%2086899%20Landsberg%20am%20Lech",
 };
 
-// Google Apps Script web app that writes into the guest list (Google Sheet) and sends
-// the confirmation e-mail. Empty until it is deployed: the form then runs in test mode.
-export const ENDPOINT = "";
+// Google Apps Script web app (scripts/anmeldung-apps-script.gs) that writes into the guest
+// list "Farbton – Anmeldungen" (Google Sheet) and sends the confirmation e-mail from
+// tonsammlermusic@gmail.com. Empty would put the form back into test mode.
+export const ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbyZhqLRpeL60Q6l-6biCoQ0Y8FdlstUEHikbupZdl1ONBwL2FUnW-RjsB8SimCggRxB/exec";
 
 // Heading and description from Raik's flyer (2026-11-02)
 export const INTRO = {
