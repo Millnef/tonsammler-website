@@ -19,17 +19,12 @@ const SANS = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 const SERIF = "Georgia, 'Times New Roman', serif";
 const ACCENT = "#ffebb5";
 
-const DESCRIPTION =
-  "Raik Holetz zeigt seine Arbeiten und malt live ein neues Bild, Tonsammler legt vier Stunden auf. Getränke gibt es gegen Spende. Beim Event wird fotografiert und gefilmt.";
-
 const MAILS = {
   bestaetigt: {
     subject: "Du bist dabei: Farbton am 28.11.",
     preheader: "Deine Anmeldung ist bestätigt – Sa 28.11., 16–20 Uhr, Kunstraum Raik Holetz.",
     badge: "Bestätigt",
     intro: "schön, dass du dabei bist! Deine Anmeldung für Farbton ist bestätigt.",
-    outro:
-      "Falls du doch nicht kannst, antworte kurz auf diese Mail. Dann bekommt jemand von der Warteliste deinen Platz.",
   },
   warteliste: {
     subject: "Warteliste: Farbton am 28.11.",
@@ -37,7 +32,6 @@ const MAILS = {
     badge: "Warteliste",
     intro:
       "danke für deine Anmeldung! Gerade sind alle Plätze vergeben, du stehst auf der Warteliste. Wird ein Platz frei, melden wir uns per E-Mail bei dir.",
-    outro: "Du musst nichts weiter tun.",
   },
 };
 
@@ -52,7 +46,7 @@ const fact = (title, lines) => `
               </td>
             </tr>`;
 
-function mail({ subject, preheader, badge, intro, outro }) {
+function mail({ subject, preheader, badge, intro }) {
   return `<!doctype html>
 <html lang="de">
 <head>
@@ -89,12 +83,6 @@ function mail({ subject, preheader, badge, intro, outro }) {
         <tr>
           <td style="padding:8px 32px 0;">
             <a href="${ROUTE}" style="display:inline-block;background-color:${ACCENT};border-radius:999px;padding:13px 26px;font-family:${SANS};font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#000000;text-decoration:none;">Route planen ↗</a>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:28px 32px 0;font-family:${SANS};font-size:15px;line-height:1.65;color:#b3b3b3;">
-            <p style="margin:0;">${DESCRIPTION}</p>
-            <p style="margin:14px 0 0;">${outro}</p>
           </td>
         </tr>
         <tr>
