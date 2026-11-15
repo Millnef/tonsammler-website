@@ -8,6 +8,9 @@
 // Setup (once): Extensions → Apps Script → paste this file. Then, signed in as
 // tonsammlermusic@gmail.com: run "setup" → Deploy → New deployment → Web app, execute as
 // "Me", access "Anyone" → copy the web app URL into ENDPOINT in src/lib/anmeldung-content.ts.
+// After changing this file: paste it again, then Deploy → Manage deployments → Edit (pencil) →
+// Version "New version" → Deploy. The URL stays the same. The mail design does not need
+// this: it lives on the website (public/anmeldung/mail/).
 
 const CONFIG = {
   sheetName: "Anmeldungen",
@@ -17,6 +20,9 @@ const CONFIG = {
   senderName: "Farbton · Raik Holetz × Tonsammler",
   replyTo: "tonsammlermusic@gmail.com",
   page: "https://www.tonsammler.com/anmeldung",
+  // Designed mails (built by scripts/build-mail-templates.mjs): bestaetigt.html, warteliste.html.
+  // Their <title> is the subject, {{NAME}} the guest's name. Changes there need no redeploy.
+  mailTemplates: "https://www.tonsammler.com/anmeldung/mail/",
   date: "Samstag, 28. November 2026, 16–20 Uhr",
   place: "Kunstraum Raik Holetz, Am Seelberg 55, 86899 Landsberg am Lech",
   route:
@@ -151,11 +157,42 @@ function sendMail_(name, email, status) {
     CONFIG.page,
   ].join("\n");
 
-  MailApp.sendEmail({
-    to: email,
-    subject: subject,
-    body: body,
-    name: CONFIG.senderName,
-    replyTo: CONFIG.replyTo,
-  });
+  const message = { to: email, subject: subject, body: body, name: CONFIG.senderName, replyTo: CONFIG.replyTo };
+  const designed = fetchTemplate_(confirmed ? "bestaetigt" : "warteliste", name.replace(/^'/, ""));
+  if (designed) {
+    message.htmlBody = designed.html;
+    message.subject = designed.subject || subject;
+  }
+  MailApp.sendEmail(message);
+}
+
+// The designed mail from the website; null if it cannot be loaded, then the plain text goes out
+function fetchTemplate_(file, name) {
+  try {
+    const response = UrlFetchApp.fetch(CONFIG.mailTemplates + file + ".html?v=" + Date.now(), {
+      muteHttpExceptions: true,
+    });
+    if (response.getResponseCode() !== 200) return null;
+    const template = response.getContentText("UTF-8");
+    if (template.indexOf("{{NAME}}") < 0) return null;
+    const title = template.match(/<title>([^<]*)<\/title>/);
+    return { html: template.split("{{NAME}}").join(escapeHtml_(name)), subject: title ? title[1].trim() : "" };
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+function escapeHtml_(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// Run by hand to see the designed mail: sends both versions to the reply address
+function testMail() {
+  sendMail_("Test", CONFIG.replyTo, "confirmed");
+  sendMail_("Test", CONFIG.replyTo, "waitlist");
 }
