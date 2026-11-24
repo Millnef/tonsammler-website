@@ -1,7 +1,7 @@
 // Content of the booking page / press kit (/booking German, /booking/en English).
 // Its downloads (photos, logos, PDFs) live under /epk/*.
 
-import { RELEASE } from "@/lib/release";
+import { EPK_RELEASE as RELEASE } from "@/lib/release";
 
 export type EpkLang = "de" | "en";
 

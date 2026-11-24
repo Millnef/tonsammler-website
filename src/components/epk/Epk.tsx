@@ -27,7 +27,7 @@ import {
   type EpkLang,
 } from "@/lib/epk-content";
 import { LEGAL_PATHS } from "@/lib/legal";
-import { RELEASE } from "@/lib/release";
+import { EPK_RELEASE as RELEASE } from "@/lib/release";
 
 const CONTAINER = "mx-auto w-full max-w-6xl px-6 sm:px-10";
 const LABEL = "text-xs font-medium uppercase tracking-[0.15em] text-foreground/50";
@@ -241,7 +241,7 @@ export default function Epk({ lang }: { lang: EpkLang }) {
 
               <div className="min-w-0">
                 <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-5 sm:grid-cols-[7.5rem_minmax(0,1fr)]">
-                  <a href={RELEASE.links.bandcamp} target="_blank" rel="noopener noreferrer" className="block">
+                  <a href={RELEASE.links.bandcamp ?? RELEASE.links.soundcloud} target="_blank" rel="noopener noreferrer" className="block">
                     <Image
                       src={RELEASE.cover.src}
                       alt={`Cover „${RELEASE.title}“`}
@@ -270,20 +270,24 @@ export default function Epk({ lang }: { lang: EpkLang }) {
                   </div>
                 </div>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  <PlatformLink href={RELEASE.links.spotify} icon={SpotifyIcon} label="Spotify" />
-                  <PlatformLink href={RELEASE.links.bandcamp} icon={BandcampIcon} label={`Bandcamp · ${t.listen.buy}`} />
-                  <PlatformLink href={RELEASE.links.soundcloud} icon={SoundCloudIcon} label="SoundCloud" />
-                  <PlatformLink href={RELEASE.links.youtube} icon={YouTubeIcon} label="YouTube" />
+                  {RELEASE.links.spotify && <PlatformLink href={RELEASE.links.spotify} icon={SpotifyIcon} label="Spotify" />}
+                  {RELEASE.links.bandcamp && (
+                    <PlatformLink href={RELEASE.links.bandcamp} icon={BandcampIcon} label={`Bandcamp · ${t.listen.buy}`} />
+                  )}
+                  {RELEASE.links.soundcloud && <PlatformLink href={RELEASE.links.soundcloud} icon={SoundCloudIcon} label="SoundCloud" />}
+                  {RELEASE.links.youtube && <PlatformLink href={RELEASE.links.youtube} icon={YouTubeIcon} label="YouTube" />}
                 </div>
-                <ConsentEmbed
-                  provider="spotify"
-                  lang={lang}
-                  title={`${RELEASE.title} von TONSAMMLER auf Spotify`}
-                  src={RELEASE.embeds.spotify}
-                  height={152}
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  className="mt-5 w-full rounded-xl print:hidden"
-                />
+                {RELEASE.embeds.spotify && (
+                  <ConsentEmbed
+                    provider="spotify"
+                    lang={lang}
+                    title={`${RELEASE.title} von TONSAMMLER auf Spotify`}
+                    src={RELEASE.embeds.spotify}
+                    height={152}
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    className="mt-5 w-full rounded-xl print:hidden"
+                  />
+                )}
               </div>
             </div>
           </Section>

@@ -38,7 +38,7 @@ const PLATFORMS: {
   {
     key: "bandcamp",
     label: "Bandcamp",
-    href: RELEASE.links.bandcamp,
+    href: RELEASE.links.bandcamp ?? "https://tonsammler.bandcamp.com",
     icon: BandcampIcon,
   },
   {
@@ -49,29 +49,21 @@ const PLATFORMS: {
   },
 ];
 
-// Players for the current release (src/lib/release.ts)
-const EMBEDS: Record<PlatformKey, { title: string; src: string; allow?: string }> = {
-  spotify: {
-    title: `${RELEASE.title} von TONSAMMLER auf Spotify`,
-    src: RELEASE.embeds.spotify,
-    allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
-  },
-  soundcloud: {
-    title: `${RELEASE.title} von TONSAMMLER auf SoundCloud`,
-    src: RELEASE.embeds.soundcloud,
-    allow: "autoplay; encrypted-media",
-  },
-  bandcamp: {
-    title: `${RELEASE.title} von TONSAMMLER auf Bandcamp`,
-    src: RELEASE.embeds.bandcamp,
-  },
-  youtube: {
-    title: `${RELEASE.title} von TONSAMMLER auf YouTube`,
-    src: RELEASE.embeds.youtube,
-    allow:
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
-  },
+const ALLOW: Partial<Record<PlatformKey, string>> = {
+  spotify: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
+  soundcloud: "autoplay; encrypted-media",
+  youtube: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
 };
+
+// Players for the current release (src/lib/release.ts); a platform the release is not
+// on yet gets no player and no switcher button
+const EMBEDS = Object.fromEntries(
+  PLATFORMS.flatMap(({ key, label }) => {
+    const src = RELEASE.embeds[key];
+    return src ? [[key, { title: `${RELEASE.title} von TONSAMMLER auf ${label}`, src, allow: ALLOW[key] }]] : [];
+  }),
+) as Partial<Record<PlatformKey, { title: string; src: string; allow?: string }>>;
+const PLAYER_PLATFORMS = PLATFORMS.filter((platform) => EMBEDS[platform.key]);
 
 const EASE_OUT = "easeOut";
 
@@ -88,7 +80,8 @@ const HEADING_LINES: HeadlineLineSpec[] = [
 ];
 
 export default function Releases() {
-  const [active, setActive] = useState<PlatformKey>("spotify");
+  const [active, setActive] = useState<PlatformKey>(PLAYER_PLATFORMS[0].key);
+  const player = EMBEDS[active]!;
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -180,7 +173,7 @@ export default function Releases() {
           <div className="mt-12 sm:mt-16 lg:mt-0">
           <div className="mx-auto flex w-fit max-w-full overflow-x-auto rounded-full border border-white/10 bg-white/[0.03] p-1 lg:mx-0">
             {/* Icons instead of labels so four options stay narrow enough for any screen */}
-            {PLATFORMS.map((platform) => {
+            {PLAYER_PLATFORMS.map((platform) => {
               const Icon = platform.icon;
               const isActive = active === platform.key;
 
@@ -231,9 +224,9 @@ export default function Releases() {
               >
                 <ConsentEmbed
                   provider={active}
-                  title={EMBEDS[active].title}
-                  src={EMBEDS[active].src}
-                  allow={EMBEDS[active].allow}
+                  title={player.title}
+                  src={player.src}
+                  allow={player.allow}
                   className="h-full w-full"
                 />
               </motion.div>
@@ -269,7 +262,7 @@ export default function Releases() {
             </a>{" "}
             ·{" "}
             <a
-              href={RELEASE.links.soundcloud}
+              href={RELEASE.links.soundcloud ?? "https://soundcloud.com/tonsammlermusic"}
               title={RELEASE.title}
               target="_blank"
               rel="noopener noreferrer"

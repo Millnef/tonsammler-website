@@ -4,7 +4,20 @@
 // in #242424, Bandcamp with track list and small artwork on bgcol 333333, YouTube in
 // privacy-enhanced mode (youtube-nocookie.com). All players load only after a click.
 
-export const RELEASE = {
+export type ReleasePlatform = "spotify" | "soundcloud" | "bandcamp" | "youtube";
+
+export type Release = {
+  title: string;
+  type: { de: string; en: string };
+  date: string;
+  cover: { src: string; width: number; height: number };
+  tracks: { title: string; length: string }[];
+  // A platform the release is not on yet is simply left out: no link, no player
+  links: Partial<Record<ReleasePlatform, string>>;
+  embeds: Partial<Record<ReleasePlatform, string>>;
+};
+
+const ABRASIVE: Release = {
   title: "abrasive",
   type: { de: "Single", en: "Single" },
   date: "19.10.2026",
@@ -26,3 +39,10 @@ export const RELEASE = {
     youtube: "https://www.youtube-nocookie.com/embed/sl5_omSsVYc",
   },
 };
+
+// Homepage, Releases section
+export const RELEASE: Release = ABRASIVE;
+
+// Booking page / EPK and its PDF. Normally the same as RELEASE; it can stay on the
+// previous release while the new one is not on every platform yet.
+export const EPK_RELEASE: Release = ABRASIVE;
