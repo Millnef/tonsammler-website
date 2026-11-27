@@ -40,8 +40,25 @@ const ABRASIVE: Release = {
   },
 };
 
+// Out 27.11.2026, at first only on YouTube (the distributor had upload problems).
+// The cover is the YouTube thumbnail until the Bandcamp artwork exists; the homepage
+// does not show it, only the booking page does (and that stays on ABRASIVE for now).
+const DRUSE: Release = {
+  title: "druse",
+  type: { de: "Single", en: "Single" },
+  date: "27.11.2026",
+  cover: { src: "/epk/druse-cover.jpg", width: 1280, height: 720 },
+  tracks: [{ title: "druse", length: "6:32" }],
+  links: {
+    youtube: "https://www.youtube.com/watch?v=zabfZClW0Ec",
+  },
+  embeds: {
+    youtube: "https://www.youtube-nocookie.com/embed/zabfZClW0Ec",
+  },
+};
+
 // Homepage, Releases section
-export const RELEASE: Release = ABRASIVE;
+export const RELEASE: Release = DRUSE;
 
 // Booking page / EPK and its PDF. Normally the same as RELEASE; it can stay on the
 // previous release while the new one is not on every platform yet.
